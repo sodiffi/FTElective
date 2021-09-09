@@ -1,11 +1,45 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= title %></title>
+
+<head>
+    <title>北商財稅系人工選課</title>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.js"></script>
     <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
+</head>
+
+<body>
+    <h3>北商財稅系人工選課 </h3>
+    <div class="ui grid two centered">
+        <div class="eight wide column">
+            <p>是否說明文字放在這</p>
+        </div>
+        <div class="four wide column">
+            <div class="ui form">
+                <div class="field">
+                    <label>First Name</label>
+                    <input type="text" name="first-name" placeholder="First Name">
+                </div>
+                <div class="field">
+                    <label>Last Name</label>
+                    <input type="text" name="last-name" placeholder="Last Name">
+                </div>
+                <button class="ui button" id="login">登入</button>
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+    <script>
+        $("#login").click(function() {
+            document.location.href = "./elective"
+        })
+    </script>
+</body>
+
 </html>

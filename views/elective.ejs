@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>北商財稅系人工選課</title>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.js"></script>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+
+<body>
+    <h3>北商財稅系人工選課 </h3>
+    <div class="ui top   secondary   menu" id="tab">
+        <a class=" active item" data-tab="push">加選</a>
+        <a class="item" data-tab="pull">退選</a>
+
+    </div>
+    <div class="ui bottom   active tab segment" data-tab="push">
+        <div>說明文字</div>
+        <button class="ui button" id="pushApply">申請</button>
+    </div>
+
+    <div class="ui bottom   tab segment" data-tab="pull">
+        <div>說明文字</div>
+        <button class="ui button" id="login">申請</button>
+    </div>
+    <div class="ui bottom   tab segment" data-tab="remove">
+        <div>說明文字</div>
+        <button class="ui button" id="login">申請</button>
+    </div>
+
+    <div>
+        <div class="ui modal" id="pushModal">
+            <i class="close icon"></i>
+            <div class="header">
+                加選申請
+            </div>
+            <div class="  content">
+
+            </div>
+            <div class="actions">
+                <div class="ui button">Cancel</div>
+                <div class="ui button">OK</div>
+            </div>
+        </div>
+        <!-- === -->
+        <div class="ui modal" id="pullModal">
+            <i class="close icon"></i>
+            <div class="header">
+                Modal Title
+            </div>
+            <div class="image content">
+                <div class="image">
+                    An image can appear on left or an icon
+                </div>
+                <div class="description">
+                    A description can appear on the right
+                </div>
+            </div>
+            <div class="actions">
+                <div class="ui button">Cancel</div>
+                <div class="ui button">OK</div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        $("body").ready(() => {
+            $('.menu .item').tab();
+            g = localStorage.getItem("graduates")
+            if (g) $("#tab").append(' <div class="item" data-tab="remove">檢修</div>')
+
+        })
+        $("#pushApply").click(() => {
+            $("#pushModal").modal("show")
+
+
+        })
+    </script>
+</body>
+
+</html>
