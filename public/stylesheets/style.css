@@ -1,4 +1,5 @@
 body {
+  background-image: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
@@ -11,9 +12,11 @@ a {
   font-size: 26px;
 }
 p {
-  font-size: 24px;
-  line-height: 38px;
+  font-size: 20px;
+  line-height: 40px;
   padding-right: 25px;
+  text-align: justify;
+  text-justify:inter-ideograph;
 }
 .field {
   font-size: 20px;
@@ -21,19 +24,32 @@ p {
 .ui.button{
   box-shadow: 0.5px 0.5px 4px rgb(49, 42, 3);
 }
+
 div.eight.wide.column{
   margin-top: 45px;
+  margin-right: 10px;
 }
 div.four.wide.column{
   margin-top: 45px;
   border: 1px #2c1700 solid;
 }
-div.ui.grid.two.centered{
-  background-image: url("/images/side.png");
-}
 button#login.ui.button{
   font-size: 18px;
   border-radius: 8px;
-  width: 180px;
+  width: 100%;
   text-align:center;
+  margin-top:10px;
+}
+
+div.ui.grid.two.centered{
+  margin-bottom: 25px;
+
+}
+
+div.ui.form{
+  padding-top: 15px;
+}
+
+a.item{
+  font-size: 20px;
 }
