@@ -6,3 +6,34 @@ body {
 a {
   color: #00B7FF;
 }
+.des {
+  line-height: 50px;
+  font-size: 26px;
+}
+p {
+  font-size: 24px;
+  line-height: 38px;
+  padding-right: 25px;
+}
+.field {
+  font-size: 20px;
+}
+.ui.button{
+  box-shadow: 0.5px 0.5px 4px rgb(49, 42, 3);
+}
+div.eight.wide.column{
+  margin-top: 45px;
+}
+div.four.wide.column{
+  margin-top: 45px;
+  border: 1px #2c1700 solid;
+}
+div.ui.grid.two.centered{
+  background-image: url("/images/side.png");
+}
+button#login.ui.button{
+  font-size: 18px;
+  border-radius: 8px;
+  width: 180px;
+  text-align:center;
+}
