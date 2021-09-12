@@ -9,8 +9,12 @@ a {
 }
 .des {
   line-height: 50px;
-  font-size: 26px;
+  font-size: 24px;
+  margin-left:50px ;
+  text-align: justify;
+  text-justify:inter-ideograph;
 }
+
 p {
   font-size: 20px;
   line-height: 40px;
@@ -52,4 +56,27 @@ div.ui.form{
 
 a.item{
   font-size: 20px;
+}
+#pushApply.ui.button{
+  text-align:center;
+  font-size: 20px;
+  border-radius: 8px;
+  width: 150px;
+  letter-spacing:5px;
+  position: absolute;  
+  bottom: 20px; 
+  right: 45px;
+}
+
+#pullApply.ui.button{
+  font-size: 20px;
+  border-radius: 8px;
+  width: 150px;
+  letter-spacing:5px;
+  position: absolute;  
+  bottom: 20px; 
+  right: 45px;
+}
+div.ui.bottom.tab.segment.active{
+  height: 350px;
 }
