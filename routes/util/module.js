@@ -11,7 +11,7 @@ var login = async function (newData) {
     console.log(newData.id, newData.psw)
     await query(`select * from student where id= "${newData.id}" and psw= "${newData.psw} "`)
         .then((data) => {
-            console.log(data)
+         
             if (Array.isArray(data)) {
                 result = data.length
             }
@@ -109,7 +109,7 @@ var aRecord = async function () {
 var aCheck = async function (cData) {
     var result;
 
-    await query(`update eletive set status_id={${cData.status_id} , remark=${cData.remark} where id=${cData.id}`)
+    await query(`update eletive set status_id=${cData.status_id} , remark="${cData.remark||" "}" where id=${cData.id}`)
         .then((data) => {
             result = data;
         }, (error) => {
@@ -138,10 +138,9 @@ var eletive = async function (eData) {
 
 // 重新加退選申請
 //----------------------------------
-var eletive = async function (eData) {
-    var result;
-    // if(eData.certUrl==undefined)
-    await query(`update eletive set applyUrl="${eData.applyUrl}", reportUrl= "${eData.reportUrl}", reportUrl="${eData.certUrl}" where id=${eData.id}`)
+var rEletive = async function (eData) {
+    var result;    
+    await query(`update eletive set applyUrl="${eData.applyUrl}", reportUrl= "${eData.reportUrl}", certUrl="${eData.certUrl}" where id=${eData.id}`)
         .then((data) => {
             console.log(data)
             result = 0;
@@ -157,5 +156,5 @@ var eletive = async function (eData) {
 
 //匯出
 module.exports = {
-    login, eletive, record, loginA, signAuth, checkAuth, aRecord,aCheck
+    login, eletive, record, loginA, signAuth, checkAuth, aRecord,aCheck,rEletive
 }

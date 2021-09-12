@@ -50,17 +50,29 @@ router.get("/", async (req, res, next) => {
 
     res.render("mLogin")
 })
-
+// 助教查詢
 router.get("/list", async (req, res, next) => {
     if (util.checkAuth(req)) {
-     await mModule.aRecord().then(data=>{
-         console.log(data)
+     await mModule.aRecord().then(data=>{  
         res.send(util.ret(true, "查詢成功", data))
      },error=>{
         res.send(util.ret(false, "查詢失敗"))
      })
     }else{
         res.send(util.ret(false, "查詢失敗"))
+    }
+  
+})
+router.post("/list", async (req, res, next) => {
+    if (util.checkAuth(req)) {
+
+     await mModule.aCheck(req.body).then(data=>{  
+        res.send(util.ret(true, "審核成功", data))
+     },error=>{
+        res.send(util.ret(false, "審核失敗"))
+     })
+    }else{
+        res.send(util.ret(false, "審核失敗"))
     }
   
 })

@@ -195,6 +195,7 @@
     <script>
         var recordData = []
         const fileRoot = "http://yusiang.unaux.com/fteFile/"
+        var forSaveId = ""
 
         function isImg(str) {
             var index = str.lastIndexOf(".");
@@ -206,6 +207,7 @@
             console.log("enter detail")
             console.log(recordData[index])
             item = recordData[index]
+            forSaveId = item["id"]
             let title = item["r_name"] + item["time"]
 
             $("#rETitle").html(title)
@@ -350,6 +352,43 @@
                     })
                 }
             }).modal('show')
+        })
+
+        // 重新加退選處理
+        $("#rESend").click(() => {
+            let rEA = document.getElementById("rEA").files[0]
+            let rER = document.getElementById("rER").files[0] || ""
+            let rEC = document.getElementById("rEC").files[0] || ""
+            let formData = new FormData()
+            let s_id = localStorage.getItem("s_id")
+            formData.append("ea", rEA)
+            formData.append("er", rER)
+            formData.append("ec", rEC)
+            formData.append("s_id", s_id)
+            formData.append("id", forSaveId)
+            formData.append("re", true)
+
+            $.ajax({
+                url: "./eletive",
+                "method": "POST",
+                contentType: false,
+                processData: false,
+                mimeType: "multipart/form-data",
+                data: formData,
+                success: (msg) => {
+                    console.log("ok", msg)
+                    res = JSON.parse(msg)
+                    if (res.success) {
+                        $('body').toast({
+                            class: 'success',
+                            message: res.message,
+                            showProgress: 'bottom',
+                        });
+                        document.location.reload()
+                    }
+                }
+
+            }, )
         })
     </script>
 </body>

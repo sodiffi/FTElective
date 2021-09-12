@@ -32,16 +32,14 @@ router.get("/list", function (req, res, next) {
 
 })
 
-const cpUpload = upload.fields([{ name: 'ea' }, { name: 'er' }, { name: 'ec' }, { name: "s_id" }])
+const cpUpload = upload.fields([{ name: 'ea' }, { name: 'er' }, { name: 'ec' }, { name: "s_id" },{name:"re"}])
 router.post('/', cpUpload, async (req, res, next) => {
   let d = new Date().toISOString().split("T")[0]
   let t = new Date().toLocaleTimeString("tw", { city: 'TAIWAN', timeZone: 'Asia/Taipei', hour12: false },)
-
   var eAFile = req.files["ea"][0].filename;
   var erFile = req.files["er"] !== undefined ? req.files["er"][0].filename : ""
   var ecFile = req.files["ec"] !== undefined ? req.files["ec"][0].filename : ""
-  console.log(req.files["ec"])
-  // res.send("error")
+  // console.log(req.files["re"])
   var eaFileCheck = 0
   var erFileCheck = 0
   var ecFileCheck = 0
@@ -52,7 +50,6 @@ router.post('/', cpUpload, async (req, res, next) => {
       host: "ftpupload.net",
       user: "unaux_29705433",
       password: "k9uy2e14b2u",
-      // secure: true
     })
     console.log(await client.list())
     await client.ensureDir("/htdocs/fteFile")
@@ -77,11 +74,9 @@ router.post('/', cpUpload, async (req, res, next) => {
         ecFileCheck = -1
       })
     } else { ecFileCheck = 1 }
-
-
-    console.log("here ", eaFileCheck, ecFileCheck, erFileCheck,eaFileCheck == ecFileCheck == erFileCheck == 1)
+    // console.log("here ", eaFileCheck, ecFileCheck, erFileCheck, eaFileCheck == ecFileCheck == erFileCheck == 1)
     if (eaFileCheck == ecFileCheck == erFileCheck == 1) {
-      console.log()
+      // console.log()
       let eData = {
         s_id: req.body.s_id,
         reason: req.body.reason || 0,
@@ -91,26 +86,33 @@ router.post('/', cpUpload, async (req, res, next) => {
         time: `${d} ${t}`
 
       }
-      mModule.eletive(eData).then(D => {
-        res.send(util.ret(true, "申請成功"))
+      if (!req.body.re) {
+        mModule.eletive(eData).then(D => {
+          res.send(util.ret(true, "申請成功"))
 
-      }, (error) => {
-        res.send(util.ret(false, "申請失敗"))
+        }, (error) => {
+          res.send(util.ret(false, "申請失敗"))
 
-      })
-    
+        })
+      } else {
+        eData.id = req.body.id
+        mModule.rEletive(eData).then(D => {
+          res.send(util.ret(true, "重新申請成功"))
+
+        }, (error) => {
+          res.send(util.ret(false, "重新申請失敗"))
+
+        })
+      }
+
 
     }
-
-
   }
   catch (err) {
     console.log(err)
   }
   client.close()
-  // c.connect();
 
-  // res.send("ok")
 })
 
 
