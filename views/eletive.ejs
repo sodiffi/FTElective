@@ -18,11 +18,19 @@
         <a class=" active item" data-tab="record">選課紀錄</a>
         <a class="item" data-tab="push">加選</a>
         <a class="item" data-tab="pull">退選</a>
-
     </div>
     <div class="ui bottom   active tab segment" data-tab="record">
-        <div>選課紀錄</div>
-        <div id="record"></div>
+        <!-- <div>選課紀錄</div> -->
+        <table class="ui very basic collapsing celled table selectable striped">
+            <thead>
+                <tr>
+                    <th>申請時間</th>
+                    <th>事由</th>
+                    <th>審核狀態</th>
+                </tr>
+            </thead>
+            <tbody id="record"></tbody>
+        </table>
     </div>
     <div class="ui bottom  tab segment" data-tab="push">
         <div class="des">
@@ -58,15 +66,15 @@
             <div class="image content">
                 <div class="field">
                     <label><span class="ui red text">*</span>選課申請書(必填)</label>
-                    <input type="file" id="pushEA" />
+                    <input type="file" id="pushEA" class="my-pond" />
                 </div>
                 <div class="field">
                     <label>學生報告書(超修或低修)</label>
-                    <input type="file" id="pushER" />
+                    <input type="file" id="pushER" class="my-pond" />
                 </div>
                 <div class="field">
                     <label>任課老師核准證明(選填)</label>
-                    <input type="file" id="pushEC" />
+                    <input type="file" id="pushEC" class="my-pond" />
                 </div>
             </div>
             <div class="actions">
@@ -80,6 +88,7 @@
             <i class="close icon"></i>
             <div class="header"> 退選申請 </div>
             <div class="image content">
+
                 <div class="field">
                     <label><span class="ui red text">*</span>選課申請書(必填)</label>
                     <input type="file" id="pullEA" />
@@ -114,15 +123,136 @@
                 <div class="ui button approve ">確認</div>
             </div>
         </div>
+
+        <!-- ===重新加退選 -->
+        <div class="ui modal" id="rEModal">
+            <i class="close icon"></i>
+            <!-- 時間標題+事由 -->
+            <div class="header" id="rETitle"></div>
+            <div class=" image  content">
+                <!-- <div>
+                    <a href="" id="rEAFile" type="file">上傳紀錄</a>
+                    <div class="ui button " id="rESend">重新送出</div>
+                </div> -->
+                <div class="ui form">
+                    <div class="three fields">
+                        <div class="field">
+                            <label><span class="ui red text">*</span>選課申請書(必填)</label>
+                            <p><button class="ui button">預覽</button></p>
+                            <input type="file" id="rEA" />
+                        </div>
+                        <div class="field">
+                            <label>學生報告書(超修或低修)</label>
+                            <p> <button class="ui button">預覽</button></p>
+                            <input type="file" id="rER" />
+                        </div>
+                        <div class="field">
+                            <label>任課老師核准證明(選填)</label>
+                            <p><button class="ui button">預覽</button></p>
+                            <input type="file" id="rEC" />
+                        </div>
+                    </div>
+                    <div class="toCenter">
+                        <div class="ui button  " id="rESend">重新送出</div>
+                    </div>
+                </div>
+
+                <div>
+
+                </div>
+            </div>
+            <div class="description">
+                <iframe src="./" style="border: none; height: 500px;" id="view"></iframe>
+            </div>
+            <div class="actions">
+                <div class="ui button cancel">取消</div>
+                <div class="ui button approve ">確認</div>
+            </div>
+        </div>
+
+        <!-- ===重新減修 -->
+        <div class="ui modal" id="rERModal">
+            <i class="close icon"></i>
+            <!-- 時間標題+事由 -->
+            <div class="header" id="rERTitle"></div>
+            <div class="image content">
+                <div class="field">
+                    <label><span class="ui red text">*</span>減修申請書(必填)</label>
+                    <input type="file" id="rERA" />
+                </div>
+            </div>
+            <div class="actions">
+                <div class="ui button cancel">取消</div>
+                <div class="ui button approve ">確認</div>
+            </div>
+        </div>
     </div>
 
-
     <script>
+        // const inputElement = document.querySelector('input[type="file"]');
+        // const pond = FilePond.create(inputElement);
+    </script>
+    <script>
+        var recordData = []
+        const fileRoot = "http://yusiang.unaux.com/fteFile/"
+
+        function isImg(str) {
+            var index = str.lastIndexOf(".");
+            var ext = str.substr(index + 1);
+            return ['png', 'jpg', 'jpeg', 'bmp', 'gif', 'webp', ' psd ', ' svg ', ' tiff '].indexOf(ext.toLowerCase()) !== -1
+        }
+
+        function detail(index) {
+            console.log("enter detail")
+            console.log(recordData[index])
+            item = recordData[index]
+            let title = item["r_name"] + item["time"]
+
+            $("#rETitle").html(title)
+            $("#rEAFile").attr("href", `./download/${item["applyUrl"]}`)
+            $("#rEAFile").attr("download", item["applyUrl"])
+                // $("#view").attr("filename", item["applyUrl"])
+            let iframeUrl = isImg(item["applyUrl"]) ? item["applyUrl"] : `https://docs.google.com/viewer?url=${fileRoot}/${item["applyUrl"]}&embedded=true`
+
+            $("#view").attr("src", iframeUrl)
+            if (item["reason_id"] == 2) {
+                $("#rERModal").modal("show")
+            } else {
+                $("#rEModal").modal("show")
+            }
+        }
+
         $("body").ready(() => {
+
             localStorage.setItem("s_id", "test")
+
+            let g = true
+                // g = localStorage.getItem("graduates")
+            if (g) $("#tab").append(' <a class="item" data-tab="remove">減修</a>');
             $('.menu .item').tab();
-            g = localStorage.getItem("graduates")
-            if (g) $("#tab").append(' <div class="item" data-tab="remove">檢修</div>')
+            $.ajax({
+                url: `./eletive/list?s_id=${localStorage.getItem("s_id")}`,
+                method: "GET",
+                success: (res) => {
+                    res = JSON.parse(res)
+                    recordData = res["d"]
+                    console.log(typeof(res["d"]))
+                    for (let index in res["d"]) {
+                        let item = res["d"][index]
+
+                        console.log(item["time"])
+                        recordRoot = document.getElementById("record")
+                        recordRoot.innerHTML += (` <tr onclick=detail(${index})>
+      <td>${item["time"]}       </td>
+      <td>${item["r_name"]}      </td>
+      <td>${item["s_name"]}      </td>
+    </tr>`)
+                    }
+                },
+                error: (error) => {
+                    console.log(error)
+                }
+            })
 
         })
 
@@ -130,11 +260,15 @@
         $("#pushApply").click(() => {
             $("#pushModal").modal({
                 onApprove: function() {
-                    let pushEA = $("#pushEA").files[0]
-                    let pushER = $("#pushER").files[0] && ""
-                    let pushEC = $("#pushEC").files[0] && ""
+                    console.log("formdata")
+                    let pushEA = document.getElementById("pushEA").files[0]
+                    console.log("formdata")
+                    let pushER = document.getElementById("pushER").files[0] || ""
+                    console.log("formdata")
+                    let pushEC = document.getElementById("pushEC").files[0] || ""
                     let formData = new FormData()
                     let s_id = localStorage.getItem("s_id")
+                    console.log("formdata")
                     formData.append("ea", pushEA)
                     formData.append("er", pushER)
                     formData.append("ec", pushEC)
@@ -147,10 +281,15 @@
                         processData: false,
                         mimeType: "multipart/form-data",
                         data: formData,
+                        success: (msg) => {
+                            console.log("ok", msg)
+                        },
+                        error: (error) => {
+                            console.log(error)
+                        }
 
 
-                    }).done((res) => {
-                        console.log(res)
+
                     })
                 }
             }).modal('show')
@@ -162,13 +301,9 @@
         $("#pullApply").click(() => {
             $("#pullModal").modal({
                 onApprove: function() {
-                    console.log("退選處理")
                     let pushEA = document.getElementById("pullEA").files[0]
-                    console.log("退選處理1.1")
-                    let pushER = document.getElementById("pullER").files[0]
-                    console.log("退選處理1")
-                    let pushEC = document.getElementById("pullEC").files[0]
-                    console.log("退選處理2")
+                    let pushER = document.getElementById("pullER").files[0] || ""
+                    let pushEC = document.getElementById("pullEC").files[0] || ""
                     let formData = new FormData()
                     let s_id = localStorage.getItem("s_id")
                     formData.append("ea", pushEA)
@@ -176,7 +311,6 @@
                     formData.append("ec", pushEC)
                     formData.append("s_id", s_id)
                     formData.append("reason", 1)
-                    console.log("退選處理3")
                     $.ajax({
                         url: "./eletive",
                         "method": "POST",
@@ -188,9 +322,7 @@
                             console.log("ok", msg)
                         }
 
-                    }, ).done((res) => {
-                        console.log(res)
-                    })
+                    }, )
                 }
             }).modal('show')
         })
@@ -221,5 +353,7 @@
         })
     </script>
 </body>
+
+</html>
 
 </html>

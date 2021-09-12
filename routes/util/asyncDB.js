@@ -4,13 +4,13 @@
 var mysql = require('mysql');
 var fs = require('fs');
 var path = require('path');
-const serverCa = [fs.readFileSync(path.resolve("./routes/util/BaltimoreCyberTrustRoot.crt.pem"), "utf8")];
+const serverCa = [fs.readFileSync(path.resolve("./routes/util/DigiCertGlobalRootCA.crt.pem"), "utf8")];
 //建立資料庫連接池
 var pool  = mysql.createPool({
-  user: "adadadmin@ft-elective-server",
+  user: "adadadmin",
   password: "adadMinad9",
-    host: 'ft-elective-server.mysql.database.azure.com',
-    database: 'elective'     ,
+    host: 'fet.mysql.database.azure.com',
+    database: 'eletive'     ,
     ssl: {
         rejectUnauthorized: true,
         ca: serverCa

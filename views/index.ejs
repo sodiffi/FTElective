@@ -19,17 +19,17 @@
             <div class="eight wide column">
                 <p><i class="caret right icon"></i>本系統為需要系辦助教核准的課程加退選、減修學分申請需求之用，如欲申請請先登入進行身分驗證。</p>
                 <p><i class="caret right icon"></i>若您欲加退選之課程學校選課系統中仍有名額，則請同學直接登入<a href="http://ntcbadm1.ntub.edu.tw/">學校選課系統</a>申請即可，無須登入此系統。</p>
-                    <p><i class="caret right icon"></i>申請後不代表已完成，仍須待助教審核後才能確定申請結果，您的申請文件若不齊全則可能有需補件之情形，請同學隨時登入系統查看。</p>
+                <p><i class="caret right icon"></i>申請後不代表已完成，仍須待助教審核後才能確定申請結果，您的申請文件若不齊全則可能有需補件之情形，請同學隨時登入系統查看。</p>
             </div>
-            <div class="four wide column" style="text-align: center;">
+            <div class="four wide column side loginBorder" style="text-align: center;">
                 <div class="ui form">
                     <div class="field">
                         <label>帳號</label>
-                        <input type="text" name="first-name" placeholder="請輸入學號">
+                        <input type="text" name="first-name" placeholder="請輸入學號" id="id">
                     </div>
                     <div class="field">
                         <label>密碼</label>
-                        <input type="text" name="last-name" placeholder="請輸入身份證字號">
+                        <input type="text" name="last-name" placeholder="請輸入身份證字號" id="psw">
                     </div>
                     <button class="ui button" id="login"><i class="sign in alternate icon"></i>登入</button>
 
@@ -43,8 +43,32 @@
 
 
     <script>
-        $("#login").click(function () {
-            document.location.href = "./eletive"
+        $("#login").click(function() {
+            console.log($("#id").val(), $("#psw").val())
+            $.ajax({
+                url: "./",
+                method: "POST",
+                data: {
+                    "id": $("#id").val(),
+                    "psw": $("#psw").val()
+                },
+                success: res => {
+                    res = JSON.parse(res)
+                    if (res.success) {
+                        $('body')
+                            .toast({
+                                class: 'success',
+                                message: res.message,
+                                showProgress: 'bottom',
+                                // classProgress: 'red'
+                            });
+                        document.location.href = "./eletive"
+                    }
+                    console.log(res)
+
+                }
+            })
+
         })
     </script>
 </body>

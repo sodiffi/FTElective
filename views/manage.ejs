@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>北商財稅系人工選課</title>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.css">
+    <link rel="icon" href="images/icon.ico" type="image/x-icon" />
+    <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.js"></script>
+
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.2/datatables.min.css" />
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.2/datatables.min.js"></script>
+
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+
+<body>
+    <div><img src="images/banner.png" alt=""></div>
+
+    <div class="ui   segment">
+        <!-- <div>選課紀錄</div> -->
+        <table class=" my-table display" id="tt" style="width:80%">
+            <thead>
+                <tr>
+
+                    <th>申請人</th>
+                    <th>學號</th>
+                    <th>學制</th>
+                    <th>班級</th>
+                    <th>年級</th>
+                    <th>申請時間</th>
+                    <th>事由</th>
+                    <th>審核狀態</th>
+                    <!-- <th>申請表</th> -->
+                    <!-- <th>審核</th> -->
+                </tr>
+            </thead>
+        </table>
+
+
+
+    </div>
+    <div>
+        <div class="ui modal" id="eCheck">
+            <i class="close icon"></i>
+            <!-- 時間標題+事由 -->
+            <div class="header" id="checkTitle"></div>
+            <div class=" image  content">
+                <!-- <div>
+                    <a href="" id="rEAFile" type="file">上傳紀錄</a>
+                    <div class="ui button " id="rESend">重新送出</div>
+                </div> -->
+                <div class="ui form">
+                    <div class="three fields">
+                        <div class="field">
+                            <label><span class="ui red text">*</span>選課申請書(必填)</label>
+                            <p><button class="ui button">預覽</button>
+                                <button class="ui button">下載</button>
+                            </p>
+                        </div>
+                        <div class="field">
+                            <label>學生報告書(超修或低修)</label>
+                            <p> <button class="ui button">預覽</button>
+                                <button class="ui button">下載</button>
+                            </p>
+                        </div>
+                        <div class="field">
+                            <label>任課老師核准證明(選填)</label>
+                            <p><button class="ui button">預覽</button>
+                                <button class="ui button">下載</button>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="ui grid">
+
+                        <div class="four wide column">
+                            <div class="  field">
+                                <label for="fruit">審核</label>
+                                <div> <input type="radio" name="fruit" class="hidden">
+                                    <label>通過</label></div>
+                                <div>
+                                    <input type="radio" name="fruit" class="hidden">
+                                    <label>未通過</label>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="eight wide column">
+
+                            <div class="field">
+                                <label>常用備註</label>
+                                <select class="ui search dropdown">
+                                    <option value="">退件(該課程不得申請加選/退選)</option>
+                                    <option value="AF">申請資料有誤(請修改/刪除：科目名稱、科目代號、學分數)</option>
+                                    <option value="AF">請補交報告書</option>
+                                    <option value="AF">請補交授課老師同意證明文件</option>
+                                    <option value="AF">其他</option>
+                                    
+                                </select>
+                                <input type="text" placeholder="其他文字">
+
+                            </div>
+                        </div>
+                        <div class="four wide column   bottom aligned    ">
+                            <div class="field toCenter">
+                                <button class="ui button">送出</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+            </div>
+            <div class="description">
+                <iframe src="./" style="border: none; height: 500px;" id="view"></iframe>
+            </div>
+            <div class="actions">
+                <div class="ui button cancel">取消</div>
+                <div class="ui button approve ">確認</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const fileRoot = "http://yusiang.unaux.com/fteFile/"
+
+        function isImg(str) {
+            var index = str.lastIndexOf(".");
+            var ext = str.substr(index + 1);
+            return ['png', 'jpg', 'jpeg', 'bmp', 'gif', 'webp', ' psd ', ' svg ', ' tiff '].indexOf(ext.toLowerCase()) !== -1
+        }
+        $(document).ready(function() {
+
+            var token = localStorage.getItem("token")
+            $.ajax({
+                url: "./list",
+                method: "GET",
+                headers: {
+                    "Authorization": "Bearer " + token
+                }
+            }).then(res => {
+                res = JSON.parse(res)
+                    // console.log(res["d"][0])
+                    // res["d"].map(item => console.log(item))
+                $('#tt thead tr')
+                    .clone(true)
+                    .addClass('filters')
+                    .appendTo('#tt thead');
+                $('#tt').on('click', 'tbody tr', function() {
+                    let table = new DataTable('#tt');
+                    var row = table.row($(this)).data();
+                    let iframeUrl = isImg(row["applyUrl"]) ? row["applyUrl"] : `https://docs.google.com/viewer?url=${fileRoot}/${row["applyUrl"]}&embedded=true`
+                    $("#view").attr("src", iframeUrl)
+                    console.log(row); //full row of array data
+                    console.log(row[1]); //EmployeeId
+                    $("#eCheck").modal({
+                        onApprove: function() {}
+                    }).modal("show")
+                });
+                $('#tt').DataTable({
+                    // orderCellsTop: true,
+                    // fixedHeader: true,
+                    data: res["d"],
+
+                    columns: [{
+                        data: 'st_name'
+                    }, {
+                        data: 's_id'
+                    }, {
+                        data: 'system'
+                    }, {
+                        data: 'class'
+                    }, {
+                        data: 'grade'
+                    }, {
+                        data: 'time'
+                    }, {
+                        data: 'r_name'
+                    }, {
+                        data: 's_name'
+                    }],
+
+                    initComplete: function() {
+                        var api = this.api();
+                        // For each column
+                        api.columns().eq(0).each(function(colIdx) {
+                            // Set the header cell to contain the input element
+                            var cell = $('.filters th').eq(
+                                $(api.column(colIdx).header()).index()
+                            );
+                            var title = $(cell).text();
+                            $(cell).html('<input type="text" placeholder="' + title + '" />');
+
+                            // On every keypress in this input
+                            $('input', $('.filters th').eq($(api.column(colIdx).header()).index()))
+                                .off('keyup change')
+                                .on('keyup change', function(e) {
+                                    e.stopPropagation();
+                                    // Get the search value
+                                    $(this).attr('title', $(this).val());
+                                    var regexr = '({search})'; //$(this).parents('th').find('select').val();
+                                    var cursorPosition = this.selectionStart;
+                                    // Search the column for that value
+                                    api.column(colIdx)
+                                        .search(
+                                            this.value != '' ?
+                                            regexr.replace('{search}', '(((' + this.value + ')))') :
+                                            '',
+                                            this.value != '',
+                                            this.value == ''
+                                        ).draw();
+
+                                    $(this).focus()[0].setSelectionRange(cursorPosition, cursorPosition);
+                                });
+                        });
+                    },
+                });
+            })
+
+        });
+    </script>
+</body>
