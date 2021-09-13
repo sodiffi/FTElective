@@ -24,7 +24,7 @@ var login = async function (newData) {
 //----------------------------------
 var loginA = async function (newData) {
     var result = false;
-
+    console.log("loginA here look me")
     await query(`select * from manager where id= "${newData.id}" and psw= "${newData.psw}" `)
         .then((data) => {
             console.log(data, newData)
@@ -35,9 +35,9 @@ var loginA = async function (newData) {
         }, (error) => {
             console.log(error)
             result = false;
-        });
+        })
 
-    return result;
+        return result;
 }
 
 // 助教登入(存回token)

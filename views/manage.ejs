@@ -19,7 +19,7 @@
     <div>
         <img src="/images/banner1.png" alt="這是背景圖"></div>
 
-    <div class="ui   segment">
+    <div class="ui segment">
         <!-- <div>選課紀錄</div> -->
         <table class=" my-table display" id="tt" style="width:80%">
             <thead>
@@ -135,7 +135,7 @@
         }
         $(document).ready(function() {
             $.ajax({
-                url: `${rootUrl}/list`,
+                url: `${rootUrl}/ma/list`,
                 method: "GET",
                 headers: {
                     "Authorization": "Bearer " + token

@@ -226,7 +226,7 @@
             item = recordData[index]
             forSaveItem = item
             forSaveId = item["id"]
-            let title = item["r_name"] + item["time"]
+            let title = item["r_name"] + " - " +item["time"]
             if (item["reason_id"] == 2) {
                 $("#ecPrview").addClass("disabled")
                 $("#ecDown").addClass("disabled")
