@@ -56,6 +56,9 @@
                 success: res => {
                     res = JSON.parse(res)
                     if (res.success) {
+                        console.log(res, res.d[0].graduates)
+                        localStorage.setItem("s_id", $("#id").val())
+                        localStorage.setItem("graduates", res.d[0].graduates == 1)
                         $('body')
                             .toast({
                                 class: 'success',

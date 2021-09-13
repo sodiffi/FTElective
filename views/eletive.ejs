@@ -109,7 +109,7 @@
         </div>
 
         <!-- ===減修 -->
-        <div class="ui modal" id="removelModal">
+        <div class="ui modal" id="removeModal">
             <i class="close icon"></i>
             <div class="header"> 減修申請 </div>
             <div class="image content">
@@ -130,25 +130,34 @@
             <!-- 時間標題+事由 -->
             <div class="header" id="rETitle"></div>
             <div class=" image  content">
-                <!-- <div>
-                    <a href="" id="rEAFile" type="file">上傳紀錄</a>
-                    <div class="ui button " id="rESend">重新送出</div>
-                </div> -->
+                <div>
+
+                    <div id="rERemark"> </div>
+                </div>
                 <div class="ui form">
                     <div class="three fields">
                         <div class="field">
                             <label><span class="ui red text">*</span>選課申請書(必填)</label>
-                            <p><button class="ui button">預覽</button></p>
+                            <p><button class="ui button prview" id="eaPrview" name="applyUrl">預覽</button>
+                                <button class="ui button downloadFile" id="eaDown" name="applyUrl">下載</button>
+                            </p>
                             <input type="file" id="rEA" />
                         </div>
-                        <div class="field">
+                        <div>
+
+                        </div>
+                        <div class="field" id="rErF">
                             <label>學生報告書(超修或低修)</label>
-                            <p> <button class="ui button">預覽</button></p>
+                            <p> <button class="ui button prview" id="erPrview" name="reportUrl">預覽</button>
+                                <button class="ui button downloadFile" id="erDown" name="reportUrl">下載</button>
+                            </p>
                             <input type="file" id="rER" />
                         </div>
-                        <div class="field">
+                        <div class="field" id="rEcF">
                             <label>任課老師核准證明(選填)</label>
-                            <p><button class="ui button">預覽</button></p>
+                            <p><button class="ui button prview" id="ecPrview" name="certUrl">預覽</button>
+                                <button class="ui button downloadFile" id="ecDown" name="certUrl">下載</button>
+                            </p>
                             <input type="file" id="rEC" />
                         </div>
                     </div>
@@ -177,7 +186,7 @@
             <div class="header" id="rERTitle"></div>
             <div class="image content">
                 <div class="field">
-                    <label><span class="ui red text">*</span>減修申請書(必填)</label>
+                    <label><span class="ui red text">*</span>申請書(必填)</label>
                     <input type="file" id="rERA" />
                 </div>
             </div>
@@ -196,6 +205,7 @@
         var recordData = []
         const fileRoot = "http://yusiang.unaux.com/fteFile/"
         var forSaveId = ""
+        var forSaveItem = ""
 
         function isImg(str) {
             var index = str.lastIndexOf(".");
@@ -207,29 +217,58 @@
             console.log("enter detail")
             console.log(recordData[index])
             item = recordData[index]
+            forSaveItem = item
             forSaveId = item["id"]
             let title = item["r_name"] + item["time"]
-
+            if (item["reason_id"] == 2) {
+                $("#ecPrview").addClass("disabled")
+                $("#ecDown").addClass("disabled")
+                $("#erPrview").addClass("disabled")
+                $("#erDown").addClass("disabled")
+                $("#rErF").addClass("disabled")
+                $("#rEcF").addClass("disabled")
+            } else {
+                $("#ecPrview").removeClass("disabled")
+                $("#ecDown").removeClass("disabled")
+                $("#erPrview").removeClass("disabled")
+                $("#erDown").removeClass("disabled")
+                $("#rErF").removeClass("disabled")
+                $("#rEcF").removeClass("disabled")
+            }
+            if (String(item["reportUrl"]).length < 5) {
+                $("#erPrview").addClass("disabled")
+                $("#erDown").addClass("disabled")
+            } else {
+                $("#erPrview").removeClass("disabled")
+                $("#erDown").removeClass("disabled")
+            }
+            if (String(item["certUrl"]).length < 5) {
+                $("#ecPrview").addClass("disabled")
+                $("#ecDown").addClass("disabled")
+            } else {
+                $("#ecPrview").removeClass("disabled")
+                $("#ecDown").removeClass("disabled")
+            }
             $("#rETitle").html(title)
+            $("#rERemark").html(item["remark"])
             $("#rEAFile").attr("href", `./download/${item["applyUrl"]}`)
             $("#rEAFile").attr("download", item["applyUrl"])
                 // $("#view").attr("filename", item["applyUrl"])
             let iframeUrl = isImg(item["applyUrl"]) ? item["applyUrl"] : `https://docs.google.com/viewer?url=${fileRoot}/${item["applyUrl"]}&embedded=true`
 
             $("#view").attr("src", iframeUrl)
-            if (item["reason_id"] == 2) {
-                $("#rERModal").modal("show")
-            } else {
-                $("#rEModal").modal("show")
-            }
+
+            $("#rEModal").modal("show")
+
+
         }
 
         $("body").ready(() => {
 
-            localStorage.setItem("s_id", "test")
+            // localStorage.setItem("s_id", "test")
 
-            let g = true
-                // g = localStorage.getItem("graduates")
+            // let g = true
+            let g = localStorage.getItem("graduates")
             if (g) $("#tab").append(' <a class="item" data-tab="remove">減修</a>');
             $('.menu .item').tab();
             $.ajax({
@@ -289,9 +328,6 @@
                         error: (error) => {
                             console.log(error)
                         }
-
-
-
                     })
                 }
             }).modal('show')
@@ -333,10 +369,10 @@
         $("#removeApply").click(() => {
             $("#removeModal").modal({
                 onApprove: function() {
-                    let removeA = $("#removeA").files[0]
+                    let removeA = document.getElementById("removeA").files[0]
                     let formData = new FormData()
                     let s_id = localStorage.getItem("s_id")
-                    formData.append("file", removeA)
+                    formData.append("ea", removeA)
                     formData.append("s_id", s_id)
                     formData.append("reason", 2)
                     $.ajax({
@@ -346,9 +382,10 @@
                         processData: false,
                         mimeType: "multipart/form-data",
                         data: formData,
+                        success: (res => {
+                            console.log(res)
+                        })
 
-                    }).done((res) => {
-                        console.log(res)
                     })
                 }
             }).modal('show')
@@ -389,6 +426,18 @@
                 }
 
             }, )
+        })
+        $(".prview").click(e => {
+            let fileTarget = e.target.name
+            let ruleFileName = forSaveItem[fileTarget]
+            let iframeUrl = isImg(ruleFileName) ? fileRoot + ruleFileName : `https://docs.google.com/viewer?url=${fileRoot}${ruleFileName}&embedded=true`
+            $("#view").attr("src", iframeUrl)
+        })
+        $(".downloadFile").click(e => {
+            let fileTarget = e.target.name
+            let ruleFileName = forSaveItem[fileTarget]
+            console.log(`${fileRoot}/${ruleFileName}`)
+            window.open(`${fileRoot}${ruleFileName}`)
         })
     </script>
 </body>
