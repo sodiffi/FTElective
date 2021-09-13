@@ -6,38 +6,73 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.css">
     <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.js"></script>
+    <link rel="icon" href="images/icon.ico" type="image/x-icon" />
     <link rel='stylesheet' href='/stylesheets/style.css' />
 </head>
 
 <body>
-    <h3>北商財稅系人工選課 </h3>
-    <div class="ui grid two centered">
-        <div class="eight wide column">
-            <p>是否說明文字放在這</p>
-        </div>
-        <div class="four wide column">
-            <div class="ui form">
-                <div class="field">
-                    <label>First Name</label>
-                    <input type="text" name="first-name" placeholder="First Name">
-                </div>
-                <div class="field">
-                    <label>Last Name</label>
-                    <input type="text" name="last-name" placeholder="Last Name">
-                </div>
-                <button class="ui button" id="login">登入</button>
-
+    <div class="header">
+        <img src="/images/banner1.png" alt="這是背景圖">
+    </div>
+    <div class="ui piled segment">
+        <div class="ui grid two centered">
+            <div class="eight wide column">
+                <p><i class="caret right icon"></i>本系統為需要系辦助教核准的課程加退選、減修學分申請需求之用，如欲申請請先登入進行身分驗證。</p>
+                <p><i class="caret right icon"></i>若您欲加退選之課程學校選課系統中仍有名額，則請同學直接登入<a href="http://ntcbadm1.ntub.edu.tw/">學校選課系統</a>申請即可，無須登入此系統。</p>
+                <p><i class="caret right icon"></i>申請後不代表已完成，仍須待助教審核後才能確定申請結果，您的申請文件若不齊全則可能有需補件之情形，請同學隨時登入系統查看。</p>
             </div>
-        </div>
+            <div class="four wide column side loginBorder" style="text-align: center;">
+                <div class="ui form">
+                    <div class="field">
+                        <label>帳號</label>
+                        <input type="text" name="first-name" placeholder="請輸入學號" id="id">
+                    </div>
+                    <div class="field">
+                        <label>密碼</label>
+                        <input type="text" name="last-name" placeholder="請輸入身份證字號" id="psw">
+                    </div>
+                    <button class="ui button" id="login"><i class="sign in alternate icon"></i>登入</button>
 
+                </div>
+            </div>
+
+        </div>
     </div>
 
 
 
 
     <script>
+        const rootUrl = document.location.origin
         $("#login").click(function() {
-            document.location.href = "./elective"
+            console.log($("#id").val(), $("#psw").val())
+            $.ajax({
+                url: `${rootUrl}/`,
+                method: "POST",
+                data: {
+                    "id": $("#id").val(),
+                    "psw": $("#psw").val()
+                },
+                success: res => {
+                    res = JSON.parse(res)
+                    if (res.success) {
+                        console.log(res, res.d[0].graduates)
+                        localStorage.setItem("s_id", $("#id").val())
+                        localStorage.setItem("graduates", res.d[0].graduates == 1)
+                        $('body')
+                            .toast({
+                                class: 'success',
+                                message: res.message,
+                                showProgress: 'bottom',
+                                // classProgress: 'red'
+                            });
+                        // document.location.href = `${rootUrl}/eletive`
+                    }
+                    // console.log(res)
+
+                }
+            })
+
         })
     </script>
 </body>

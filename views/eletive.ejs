@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>北商財稅系人工選課</title>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.css">
+    <link rel="icon" href="images/icon.ico" type="image/x-icon" />
+    <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.js"></script>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+
+<body>
+    <div class="header">
+        <img src="/images/banner1.png" alt="這是背景圖">
+    </div>
+    <div class="ui top   secondary   menu" id="tab">
+        <a class=" active item" data-tab="record">選課紀錄</a>
+        <a class="item" data-tab="push">加選</a>
+        <a class="item" data-tab="pull">退選</a>
+    </div>
+    <div class="ui bottom   active tab segment" data-tab="record">
+        <!-- <div>選課紀錄</div> -->
+        <table class="ui very basic collapsing celled table selectable striped">
+            <thead>
+                <tr>
+                    <th>申請時間</th>
+                    <th>事由</th>
+                    <th>審核狀態</th>
+                </tr>
+            </thead>
+            <tbody id="record"></tbody>
+        </table>
+    </div>
+    <div class="ui bottom  tab segment" data-tab="push">
+        <div class="des">
+            <p>加選程序說明:</p>
+            1、若欲加選的課程在學校選課系統中仍顯示有名額，請直接登入學校選課系統選課，不必填寫選課申請單。
+            <br> 2、需人工加選的同學請先下載選課申請書，依照填寫範本所示填妥資料後上傳，選課申請書為必繳資料。
+            <br> 3、若有其他特殊情況(詳見備註)請檢附上課老師同意加選之證明，例如email截圖、line截圖等方式上傳系統。
+            <br> 4、若加選後學分超過修課上限規定，請附上學生報告書。
+        </div>
+        <button class="ui button" id="pushApply">申請</button>
+    </div>
+
+    <div class="ui bottom   tab segment" data-tab="pull">
+        <div class="des">
+            <p>退選程序說明:</p>
+            1、必修課程請以在本班修課為原則，若遇特殊情況需要退選(ex.重補修衝堂)請檢附原任課老師同意之證明。
+            <br> 2、欲退選同學請先下載選課申請書，依照填寫範本所示填妥資料後上傳，選課申請書為必繳資料。
+            <br> 3、若有其他特殊情況(詳見備註)請檢附上課老師同意退選之證明，例如email截圖、line截圖等方式上傳系統。
+            <br> 4、退選後若不足最低學分規定，請附上學生報告書。
+        </div>
+        <button class="ui button" id="pullApply">申請</button>
+    </div>
+    <div class="ui bottom   tab segment" data-tab="remove">
+        <div class="des">請先下載減修申請書，填妥後上傳時請務必附上減修申請表</div>
+        <button class="ui button" id="removeApply">申請</button>
+    </div>
+
+    <div>
+        <!-- ===加選 -->
+        <div class="ui modal" id="pushModal">
+            <i class="close icon"></i>
+            <div class="header"> 加選申請 </div>
+            <div class="image content">
+                <div class="field">
+                    <label><span class="ui red text">*</span>選課申請書(必填)</label>
+                    <input type="file" id="pushEA" class="my-pond" />
+                </div>
+                <div class="field">
+                    <label>學生報告書(超修或低修)</label>
+                    <input type="file" id="pushER" class="my-pond" />
+                </div>
+                <div class="field">
+                    <label>任課老師核准證明(選填)</label>
+                    <input type="file" id="pushEC" class="my-pond" />
+                </div>
+            </div>
+            <div class="actions">
+                <div class="ui button cancel ">取消</div>
+                <div class="ui button approve ">確認</div>
+            </div>
+        </div>
+
+        <!-- ===退選 -->
+        <div class="ui modal" id="pullModal">
+            <i class="close icon"></i>
+            <div class="header"> 退選申請 </div>
+            <div class="image content">
+
+                <div class="field">
+                    <label><span class="ui red text">*</span>選課申請書(必填)</label>
+                    <input type="file" id="pullEA" />
+                </div>
+                <div class="field">
+                    <label>學生報告書(超修或低修)</label>
+                    <input type="file" id="pullER" />
+                </div>
+                <div class="field">
+                    <label>任課老師核准證明(選填)</label>
+                    <input type="file" id="pullEC" />
+                </div>
+            </div>
+            <div class="actions">
+                <div class="ui button cancel">取消</div>
+                <div class="ui button approve ">確認</div>
+            </div>
+        </div>
+
+        <!-- ===減修 -->
+        <div class="ui modal" id="removeModal">
+            <i class="close icon"></i>
+            <div class="header"> 減修申請 </div>
+            <div class="image content">
+                <div class="field">
+                    <label><span class="ui red text">*</span>減修申請書(必填)</label>
+                    <input type="file" id="removeA" />
+                </div>
+            </div>
+            <div class="actions">
+                <div class="ui button cancel">取消</div>
+                <div class="ui button approve ">確認</div>
+            </div>
+        </div>
+
+        <!-- ===重新加退選 -->
+        <div class="ui modal" id="rEModal">
+            <i class="close icon"></i>
+            <!-- 時間標題+事由 -->
+            <div class="header" id="rETitle"></div>
+            <div class=" image  content">
+                <div>
+
+                    <div id="rERemark"> </div>
+                </div>
+                <div class="ui form">
+                    <div class="three fields">
+                        <div class="field">
+                            <label><span class="ui red text">*</span>選課申請書(必填)</label>
+                            <p><button class="ui button prview" id="eaPrview" name="applyUrl">預覽</button>
+                                <button class="ui button downloadFile" id="eaDown" name="applyUrl">下載</button>
+                            </p>
+                            <input type="file" id="rEA" />
+                        </div>
+                        <div>
+
+                        </div>
+                        <div class="field" id="rErF">
+                            <label>學生報告書(超修或低修)</label>
+                            <p> <button class="ui button prview" id="erPrview" name="reportUrl">預覽</button>
+                                <button class="ui button downloadFile" id="erDown" name="reportUrl">下載</button>
+                            </p>
+                            <input type="file" id="rER" />
+                        </div>
+                        <div class="field" id="rEcF">
+                            <label>任課老師核准證明(選填)</label>
+                            <p><button class="ui button prview" id="ecPrview" name="certUrl">預覽</button>
+                                <button class="ui button downloadFile" id="ecDown" name="certUrl">下載</button>
+                            </p>
+                            <input type="file" id="rEC" />
+                        </div>
+                    </div>
+                    <div class="toCenter">
+                        <div class="ui button  " id="rESend">重新送出</div>
+                    </div>
+                </div>
+
+                <div>
+
+                </div>
+            </div>
+            <div class="description">
+                <iframe src="./" style="border: none; height: 500px;" id="view"></iframe>
+            </div>
+            <div class="actions">
+                <div class="ui button cancel">取消</div>
+                <div class="ui button approve ">確認</div>
+            </div>
+        </div>
+
+        <!-- ===重新減修 -->
+        <div class="ui modal" id="rERModal">
+            <i class="close icon"></i>
+            <!-- 時間標題+事由 -->
+            <div class="header" id="rERTitle"></div>
+            <div class="image content">
+                <div class="field">
+                    <label><span class="ui red text">*</span>申請書(必填)</label>
+                    <input type="file" id="rERA" />
+                </div>
+            </div>
+            <div class="actions">
+                <div class="ui button cancel">取消</div>
+                <div class="ui button approve ">確認</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // const inputElement = document.querySelector('input[type="file"]');
+        // const pond = FilePond.create(inputElement);
+    </script>
+    <script>
+        var recordData = []
+        const fileRoot = "http://yusiang.unaux.com/fteFile/"
+        var forSaveId = ""
+        var forSaveItem = ""
+
+        function isImg(str) {
+            var index = str.lastIndexOf(".");
+            var ext = str.substr(index + 1);
+            return ['png', 'jpg', 'jpeg', 'bmp', 'gif', 'webp', ' psd ', ' svg ', ' tiff '].indexOf(ext.toLowerCase()) !== -1
+        }
+
+        function detail(index) {
+            console.log("enter detail")
+            console.log(recordData[index])
+            item = recordData[index]
+            forSaveItem = item
+            forSaveId = item["id"]
+            let title = item["r_name"] + item["time"]
+            if (item["reason_id"] == 2) {
+                $("#ecPrview").addClass("disabled")
+                $("#ecDown").addClass("disabled")
+                $("#erPrview").addClass("disabled")
+                $("#erDown").addClass("disabled")
+                $("#rErF").addClass("disabled")
+                $("#rEcF").addClass("disabled")
+            } else {
+                $("#ecPrview").removeClass("disabled")
+                $("#ecDown").removeClass("disabled")
+                $("#erPrview").removeClass("disabled")
+                $("#erDown").removeClass("disabled")
+                $("#rErF").removeClass("disabled")
+                $("#rEcF").removeClass("disabled")
+            }
+            if (String(item["reportUrl"]).length < 5) {
+                $("#erPrview").addClass("disabled")
+                $("#erDown").addClass("disabled")
+            } else {
+                $("#erPrview").removeClass("disabled")
+                $("#erDown").removeClass("disabled")
+            }
+            if (String(item["certUrl"]).length < 5) {
+                $("#ecPrview").addClass("disabled")
+                $("#ecDown").addClass("disabled")
+            } else {
+                $("#ecPrview").removeClass("disabled")
+                $("#ecDown").removeClass("disabled")
+            }
+            $("#rETitle").html(title)
+            $("#rERemark").html(item["remark"])
+            $("#rEAFile").attr("href", `./download/${item["applyUrl"]}`)
+            $("#rEAFile").attr("download", item["applyUrl"])
+                // $("#view").attr("filename", item["applyUrl"])
+            let iframeUrl = isImg(item["applyUrl"]) ? item["applyUrl"] : `https://docs.google.com/viewer?url=${fileRoot}/${item["applyUrl"]}&embedded=true`
+
+            $("#view").attr("src", iframeUrl)
+
+            $("#rEModal").modal("show")
+
+
+        }
+
+        $("body").ready(() => {
+
+            // localStorage.setItem("s_id", "test")
+
+            // let g = true
+            let g = localStorage.getItem("graduates")
+            if (g) $("#tab").append(' <a class="item" data-tab="remove">減修</a>');
+            $('.menu .item').tab();
+            $.ajax({
+                url: `./eletive/list?s_id=${localStorage.getItem("s_id")}`,
+                method: "GET",
+                success: (res) => {
+                    res = JSON.parse(res)
+                    recordData = res["d"]
+                    console.log(typeof(res["d"]))
+                    for (let index in res["d"]) {
+                        let item = res["d"][index]
+
+                        console.log(item["time"])
+                        recordRoot = document.getElementById("record")
+                        recordRoot.innerHTML += (` <tr onclick=detail(${index})>
+      <td>${item["time"]}       </td>
+      <td>${item["r_name"]}      </td>
+      <td>${item["s_name"]}      </td>
+    </tr>`)
+                    }
+                },
+                error: (error) => {
+                    console.log(error)
+                }
+            })
+
+        })
+
+        // 加選處理
+        $("#pushApply").click(() => {
+            $("#pushModal").modal({
+                onApprove: function() {
+                    console.log("formdata")
+                    let pushEA = document.getElementById("pushEA").files[0]
+                    console.log("formdata")
+                    let pushER = document.getElementById("pushER").files[0] || ""
+                    console.log("formdata")
+                    let pushEC = document.getElementById("pushEC").files[0] || ""
+                    let formData = new FormData()
+                    let s_id = localStorage.getItem("s_id")
+                    console.log("formdata")
+                    formData.append("ea", pushEA)
+                    formData.append("er", pushER)
+                    formData.append("ec", pushEC)
+                    formData.append("s_id", s_id)
+                    formData.append("reason", 0)
+                    $.ajax({
+                        url: "./eletive",
+                        "method": "POST",
+                        contentType: false,
+                        processData: false,
+                        mimeType: "multipart/form-data",
+                        data: formData,
+                        success: (msg) => {
+                            console.log("ok", msg)
+                        },
+                        error: (error) => {
+                            console.log(error)
+                        }
+                    })
+                }
+            }).modal('show')
+
+
+        })
+
+        // 退選處理
+        $("#pullApply").click(() => {
+            $("#pullModal").modal({
+                onApprove: function() {
+                    let pushEA = document.getElementById("pullEA").files[0]
+                    let pushER = document.getElementById("pullER").files[0] || ""
+                    let pushEC = document.getElementById("pullEC").files[0] || ""
+                    let formData = new FormData()
+                    let s_id = localStorage.getItem("s_id")
+                    formData.append("ea", pushEA)
+                    formData.append("er", pushER)
+                    formData.append("ec", pushEC)
+                    formData.append("s_id", s_id)
+                    formData.append("reason", 1)
+                    $.ajax({
+                        url: "./eletive",
+                        "method": "POST",
+                        contentType: false,
+                        processData: false,
+                        mimeType: "multipart/form-data",
+                        data: formData,
+                        success: (msg) => {
+                            console.log("ok", msg)
+                        }
+
+                    }, )
+                }
+            }).modal('show')
+        })
+
+        // 減修處理
+        $("#removeApply").click(() => {
+            $("#removeModal").modal({
+                onApprove: function() {
+                    let removeA = document.getElementById("removeA").files[0]
+                    let formData = new FormData()
+                    let s_id = localStorage.getItem("s_id")
+                    formData.append("ea", removeA)
+                    formData.append("s_id", s_id)
+                    formData.append("reason", 2)
+                    $.ajax({
+                        url: "./eletive",
+                        "method": "POST",
+                        contentType: false,
+                        processData: false,
+                        mimeType: "multipart/form-data",
+                        data: formData,
+                        success: (res => {
+                            console.log(res)
+                        })
+
+                    })
+                }
+            }).modal('show')
+        })
+
+        // 重新加退選處理
+        $("#rESend").click(() => {
+            let rEA = document.getElementById("rEA").files[0]
+            let rER = document.getElementById("rER").files[0] || ""
+            let rEC = document.getElementById("rEC").files[0] || ""
+            let formData = new FormData()
+            let s_id = localStorage.getItem("s_id")
+            formData.append("ea", rEA)
+            formData.append("er", rER)
+            formData.append("ec", rEC)
+            formData.append("s_id", s_id)
+            formData.append("id", forSaveId)
+            formData.append("re", true)
+
+            $.ajax({
+                url: "./eletive",
+                "method": "POST",
+                contentType: false,
+                processData: false,
+                mimeType: "multipart/form-data",
+                data: formData,
+                success: (msg) => {
+                    console.log("ok", msg)
+                    res = JSON.parse(msg)
+                    if (res.success) {
+                        $('body').toast({
+                            class: 'success',
+                            message: res.message,
+                            showProgress: 'bottom',
+                        });
+                        document.location.reload()
+                    }
+                }
+
+            }, )
+        })
+        $(".prview").click(e => {
+            let fileTarget = e.target.name
+            let ruleFileName = forSaveItem[fileTarget]
+            let iframeUrl = isImg(ruleFileName) ? fileRoot + ruleFileName : `https://docs.google.com/viewer?url=${fileRoot}${ruleFileName}&embedded=true`
+            $("#view").attr("src", iframeUrl)
+        })
+        $(".downloadFile").click(e => {
+            let fileTarget = e.target.name
+            let ruleFileName = forSaveItem[fileTarget]
+            console.log(`${fileRoot}/${ruleFileName}`)
+            window.open(`${fileRoot}${ruleFileName}`)
+        })
+    </script>
+</body>
+
+</html>
+
+</html>
