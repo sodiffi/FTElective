@@ -15,11 +15,11 @@
         <img src="/images/banner1.png" alt="這是背景圖">
     </div>
     <div class="ui top   secondary   menu" id="tab">
-        <a class=" active item" data-tab="record">選課紀錄</a>
-        <a class="item" data-tab="push">加選</a>
-        <a class="item" data-tab="pull">退選</a>
+        <a class=" active item" data-tab="record"><b>選課紀錄</b></a>
+        <a class="item" data-tab="push"><b>加選</b></a>
+        <a class="item" data-tab="pull"><b>退選</b></a>
     </div>
-    <div class="ui bottom   active tab segment" data-tab="record">
+    <div class="ui bottom center aligned active tab segment" data-tab="record">
         <!-- <div>選課紀錄</div> -->
         <table class="ui very basic collapsing celled table selectable striped">
             <thead>
@@ -34,22 +34,28 @@
     </div>
     <div class="ui bottom  tab segment" data-tab="push">
         <div class="des">
-            <p>加選程序說明:</p>
-            1、若欲加選的課程在學校選課系統中仍顯示有名額，請直接登入學校選課系統選課，不必填寫選課申請單。
-            <br> 2、需人工加選的同學請先下載選課申請書，依照填寫範本所示填妥資料後上傳，選課申請書為必繳資料。
-            <br> 3、若有其他特殊情況(詳見備註)請檢附上課老師同意加選之證明，例如email截圖、line截圖等方式上傳系統。
-            <br> 4、若加選後學分超過修課上限規定，請附上學生報告書。
+            <h2>加選程序說明:</h2>
+            <ol class="ui suffixed list">
+                <li>若欲加選的課程在學校選課系統中仍顯示有名額，請直接登入學校選課系統選課，不必填寫選課申請單。</li>
+                <li>需人工加選的同學請先下載選課申請書，依照填寫範本所示填妥資料後上傳，選課申請書為必繳資料。</li>
+                <li>若有其他特殊情況(詳見備註)請檢附上課老師同意加選之證明，例如email截圖、line截圖等方式上傳系統。</li>
+                <li>若加選後學分超過修課上限規定，請附上學生報告書。</li>
+            </ol>
+            <a download href="download/sample_docs.pdf"><i class="download icon"></i></i>選課申請書範本</a>
         </div>
         <button class="ui button" id="pushApply">申請</button>
     </div>
 
     <div class="ui bottom   tab segment" data-tab="pull">
         <div class="des">
-            <p>退選程序說明:</p>
-            1、必修課程請以在本班修課為原則，若遇特殊情況需要退選(ex.重補修衝堂)請檢附原任課老師同意之證明。
-            <br> 2、欲退選同學請先下載選課申請書，依照填寫範本所示填妥資料後上傳，選課申請書為必繳資料。
-            <br> 3、若有其他特殊情況(詳見備註)請檢附上課老師同意退選之證明，例如email截圖、line截圖等方式上傳系統。
-            <br> 4、退選後若不足最低學分規定，請附上學生報告書。
+            <h2>退選程序說明:</h2>
+            <ol class="ui relaxed list">
+                <li>必修課程請以在本班修課為原則，若遇特殊情況需要退選(ex.重補修衝堂)請檢附原任課老師同意之證明。</li>
+                <li>欲退選同學請先下載選課申請書，依照填寫範本所示填妥資料後上傳，選課申請書為必繳資料。</li>
+                <li>若有其他特殊情況(詳見備註)請檢附上課老師同意退選之證明，例如email截圖、line截圖等方式上傳系統。</li>
+                <li>退選後若不足最低學分規定，請附上學生報告書。</li>
+            </ol>
+            <a download href="download/sample_docs.pdf"><i class="download icon"></i></i>選課申請書範本</a>
         </div>
         <button class="ui button" id="pullApply">申請</button>
     </div>
@@ -60,20 +66,20 @@
 
     <div>
         <!-- ===加選 -->
-        <div class="ui modal" id="pushModal">
+        <div class="ui modal large" id="pushModal">
             <i class="close icon"></i>
             <div class="header"> 加選申請 </div>
             <div class="image content">
                 <div class="field">
-                    <label><span class="ui red text">*</span>選課申請書(必填)</label>
+                    <label class="modelField"><span class="ui red text">*</span>選課申請書(必填)</label>
                     <input type="file" id="pushEA" class="my-pond" />
                 </div>
                 <div class="field">
-                    <label>學生報告書(超修或低修)</label>
+                    <label class="modelField">學生報告書(超修或低修)</label>
                     <input type="file" id="pushER" class="my-pond" />
                 </div>
                 <div class="field">
-                    <label>任課老師核准證明(選填)</label>
+                    <label class="modelField">任課老師核准證明(選填)</label>
                     <input type="file" id="pushEC" class="my-pond" />
                 </div>
             </div>
@@ -84,21 +90,21 @@
         </div>
 
         <!-- ===退選 -->
-        <div class="ui modal" id="pullModal">
+        <div class="ui modal large" id="pullModal">
             <i class="close icon"></i>
             <div class="header"> 退選申請 </div>
             <div class="image content">
 
                 <div class="field">
-                    <label><span class="ui red text">*</span>選課申請書(必填)</label>
+                    <label class="modelField"><span class="ui red text">*</span>選課申請書(必填)</label>
                     <input type="file" id="pullEA" />
                 </div>
                 <div class="field">
-                    <label>學生報告書(超修或低修)</label>
+                    <label class="modelField">學生報告書(超修或低修)</label>
                     <input type="file" id="pullER" />
                 </div>
                 <div class="field">
-                    <label>任課老師核准證明(選填)</label>
+                    <label class="modelField">任課老師核准證明(選填)</label>
                     <input type="file" id="pullEC" />
                 </div>
             </div>
@@ -109,12 +115,12 @@
         </div>
 
         <!-- ===減修 -->
-        <div class="ui modal" id="removeModal">
+        <div class="ui modal large" id="removeModal">
             <i class="close icon"></i>
             <div class="header"> 減修申請 </div>
             <div class="image content">
                 <div class="field">
-                    <label><span class="ui red text">*</span>減修申請書(必填)</label>
+                    <label class="modelField"><span class="ui red text">*</span>減修申請書(必填)</label>
                     <input type="file" id="removeA" />
                 </div>
             </div>
@@ -135,6 +141,7 @@
                     <div id="rERemark"> </div>
                 </div>
                 <div class="ui form">
+                    <h3>若需要重新上傳文件，請於下方瀏覽按鈕旁重新選擇檔案。</h3>
                     <div class="three fields">
                         <div class="field">
                             <label><span class="ui red text">*</span>選課申請書(必填)</label>
@@ -147,14 +154,14 @@
 
                         </div>
                         <div class="field" id="rErF">
-                            <label>學生報告書(超修或低修)</label>
+                            <label class="modelField">學生報告書(超修或低修)</label>
                             <p> <button class="ui button prview" id="erPrview" name="reportUrl">預覽</button>
                                 <button class="ui button downloadFile" id="erDown" name="reportUrl">下載</button>
                             </p>
                             <input type="file" id="rER" />
                         </div>
                         <div class="field" id="rEcF">
-                            <label>任課老師核准證明(選填)</label>
+                            <label class="modelField">任課老師核准證明(選填)</label>
                             <p><button class="ui button prview" id="ecPrview" name="certUrl">預覽</button>
                                 <button class="ui button downloadFile" id="ecDown" name="certUrl">下載</button>
                             </p>
@@ -186,7 +193,7 @@
             <div class="header" id="rERTitle"></div>
             <div class="image content">
                 <div class="field">
-                    <label><span class="ui red text">*</span>申請書(必填)</label>
+                    <label class="modelField"><span class="ui red text">*</span>申請書(必填)</label>
                     <input type="file" id="rERA" />
                 </div>
             </div>
@@ -253,7 +260,7 @@
             $("#rERemark").html(item["remark"])
             $("#rEAFile").attr("href", `./download/${item["applyUrl"]}`)
             $("#rEAFile").attr("download", item["applyUrl"])
-                // $("#view").attr("filename", item["applyUrl"])
+            // $("#view").attr("filename", item["applyUrl"])
             let iframeUrl = isImg(item["applyUrl"]) ? item["applyUrl"] : `https://docs.google.com/viewer?url=${fileRoot}/${item["applyUrl"]}&embedded=true`
 
             $("#view").attr("src", iframeUrl)
@@ -267,9 +274,9 @@
 
             // localStorage.setItem("s_id", "test")
 
-            // let g = true
+            //let g = true
             let g = localStorage.getItem("graduates")
-            if (g) $("#tab").append(' <a class="item" data-tab="remove">減修</a>');
+            if (g == "true") $("#tab").append(' <a class="item" data-tab="remove"><b>減修</b></a>');
             $('.menu .item').tab();
             $.ajax({
                 url: `./eletive/list?s_id=${localStorage.getItem("s_id")}`,
@@ -277,7 +284,7 @@
                 success: (res) => {
                     res = JSON.parse(res)
                     recordData = res["d"]
-                    console.log(typeof(res["d"]))
+                    console.log(typeof (res["d"]))
                     for (let index in res["d"]) {
                         let item = res["d"][index]
 
@@ -300,7 +307,7 @@
         // 加選處理
         $("#pushApply").click(() => {
             $("#pushModal").modal({
-                onApprove: function() {
+                onApprove: function () {
                     console.log("formdata")
                     let pushEA = document.getElementById("pushEA").files[0]
                     console.log("formdata")
@@ -338,7 +345,7 @@
         // 退選處理
         $("#pullApply").click(() => {
             $("#pullModal").modal({
-                onApprove: function() {
+                onApprove: function () {
                     let pushEA = document.getElementById("pullEA").files[0]
                     let pushER = document.getElementById("pullER").files[0] || ""
                     let pushEC = document.getElementById("pullEC").files[0] || ""
@@ -360,7 +367,7 @@
                             console.log("ok", msg)
                         }
 
-                    }, )
+                    })
                 }
             }).modal('show')
         })
@@ -368,7 +375,7 @@
         // 減修處理
         $("#removeApply").click(() => {
             $("#removeModal").modal({
-                onApprove: function() {
+                onApprove: function () {
                     let removeA = document.getElementById("removeA").files[0]
                     let formData = new FormData()
                     let s_id = localStorage.getItem("s_id")
@@ -425,7 +432,7 @@
                     }
                 }
 
-            }, )
+            })
         })
         $(".prview").click(e => {
             let fileTarget = e.target.name
