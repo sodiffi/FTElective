@@ -122,6 +122,7 @@
 
     <script>
         const fileRoot = "http://yusiang.unaux.com/fteFile/"
+        const rootUrl = document.location.origin
         var token = localStorage.getItem("token")
         var forSaveId = ""
         var forSaveItem = ""
@@ -133,7 +134,7 @@
         }
         $(document).ready(function() {
             $.ajax({
-                url: "./list",
+                url: `${rootUrl}/list`,
                 method: "GET",
                 headers: {
                     "Authorization": "Bearer " + token
@@ -245,7 +246,7 @@
             remark = remark == "其他" ? remarkText : remark + "<br/>" + remarkText
 
             $.ajax({
-                url: `${document.location.origin}/ma/list`,
+                url: `${rootUrl}/ma/list`,
                 method: "POST",
                 data: {
                     "id": forSaveId,
@@ -265,14 +266,10 @@
             let ruleFileName = forSaveItem[fileTarget]
             let iframeUrl = isImg(ruleFileName) ? fileRoot + ruleFileName : `https://docs.google.com/viewer?url=${fileRoot}${ruleFileName}&embedded=true`
             $("#view").attr("src", iframeUrl)
-                // console.log(e.target.tagName)
         })
         $(".downloadFile").click(e => {
             let fileTarget = e.target.name
-
             let ruleFileName = forSaveItem[fileTarget]
-            console.log(fileTarget)
-
             console.log(`${fileRoot}/${ruleFileName}`)
             window.open(`${fileRoot}${ruleFileName}`)
         })

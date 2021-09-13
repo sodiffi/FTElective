@@ -43,10 +43,11 @@
 
 
     <script>
+        const rootUrl = document.location.origin
         $("#login").click(function() {
             console.log($("#id").val(), $("#psw").val())
             $.ajax({
-                url: "./",
+                url: `${rootUrl}/`,
                 method: "POST",
                 data: {
                     "id": $("#id").val(),
@@ -62,9 +63,9 @@
                                 showProgress: 'bottom',
                                 // classProgress: 'red'
                             });
-                        document.location.href = "./eletive"
+                        // document.location.href = `${rootUrl}/eletive`
                     }
-                    console.log(res)
+                    // console.log(res)
 
                 }
             })

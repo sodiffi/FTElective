@@ -42,10 +42,11 @@
 
 
     <script>
+        const rootUrl = document.location.origin
         $("#login").click(function() {
             console.log($("#id").val(), $("#psw").val())
             $.ajax({
-                url: "./",
+                url: `${rootUrl}/`,
                 method: "POST",
                 data: {
                     "id": $("#id").val(),
@@ -63,7 +64,7 @@
                             });
                         localStorage.setItem("token", res.d.token)
                             // console.log(res)
-                        document.location.href = "./manage"
+                        document.location.href = `${rootUrl}/manage`
                     }
                     // console.log(res)
 
