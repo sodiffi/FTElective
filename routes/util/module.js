@@ -9,11 +9,10 @@ const query = require('./asyncDB');
 var login = async function (newData) {
     var result = 0;
     console.log(newData.id, newData.psw)
-    await query(`select * from student where id= "${newData.id}" and psw= "${newData.psw} "`)
+    await query(`select *,concat(system,grade) in ( "日五專7","日四技6","日四技4","日五專6","碩士班4","日四技5","日五專5","進二技2","日二技4","進二技3","日二技2","日二技3") as "graduates" from student where id= "${newData.id}" and psw= "${newData.psw} "`)
         .then((data) => {
-         
             if (Array.isArray(data)) {
-                result = data.length
+                result = { isLogin: data.length > 0, d: data }
             }
         }, (error) => {
             result = -1;
@@ -24,15 +23,15 @@ var login = async function (newData) {
 // 助教登入
 //----------------------------------
 var loginA = async function (newData) {
-    var result=false;
+    var result = false;
 
     await query(`select * from manager where id= "${newData.id}" and psw= "${newData.psw}" `)
         .then((data) => {
-            console.log(data,newData)
-            if(Array.isArray(data)){
-                result=data.length>0
+            console.log(data, newData)
+            if (Array.isArray(data)) {
+                result = data.length > 0
             }
-            
+
         }, (error) => {
             console.log(error)
             result = false;
@@ -109,7 +108,7 @@ var aRecord = async function () {
 var aCheck = async function (cData) {
     var result;
 
-    await query(`update eletive set status_id=${cData.status_id} , remark="${cData.remark||" "}" where id=${cData.id}`)
+    await query(`update eletive set status_id=${cData.status_id} , remark="${cData.remark || " "}" where id=${cData.id}`)
         .then((data) => {
             result = data;
         }, (error) => {
@@ -139,7 +138,7 @@ var eletive = async function (eData) {
 // 重新加退選申請
 //----------------------------------
 var rEletive = async function (eData) {
-    var result;    
+    var result;
     await query(`update eletive set applyUrl="${eData.applyUrl}", reportUrl= "${eData.reportUrl}", certUrl="${eData.certUrl}" where id=${eData.id}`)
         .then((data) => {
             console.log(data)
@@ -156,5 +155,5 @@ var rEletive = async function (eData) {
 
 //匯出
 module.exports = {
-    login, eletive, record, loginA, signAuth, checkAuth, aRecord,aCheck,rEletive
+    login, eletive, record, loginA, signAuth, checkAuth, aRecord, aCheck, rEletive
 }
