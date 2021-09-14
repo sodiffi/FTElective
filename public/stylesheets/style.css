@@ -24,6 +24,10 @@ p {
     text-justify: inter-ideograph;
 }
 
+.header img {
+    width: calc( 95vw - 100px)
+}
+
 .field,
 .ui.form .field>label {
     font-size: 18px !important;
@@ -121,7 +125,7 @@ a.item.active {
 }
 
 #tt {
-    width: calc(100vw - 125px);
+    width: calc(100vw - 150px) !important;
 }
 
 .modelField {

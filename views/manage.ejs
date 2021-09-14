@@ -43,6 +43,9 @@
             <!-- 時間標題+事由 -->
             <div class="header" id="checkTitle"></div>
             <div class="    content">
+                <div class="ui segments">
+                    <table id="showStudent"></table>
+                </div>
                 <div class="ui horizontal basic segments">
                     <div class="ui center aligned segment">
                         <div class="field">
@@ -67,14 +70,9 @@
                         </div>
                     </div>
                 </div>
-
-
-
                 <div class="ui form">
                     <div class="ui grid">
-                        <div class="two wide column">
-
-                        </div>
+                        <div class="two wide column"> </div>
                         <div class="three wide column">
                             <div class="grouped fields">
                                 <div class="field">
@@ -97,21 +95,14 @@
                         <div class="nine wide column       ">
                             <div class=" equal width grouped fields">
                                 <div class="field"> <label>常用備註</label></div>
-
                                 <div class="field">
-
                                     <select class="ui search dropdown" id="remark">
                                             <option value="退件(該課程不得申請加選/退選)">退件(該課程不得申請加選/退選)</option>
                                             <option value="申請資料有誤(請修改/刪除：科目名稱、科目代號、學分數)">申請資料有誤(請修改/刪除：科目名稱、科目代號、學分數)</option>
                                             <option value="請補交報告書">請補交報告書</option>
                                             <option value="請補交授課老師同意證明文件">請補交授課老師同意證明文件</option>
-                                            <option value="其他">其他</option>
-                                            
+                                            <option value="其他">其他</option>                                            
                                         </select>
-
-
-
-
                                 </div>
                                 <div class="field" id="remarkTextField"> <input type="text" placeholder="其他文字" id="remarkText"></div>
 
@@ -129,7 +120,7 @@
                 </div>
             </div>
             <div class="description">
-                <iframe src="./" style="border: none; height: 500px;" id="view"></iframe>
+                <!-- <iframe src="./" style="border: none; height: 500px;" id="view"></iframe> -->
             </div>
             <div class="actions">
                 <div class="ui button cancel">取消</div>

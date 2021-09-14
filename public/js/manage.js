@@ -32,7 +32,26 @@ $(document).ready(function () {
             // $("#view").attr("src", iframeUrl)
             forSaveId = row["id"]
             forSaveItem = row
-
+$("#showStudent").html(`
+<tr>
+<th>申請人</th>
+<th>學號</th>
+<th>學制</th>
+<th>班級</th>
+<th>年級</th>
+<th>申請時間</th>
+<th>事由</th>
+<th>審核狀態</th>
+</tr> <tr>
+<td>${row["s_name"]}</td>
+<td>${row["s_id"]}</td>
+<td>${row["system"]}</td>
+<td>${row["class"]}</td>
+<td>${row["grade"]}</td>
+<td>${row["time"]}</td>
+<td>${row["r_name"]}</td>
+<td>${row["s_name"]}</td>
+</tr>`)
             if (String(row["reportUrl"]).length < 5) {
                 $("#erPrview").addClass("disabled")
                 $("#erDown").addClass("disabled")
@@ -136,21 +155,26 @@ $("#send").click(() => {
     console.log(remarkText)
     remark = remark == "其他" ? remarkText : remark + "<br/>" + remarkText
 
-    // $.ajax({
-    //     url: `${rootUrl}/ma/list`,
-    //     method: "POST",
-    //     data: {
-    //         "id": forSaveId,
-    //         "status_id": v ? 1 : 2,
-    //         "remark": remark
-    //     },
-    //     headers: {
-    //         "Authorization": "Bearer " + token
-    //     },
-    //     success: (res) => {
-    //         console.log(res)
-    //     }
-    // })
+    $.ajax({
+        url: `${rootUrl}/ma/list`,
+        method: "POST",
+        data: {
+            "id": forSaveId,
+            "status_id": v ? 1 : 2,
+            "remark": remark
+        },
+        headers: {
+            "Authorization": "Bearer " + token
+        },
+        success: (res) => {
+            $('body').toast({
+                message: res.message,
+                showProgress: 'bottom',
+                onRemove: todo
+        
+            });
+        }
+    })
 })
 $(".prview").click(e => {
     let fileTarget = e.target.name
@@ -162,7 +186,8 @@ $(".downloadFile").click(e => {
     let fileTarget = e.target.name
     let ruleFileName = forSaveItem[fileTarget]
     // console.log(`${fileRoot}/${ruleFileName}`)
-    window.open(`${fileRoot}${ruleFileName}`)
+    let toOpen = isImg(ruleFileName) ? fileRoot + ruleFileName : `https://docs.google.com/viewer?url=${fileRoot}${ruleFileName}`
+    window.open(toOpen)
 })
 window.onresize=()=>{
     // console.log("here")

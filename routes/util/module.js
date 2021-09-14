@@ -75,7 +75,7 @@ var checkAuth = async function (newData) {
 var record = async function (s_id) {
     var result;
 
-    await query(`select e.*,concat(time," ") as time ,r.name as r_name ,s.name as s_name from eletive as e join status as s on s.id=e.status_id join reason as r on r.id=e.reason_id where s_id= "${s_id}"`)
+    await query(`select e.*,concat(time," ") as time ,r.name as r_name ,s.name as s_name from eletive as e join status as s on s.id=e.status_id join reason as r on r.id=e.reason_id where s_id= "${s_id}" order by time desc`)
         .then((data) => {
             result = data;
         }, (error) => {
@@ -91,7 +91,7 @@ var record = async function (s_id) {
 var aRecord = async function () {
     var result;
 
-    await query(`select e.*,concat(time," ") as time ,r.name as r_name ,s.name as s_name ,st.system,st.grade,st.name as "st_name",st.class from eletive as e join status as s on s.id=e.status_id join reason as r on r.id=e.reason_id join student as st on e.s_id=st.id`)
+    await query(`select e.*,concat(time," ") as time ,r.name as r_name ,s.name as s_name ,st.system,st.grade,st.name as "st_name",st.class from eletive as e join status as s on s.id=e.status_id join reason as r on r.id=e.reason_id join student as st on e.s_id=st.id order by time desc`)
         .then((data) => {
             
             result = data;

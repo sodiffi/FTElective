@@ -29,7 +29,7 @@
                     </div>
                     <div class="field">
                         <label>密碼</label>
-                        <input type="text" name="last-name" placeholder="請輸入身份證字號" id="psw"> </div>
+                        <input type="password" name="last-name" placeholder="請輸入身份證字號" id="psw"> </div>
                     <button class="ui button" id="login"><i class="sign in alternate icon"></i>登入</button>
                 </div>
             </div>
@@ -59,7 +59,8 @@
                         class: res.success ? 'success' : "warning",
                         message: res.message,
                         showProgress: 'bottom',
-                        onRemove: todo
+                        onRemove: todo,
+                        displayTime: 1500
 
                     });
 

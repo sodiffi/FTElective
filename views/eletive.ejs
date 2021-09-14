@@ -49,7 +49,7 @@
     <div class="ui bottom   tab segment" data-tab="pull">
         <div class="des">
             <h2>退選程序說明:</h2>
-            <ol class="ui relaxed list">
+            <ol class="ui suffixed list">
                 <li>必修課程請以在本班修課為原則，若遇特殊情況需要退選(ex.重補修衝堂)請檢附原任課老師同意之證明。</li>
                 <li>欲退選同學請先下載選課申請書，依照填寫範本所示填妥資料後上傳，選課申請書為必繳資料。</li>
                 <li>若有其他特殊情況(詳見備註)請檢附上課老師同意退選之證明，例如email截圖、line截圖等方式上傳系統。</li>
@@ -137,14 +137,17 @@
             <!-- 時間標題+事由 -->
             <div class="header" id="rETitle"></div>
             <div class=" content">
-                <div id="rERemark"> </div>
-                <h3>若需要重新上傳文件，請於下方瀏覽按鈕旁重新選擇檔案，並點選送出</h3>
+                <h3 id="rERemark">
+                </h3>
+                <h3>若需要重新上傳文件，請於下方點選瀏覽按鈕選擇檔案，並點選送出</h3>
+                <h3>若要前次上傳紀錄，請點選下載</h3>
                 <div class="ui horizontal basic segments">
                     <div class="ui center aligned segment">
                         <div class="field studentF">
                             <label><span class="ui red text">*</span>選課申請書(必填)</label>
-                            <!-- <p><button class="ui button prview" id="eaPrview" name="applyUrl">預覽</button> -->
-                            <button class="ui button downloadFile" id="eaDown" name="applyUrl">下載</button>
+                            <p>
+                                <!-- <button class="ui button prview" id="eaPrview" name="applyUrl">預覽</button> -->
+                                <button class="ui button downloadFile" id="eaDown" name="applyUrl">下載</button>
                             </p>
                             <input type="file" id="rEA" />
                         </div>
@@ -152,8 +155,9 @@
                     <div class="ui center aligned segment ">
                         <div class="field studentF" id="rErF">
                             <label>學生報告書(超修或低修)</label>
-                            <!-- <p> <button class="ui button prview" id="erPrview" name="reportUrl">預覽</button> -->
-                            <button class="ui button downloadFile" id="erDown" name="reportUrl">下載</button>
+                            <p>
+                                <!-- <button class="ui button prview" id="erPrview" name="reportUrl">預覽</button> -->
+                                <button class="ui button downloadFile" id="erDown" name="reportUrl">下載</button>
                             </p>
                             <input type="file" id="rER" />
                         </div>
@@ -161,15 +165,17 @@
                     <div class="ui center aligned segment">
                         <div class="field studentF" id="rEcF">
                             <label>任課老師核准證明(選填)</label>
-                            <!-- <p><button class="ui button prview" id="ecPrview" name="certUrl">預覽</button> -->
-                            <button class="ui button downloadFile" id="ecDown" name="certUrl">下載</button>
+                            <p>
+                                <!-- <button class="ui button prview" id="ecPrview" name="certUrl">預覽</button> -->
+                                <button class="ui button downloadFile" id="ecDown" name="certUrl">下載</button>
                             </p>
                             <input type="file" id="rEC" />
                         </div>
                     </div>
-                    <div class="ui segment  ">
-                        <div class="ui button  " id="rESend">送出</div>
-                    </div>
+
+                </div>
+                <div class="ui basic segment  right aligned ">
+                    <div class="ui button  " id="rESend">送出</div>
                 </div>
             </div>
             <div class="description" id="toView">
@@ -182,9 +188,8 @@
         </div>
 
         <!-- ===重新減修 -->
-        <div class="ui modal" id="rERModal">
-            <i class="close icon"></i>
-            <!-- 時間標題+事由 -->
+        <!-- <div class="ui modal" id="rERModal">
+            <i class="close icon"></i> 時間標題+事由
             <div class="header" id="rERTitle"></div>
             <div class="image content">
                 <div class="field">
@@ -196,7 +201,7 @@
                 <div class="ui button cancel">取消</div>
                 <div class="ui button approve ">確認</div>
             </div>
-        </div>
+        </div> -->
     </div>
     <script src="/js/eletive.js"></script>
 
