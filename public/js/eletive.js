@@ -233,6 +233,13 @@ $(".prview").click(e => {
 $(".downloadFile").click(e => {
     let fileTarget = e.target.name
     let ruleFileName = forSaveItem[fileTarget]
-    console.log(`${fileRoot}/${ruleFileName}`)
-    window.open(`${fileRoot}${ruleFileName}`)
+    let toOpen = isImg(ruleFileName) ? fileRoot + ruleFileName : `https://docs.google.com/viewer?url=${fileRoot}${ruleFileName}`
+    window.open(toOpen)
+})
+$(".downloadSample").click(e => {
+    console.log("enter smapl")
+    let fileTarget = e.target.name   
+    let toOpen =  `https://docs.google.com/viewer?url=${fileRoot}${fileTarget}`
+    console.log(toOpen)
+    window.open(toOpen)
 })
