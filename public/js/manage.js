@@ -197,3 +197,6 @@ window.onresize=()=>{
     // console.log("here")
     $("#tt").css("width","calc( 100vw - 150px )")
 }
+$("#logout").click(()=>{
+    localStorage.clear()
+})

@@ -243,3 +243,6 @@ $(".downloadSample").click(e => {
     console.log(toOpen)
     window.open(toOpen)
 })
+$("#logout").click(()=>{
+    localStorage.clear()
+})
