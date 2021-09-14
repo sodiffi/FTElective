@@ -43,7 +43,7 @@ $("#showStudent").html(`
 <th>事由</th>
 <th>審核狀態</th>
 </tr> <tr>
-<td>${row["s_name"]}</td>
+<td>${row["st_name"]}</td>
 <td>${row["s_id"]}</td>
 <td>${row["system"]}</td>
 <td>${row["class"]}</td>
@@ -167,6 +167,10 @@ $("#send").click(() => {
             "Authorization": "Bearer " + token
         },
         success: (res) => {
+            res=JSON.parse(res)
+            todo= res.success?()=>{
+                $("#eCheck").modal("hide",true)
+            }:()=>{}
             $('body').toast({
                 message: res.message,
                 showProgress: 'bottom',
