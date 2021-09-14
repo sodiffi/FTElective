@@ -10,7 +10,8 @@ function isImg(str) {
     var ext = str.substr(index + 1);
     return ['png', 'jpg', 'jpeg', 'bmp', 'gif', 'webp', ' psd ', ' svg ', ' tiff '].indexOf(ext.toLowerCase()) !== -1
 }
-$(document).ready(function () {
+
+function tableReload(){
     $.ajax({
         url: `${rootUrl}/ma/list`,
         method: "GET",
@@ -141,7 +142,9 @@ $(document).ready(function () {
             ]
         });
     })
-
+}
+$(document).ready(function () {
+   tableReload()
 });
 $("#send").click(() => {
     // console.log($("#yes").val())
@@ -170,6 +173,7 @@ $("#send").click(() => {
             res = JSON.parse(res)
             todo = res.success ? () => {
                 $("#eCheck").modal("hide", true)
+                tableReload()
             } : () => { }
             $('body').toast({
                 message: res.message,
