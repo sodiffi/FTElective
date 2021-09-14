@@ -48,7 +48,7 @@ function detail(index) {
         }
     }
     $("#rETitle").html(title)
-    $("#rERemark").html(item["s_name"] == 2 ? (item["remark"] != null ? "退件備註：" + item["remark"] : "") : "")
+    $("#rERemark").html(item["status_id"] == 2 ? (String(item["remark"]).trim() !== "" ? "退件備註：" + item["remark"] : "") : "")
     let iframeUrl = isImg(item["applyUrl"]) ? `${fileRoot}/${item["applyUrl"]}` : `https://docs.google.com/viewer?url=${fileRoot}/${item["applyUrl"]}&embedded=true`
     let iframeItem = isImg(item["applyUrl"]) ? `<img src=${iframeUrl}>` : ` <iframe src="${iframeUrl}" style="border: none; height: 500px;" id="view"></iframe>`
     console.log(iframeUrl)
