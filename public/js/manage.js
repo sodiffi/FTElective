@@ -11,7 +11,7 @@ function isImg(str) {
     return ['png', 'jpg', 'jpeg', 'bmp', 'gif', 'webp', ' psd ', ' svg ', ' tiff '].indexOf(ext.toLowerCase()) !== -1
 }
 
-function tableReload(){
+function tableReload(forInit) {
     $.ajax({
         url: `${rootUrl}/ma/list`,
         method: "GET",
@@ -22,10 +22,6 @@ function tableReload(){
         res = JSON.parse(res)
         // console.log(res["d"][0])
         // res["d"].map(item => console.log(item))
-        $('#tt thead tr')
-            .clone(true)
-            .addClass('filters')
-            .appendTo('#tt thead');
         $('#tt').on('click', 'tbody tr', function () {
             let table = new DataTable('#tt');
             var row = table.row($(this)).data();
@@ -34,25 +30,25 @@ function tableReload(){
             forSaveId = row["id"]
             forSaveItem = row
             $("#showStudent").html(`
-<tr>
-<th>申請人</th>
-<th>學號</th>
-<th>學制</th>
-<th>班級</th>
-<th>年級</th>
-<th>申請時間</th>
-<th>事由</th>
-<th>審核狀態</th>
-</tr> <tr>
-<td>${row["st_name"]}</td>
-<td>${row["s_id"]}</td>
-<td>${row["system"]}</td>
-<td>${row["class"]}</td>
-<td>${row["grade"]}</td>
-<td>${row["time"]}</td>
-<td>${row["r_name"]}</td>
-<td>${row["s_name"]}</td>
-</tr>`)
+    <tr>
+    <th>申請人</th>
+    <th>學號</th>
+    <th>學制</th>
+    <th>班級</th>
+    <th>年級</th>
+    <th>申請時間</th>
+    <th>事由</th>
+    <th>審核狀態</th>
+    </tr> <tr>
+    <td>${row["st_name"]}</td>
+    <td>${row["s_id"]}</td>
+    <td>${row["system"]}</td>
+    <td>${row["class"]}</td>
+    <td>${row["grade"]}</td>
+    <td>${row["time"]}</td>
+    <td>${row["r_name"]}</td>
+    <td>${row["s_name"]}</td>
+    </tr>`)
             if (String(row["reportUrl"]).length < 5) {
                 $("#erPrview").addClass("disabled")
                 $("#erDown").addClass("disabled")
@@ -72,6 +68,7 @@ function tableReload(){
                 onApprove: function () { }
             }).modal("show")
         });
+
         $('#tt').DataTable({
             fixedHeader: true,
             responsive: true,
@@ -80,8 +77,9 @@ function tableReload(){
                 [25, 50, -1],
                 ['25', '50', '全部']
             ],
+            destroy: true,
             buttons: [
-                'pageLength', 'copy', 'excel', 'pdf'
+                'pageLength'
             ],
             columns: [{
                 data: 'st_name'
@@ -100,40 +98,7 @@ function tableReload(){
             }, {
                 data: 's_name'
             }],
-            initComplete: function () {
-                var api = this.api();
-                // For each column
-                api.columns().eq(0).each(function (colIdx) {
-                    // Set the header cell to contain the input element
-                    var cell = $('.filters th').eq(
-                        $(api.column(colIdx).header()).index()
-                    );
-                    var title = $(cell).text();
-                    $(cell).html(' <div class="ui form"><input type="text" placeholder="' + title + '" class="searchInput"/></div>');
-
-                    // On every keypress in this input
-                    $('input', $('.filters th').eq($(api.column(colIdx).header()).index()))
-                        .off('keyup change')
-                        .on('keyup change', function (e) {
-                            e.stopPropagation();
-                            // Get the search value
-                            $(this).attr('title', $(this).val());
-                            var regexr = '({search})'; //$(this).parents('th').find('select').val();
-                            var cursorPosition = this.selectionStart;
-                            // Search the column for that value
-                            api.column(colIdx)
-                                .search(
-                                    this.value != '' ?
-                                        regexr.replace('{search}', '(((' + this.value + ')))') :
-                                        '',
-                                    this.value != '',
-                                    this.value == ''
-                                ).draw();
-
-                            $(this).focus()[0].setSelectionRange(cursorPosition, cursorPosition);
-                        });
-                });
-            },
+            initComplete: forInit,
         });
         new $.fn.dataTable.Buttons(table, {
             dom: 'Bfrtip',
@@ -144,7 +109,45 @@ function tableReload(){
     })
 }
 $(document).ready(function () {
-   tableReload()
+    $('#tt thead tr')
+        .clone(true)
+        .addClass('filters')
+        .appendTo('#tt thead');
+
+    tableReload(function () {
+        var api = this.api();
+        // For each column
+        api.columns().eq(0).each(function (colIdx) {
+            // Set the header cell to contain the input element
+            var cell = $('.filters th').eq(
+                $(api.column(colIdx).header()).index()
+            );
+            var title = $(cell).text();
+            $(cell).html(' <div class="ui form"><input type="text" placeholder="' + title + '" class="searchInput"/></div>');
+
+            // On every keypress in this input
+            $('input', $('.filters th').eq($(api.column(colIdx).header()).index()))
+                .off('keyup change')
+                .on('keyup change', function (e) {
+                    e.stopPropagation();
+                    // Get the search value
+                    $(this).attr('title', $(this).val());
+                    var regexr = '({search})'; //$(this).parents('th').find('select').val();
+                    var cursorPosition = this.selectionStart;
+                    // Search the column for that value
+                    api.column(colIdx)
+                        .search(
+                            this.value != '' ?
+                                regexr.replace('{search}', '(((' + this.value + ')))') :
+                                '',
+                            this.value != '',
+                            this.value == ''
+                        ).draw();
+
+                    $(this).focus()[0].setSelectionRange(cursorPosition, cursorPosition);
+                });
+        });
+    })
 });
 $("#send").click(() => {
     // console.log($("#yes").val())
