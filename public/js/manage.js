@@ -149,18 +149,11 @@ $(document).ready(function () {
         });
     })
 });
-$("#send").click(() => {
-    // console.log($("#yes").val())
-    // console.log($("#no").val())
+$("#send").click(() => {    
     let v = $('[name=checkE]:checked').val() === "yes"
-
-    console.log(v)
     let remark = $("#remark").val()
-    console.log(remark)
     let remarkText = $("#remarkText").val()
-    console.log(remarkText)
-    remark = remark == "其他" ? remarkText : remark + "<br/>" + remarkText
-
+    remark = v ? "" : (remark == "其他" ? remarkText : remark + "<br/>" + remarkText)
     $.ajax({
         url: `${rootUrl}/ma/list`,
         method: "POST",
@@ -183,7 +176,6 @@ $("#send").click(() => {
                 showProgress: 'bottom',
                 onRemove: todo,
                 displayTime: 1500
-
             });
         }
     })
@@ -197,12 +189,10 @@ $(".prview").click(e => {
 $(".downloadFile").click(e => {
     let fileTarget = e.target.name
     let ruleFileName = forSaveItem[fileTarget]
-    // console.log(`${fileRoot}/${ruleFileName}`)
     let toOpen = isImg(ruleFileName) ? fileRoot + ruleFileName : `https://docs.google.com/viewer?url=${fileRoot}${ruleFileName}`
     window.open(toOpen)
 })
 window.onresize = () => {
-    // console.log("here")
     $("#tt").css("width", "calc( 100vw - 150px )")
 }
 $("#logout").click(() => {

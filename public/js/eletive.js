@@ -48,9 +48,9 @@ function detail(index) {
         }
     }
     $("#rETitle").html(title)
-    $("#rERemark").html(item["remark"] != null ? "退件備註：" + item["remark"] : "")
-    let iframeUrl = isImg(item["applyUrl"]) ?`${fileRoot}/${item["applyUrl"]}` : `https://docs.google.com/viewer?url=${fileRoot}/${item["applyUrl"]}&embedded=true`
-    let iframeItem=isImg(item["applyUrl"])?`<img src=${iframeUrl}>`:` <iframe src="${iframeUrl}" style="border: none; height: 500px;" id="view"></iframe>`
+    $("#rERemark").html(item["s_name"] == 2 ? (item["remark"] != null ? "退件備註：" + item["remark"] : "") : "")
+    let iframeUrl = isImg(item["applyUrl"]) ? `${fileRoot}/${item["applyUrl"]}` : `https://docs.google.com/viewer?url=${fileRoot}/${item["applyUrl"]}&embedded=true`
+    let iframeItem = isImg(item["applyUrl"]) ? `<img src=${iframeUrl}>` : ` <iframe src="${iframeUrl}" style="border: none; height: 500px;" id="view"></iframe>`
     console.log(iframeUrl)
     // $("#toView").html(iframeItem)
     $("#rEModal").modal("show")
@@ -126,7 +126,7 @@ $("#pushApply").click(() => {
                 data: formData,
                 success: (res) => {
                     res = JSON.parse(res)
-                    toast(res,tableReload)
+                    toast(res, tableReload)
                     // console.log("ok", msg)
                 },
                 error: (error) => {
@@ -162,7 +162,7 @@ $("#pullApply").click(() => {
                 data: formData,
                 success: (res) => {
                     res = JSON.parse(res)
-                    toast(res,tableReload)
+                    toast(res, tableReload)
                 }
             })
         }
@@ -188,7 +188,7 @@ $("#removeApply").click(() => {
                 data: formData,
                 success: (res => {
                     res = JSON.parse(res)
-                    toast(res,tableReload)
+                    toast(res, tableReload)
                 })
             })
         }
@@ -216,9 +216,9 @@ $("#rESend").click(() => {
         mimeType: "multipart/form-data",
         data: formData,
         success: (res) => {
-            console.log("ok", res)         
+            console.log("ok", res)
             res = JSON.parse(res)
-            toast(res,tableReload)
+            toast(res, tableReload)
         }
 
     })
@@ -238,12 +238,12 @@ $(".downloadFile").click(e => {
 })
 $(".downloadSample").click(e => {
     console.log("enter smapl")
-    let fileTarget = e.target.name   
-    let toOpen =  `https://docs.google.com/viewer?url=${fileRoot}${fileTarget}`
+    let fileTarget = e.target.name
+    let toOpen = `https://docs.google.com/viewer?url=${fileRoot}${fileTarget}`
     console.log(toOpen)
     window.open(toOpen)
 })
-$("#logout").click(()=>{
+$("#logout").click(() => {
     localStorage.clear()
-    document.location.href=document.location.href.split("/eletive")[0]
+    document.location.href = document.location.href.split("/eletive")[0]
 })
