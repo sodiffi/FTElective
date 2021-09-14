@@ -1,6 +1,6 @@
 body {
     background-image: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
-    padding: 50px;
+    padding: 30px 50px;
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
@@ -11,7 +11,7 @@ a {
 .des {
     line-height: 50px;
     font-size: 24px;
-    margin-left: 50px;
+    margin-left: 90px;
     text-align: justify;
     text-justify: inter-ideograph;
 }
@@ -24,8 +24,13 @@ p {
     text-justify: inter-ideograph;
 }
 
-.field {
-    font-size: 18px;
+.header img {
+    width: calc( 95vw - 100px)
+}
+
+.field,
+.ui.form .field>label {
+    font-size: 18px !important;
 }
 
 .ui.button {
@@ -44,8 +49,8 @@ div.ui.grid.two.centered {
     background-image: url("/images/side.png");
 }
 
-#tt input {
-    width: calc( 65vw / 8)
+input.searchInput {
+    padding: 10px 0 !important;
 }
 
 #view {
@@ -81,7 +86,15 @@ div.ui.form {
 }
 
 a.item {
-    font-size: 20px;
+    color: #000;
+    text-decoration: none;
+    letter-spacing: 2px;
+    font-size: 21px;
+}
+
+a.item.active {
+    border-bottom: 1px solid #fff;
+    background: #fff;
 }
 
 #pushApply,
@@ -93,7 +106,43 @@ a.item {
     letter-spacing: 5px;
     position: absolute;
     bottom: 20px;
-    right: 45px;
+    right: 90px;
+}
+
+#removeApply {
+    text-align: center;
+    font-size: 20px;
+    border-radius: 8px;
+    width: 150px;
+    letter-spacing: 5px;
+    position: absolute;
+    bottom: 5px;
+    right: 90px;
+}
+
+#remarkTextField {
+    margin-bottom: 0;
+}
+
+#tt {
+    width: calc(100vw - 150px) !important;
+}
+
+.modelField {
+    margin-top: 10px;
+}
+
+.field p {
+    margin: 0;
+    text-align: center;
+}
+
+.studentF input {
+    margin-top: 15px;
+}
+
+.manageThreeFields {
+    align-items: baseline !important;
 }
 
 @media only screen and (max-width:767.98px) {
@@ -110,18 +159,18 @@ a.item {
 
 @media only screen and (min-width: 992px) {
     #view {
-        width: 850px;
+        width: 1020px;
     }
 }
 
 @media only screen and (min-width:1200px) {
     #view {
-        width: 900px;
+        width: 1080px;
     }
 }
 
 @media only screen and (min-width:1920px) {
     #view {
-        width: 950px;
+        width: 1140px;
     }
 }

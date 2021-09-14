@@ -9,18 +9,20 @@
     <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.js"></script>
 
 
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.2/datatables.min.css" />
-    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.2/datatables.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.2/b-2.0.0/b-colvis-2.0.0/b-print-2.0.0/fh-3.1.9/r-2.2.9/datatables.min.css" />
+
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.2/b-2.0.0/b-colvis-2.0.0/b-print-2.0.0/fh-3.1.9/r-2.2.9/datatables.min.js"></script>
 
     <link rel='stylesheet' href='/stylesheets/style.css' />
 </head>
 
 <body>
-    <div><img src="images/banner.png" alt=""></div>
+    <div>
+        <img src="/images/banner1.png" alt="這是背景圖"></div>
 
-    <div class="ui   segment">
+    <div class="ui segment">
         <!-- <div>選課紀錄</div> -->
-        <table class=" my-table display" id="tt" style="width:80%">
+        <table class=" my-table display     " id="tt">
             <thead>
                 <tr>
                     <th>申請人</th>
@@ -36,37 +38,46 @@
         </table>
     </div>
     <div>
-        <div class="ui modal" id="eCheck">
+        <div class="ui modal large" id="eCheck">
             <i class="close icon"></i>
             <!-- 時間標題+事由 -->
             <div class="header" id="checkTitle"></div>
-            <div class=" image  content">
-                <div class="ui form">
-                    <div class="three fields">
+            <div class="    content">
+                <div class="ui segments">
+                    <table id="showStudent"></table>
+                </div>
+                <div class="ui horizontal basic segments">
+                    <div class="ui center aligned segment">
                         <div class="field">
                             <label><span class="ui red text">*</span>申請書(必填)</label>
-                            <p><button class="ui button prview" id="eaPrview" name="applyUrl">預覽</button>
-                                <button class="ui button downloadFile" id="eaDown" name="applyUrl">下載</button>
-                            </p>
-                        </div>
-                        <div class="field">
-                            <label>學生報告書(超修或低修)</label>
-                            <p> <button class="ui button prview" id="erPrview" name="reportUrl">預覽</button>
-                                <button class="ui button downloadFile" id="erDown" name="reportUrl">下載</button>
-                            </p>
-                        </div>
-                        <div class="field">
-                            <label>任課老師核准證明(選填)</label>
-                            <p><button class="ui button prview" id="ecPrview" name="certUrl">預覽</button>
-                                <button class="ui button downloadFile" id="ecDown" name="certUrl">下載</button>
+                            <!-- <p><button class="ui button prview " id="eaPrview" name="applyUrl">預覽</button> -->
+                            <button class="ui button downloadFile" id="eaDown" name="applyUrl">下載</button>
                             </p>
                         </div>
                     </div>
+                    <div class="ui center aligned segment">
+                        <div class="field  "><label>學生報告書(超修或低修)</label>
+                            <!-- <p> <button class="ui button prview  " id="erPrview" name="reportUrl">預覽</button> -->
+                            <button class="ui button downloadFile  " id="erDown" name="reportUrl">下載</button>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="ui center aligned segment">
+                        <div class="field"><label>任課老師核准證明(選填)</label>
+                            <!-- <p><button class="ui button prview" id="ecPrview" name="certUrl">預覽</button> -->
+                            <button class="ui button downloadFile" id="ecDown" name="certUrl">下載</button>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui form">
                     <div class="ui grid">
-
-                        <div class="four wide column">
+                        <div class="two wide column"> </div>
+                        <div class="three wide column">
                             <div class="grouped fields">
-                                <label>審核</label>
+                                <div class="field">
+                                    <label>審核</label>
+                                </div>
                                 <div class="field">
                                     <div class="ui radio checkbox">
                                         <input type="radio" name="checkE" checked="checked" id="yes" value="yes">
@@ -80,38 +91,36 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
-                        <div class="eight wide column">
-
-                            <div class="field">
-                                <label>常用備註</label>
-                                <select class="ui search dropdown" id="remark">
-                                    <option value="退件(該課程不得申請加選/退選)">退件(該課程不得申請加選/退選)</option>
-                                    <option value="申請資料有誤(請修改/刪除：科目名稱、科目代號、學分數)">申請資料有誤(請修改/刪除：科目名稱、科目代號、學分數)</option>
-                                    <option value="請補交報告書">請補交報告書</option>
-                                    <option value="請補交授課老師同意證明文件">請補交授課老師同意證明文件</option>
-                                    <option value="其他">其他</option>
-                                    
-                                </select>
-                                <input type="text" placeholder="其他文字" id="remarkText">
+                        <div class="nine wide column       ">
+                            <div class=" equal width grouped fields">
+                                <div class="field"> <label>常用備註</label></div>
+                                <div class="field">
+                                    <select class="ui search dropdown" id="remark">
+                                            <option value="退件(該課程不得申請加選/退選)">退件(該課程不得申請加選/退選)</option>
+                                            <option value="申請資料有誤(請修改/刪除：科目名稱、科目代號、學分數)">申請資料有誤(請修改/刪除：科目名稱、科目代號、學分數)</option>
+                                            <option value="請補交報告書">請補交報告書</option>
+                                            <option value="請補交授課老師同意證明文件">請補交授課老師同意證明文件</option>
+                                            <option value="其他">其他</option>                                            
+                                        </select>
+                                </div>
+                                <div class="field" id="remarkTextField"> <input type="text" placeholder="其他文字" id="remarkText"></div>
 
                             </div>
+
                         </div>
-                        <div class="four wide column   bottom aligned    ">
+                        <div class="two wide column bottom aligned">
                             <div class="field toCenter">
                                 <button class="ui button" id="send">送出</button>
                             </div>
                         </div>
+
                     </div>
 
                 </div>
-
-
-
             </div>
             <div class="description">
-                <iframe src="./" style="border: none; height: 500px;" id="view"></iframe>
+                <!-- <iframe src="./" style="border: none; height: 500px;" id="view"></iframe> -->
             </div>
             <div class="actions">
                 <div class="ui button cancel">取消</div>
@@ -120,158 +129,10 @@
         </div>
     </div>
 
-    <script>
-        const fileRoot = "http://yusiang.unaux.com/fteFile/"
-        const rootUrl = document.location.origin
-        var token = localStorage.getItem("token")
-        var forSaveId = ""
-        var forSaveItem = ""
+    <script src="/js/manage.js"></script>
 
-        function isImg(str) {
-            var index = str.lastIndexOf(".");
-            var ext = str.substr(index + 1);
-            return ['png', 'jpg', 'jpeg', 'bmp', 'gif', 'webp', ' psd ', ' svg ', ' tiff '].indexOf(ext.toLowerCase()) !== -1
-        }
-        $(document).ready(function() {
-            $.ajax({
-                url: `${rootUrl}/list`,
-                method: "GET",
-                headers: {
-                    "Authorization": "Bearer " + token
-                }
-            }).then(res => {
-                res = JSON.parse(res)
-                    // console.log(res["d"][0])
-                    // res["d"].map(item => console.log(item))
-                $('#tt thead tr')
-                    .clone(true)
-                    .addClass('filters')
-                    .appendTo('#tt thead');
-                $('#tt').on('click', 'tbody tr', function() {
-                    let table = new DataTable('#tt');
-                    var row = table.row($(this)).data();
-                    let iframeUrl = isImg(row["applyUrl"]) ? fileRoot + row["applyUrl"] : `https://docs.google.com/viewer?url=${fileRoot}${row["applyUrl"]}&embedded=true`
-                    $("#view").attr("src", iframeUrl)
-                    forSaveId = row["id"]
-                    forSaveItem = row
-
-                    if (String(row["reportUrl"]).length < 5) {
-                        $("#erPrview").addClass("disabled")
-                        $("#erDown").addClass("disabled")
-                    } else {
-                        $("#erPrview").removeClass("disabled")
-                        $("#erDown").removeClass("disabled")
-                    }
-                    if (String(row["certUrl"]).length < 5) {
-                        $("#ecPrview").addClass("disabled")
-                        $("#ecDown").addClass("disabled")
-                    } else {
-                        $("#ecPrview").removeClass("disabled")
-                        $("#ecDown").removeClass("disabled")
-                    }
-
-                    $("#eCheck").modal({
-                        onApprove: function() {}
-                    }).modal("show")
-                });
-                $('#tt').DataTable({
-                    // orderCellsTop: true,
-                    // fixedHeader: true,
-                    data: res["d"],
-                    columns: [{
-                        data: 'st_name'
-                    }, {
-                        data: 's_id'
-                    }, {
-                        data: 'system'
-                    }, {
-                        data: 'class'
-                    }, {
-                        data: 'grade'
-                    }, {
-                        data: 'time'
-                    }, {
-                        data: 'r_name'
-                    }, {
-                        data: 's_name'
-                    }],
-                    initComplete: function() {
-                        var api = this.api();
-                        // For each column
-                        api.columns().eq(0).each(function(colIdx) {
-                            // Set the header cell to contain the input element
-                            var cell = $('.filters th').eq(
-                                $(api.column(colIdx).header()).index()
-                            );
-                            var title = $(cell).text();
-                            $(cell).html('<input type="text" placeholder="' + title + '" />');
-
-                            // On every keypress in this input
-                            $('input', $('.filters th').eq($(api.column(colIdx).header()).index()))
-                                .off('keyup change')
-                                .on('keyup change', function(e) {
-                                    e.stopPropagation();
-                                    // Get the search value
-                                    $(this).attr('title', $(this).val());
-                                    var regexr = '({search})'; //$(this).parents('th').find('select').val();
-                                    var cursorPosition = this.selectionStart;
-                                    // Search the column for that value
-                                    api.column(colIdx)
-                                        .search(
-                                            this.value != '' ?
-                                            regexr.replace('{search}', '(((' + this.value + ')))') :
-                                            '',
-                                            this.value != '',
-                                            this.value == ''
-                                        ).draw();
-
-                                    $(this).focus()[0].setSelectionRange(cursorPosition, cursorPosition);
-                                });
-                        });
-                    },
-                });
-            })
-
-        });
-        $("#send").click(() => {
-            // console.log($("#yes").val())
-            // console.log($("#no").val())
-            let v = $('[name=checkE]:checked').val() === "yes"
-
-            console.log(v)
-            let remark = $("#remark").val()
-            console.log(remark)
-            let remarkText = $("#remarkText").val()
-            console.log(remarkText)
-            remark = remark == "其他" ? remarkText : remark + "<br/>" + remarkText
-
-            $.ajax({
-                url: `${rootUrl}/ma/list`,
-                method: "POST",
-                data: {
-                    "id": forSaveId,
-                    "status_id": v ? 1 : 2,
-                    "remark": remark
-                },
-                headers: {
-                    "Authorization": "Bearer " + token
-                },
-                success: (res) => {
-                    console.log(res)
-                }
-            })
-        })
-        $(".prview").click(e => {
-            let fileTarget = e.target.name
-            let ruleFileName = forSaveItem[fileTarget]
-            let iframeUrl = isImg(ruleFileName) ? fileRoot + ruleFileName : `https://docs.google.com/viewer?url=${fileRoot}${ruleFileName}&embedded=true`
-            $("#view").attr("src", iframeUrl)
-        })
-        $(".downloadFile").click(e => {
-            let fileTarget = e.target.name
-            let ruleFileName = forSaveItem[fileTarget]
-            console.log(`${fileRoot}/${ruleFileName}`)
-            window.open(`${fileRoot}${ruleFileName}`)
-        })
-    </script>
 </body>
+
+
+
+</html>
