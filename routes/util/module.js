@@ -9,7 +9,7 @@ const query = require('./asyncDB');
 var login = async function (newData) {
     var result = 0;
     console.log(newData.id, newData.psw)
-    await query(`select *,concat(system,grade) in ( "日五專7","日四技6","日四技4","日五專6","碩士班4","日四技5","日五專5","進二技2","日二技4","進二技3","日二技2","日二技3") as "graduates" from student where id= "${newData.id}" and psw= "${newData.psw} "`)
+    await query(`select *,concat(system,grade) in ( "日五專5","日五專6","日五專7","日四技4","日四技5","日四技6",,"進二技2","進二技3","日二技4","日二技2","日二技3","碩士班4","碩士班3","碩士班2") as "graduates" from student where id= "${newData.id}" and psw= "${newData.psw} "`)
         .then((data) => {
             if (Array.isArray(data)) {
                 result = { isLogin: data.length > 0, d: data }
