@@ -245,4 +245,5 @@ $(".downloadSample").click(e => {
 })
 $("#logout").click(()=>{
     localStorage.clear()
+    document.location.href=document.location.href.split("/eletive")[0]
 })

@@ -32,7 +32,7 @@ $(document).ready(function () {
             // $("#view").attr("src", iframeUrl)
             forSaveId = row["id"]
             forSaveItem = row
-$("#showStudent").html(`
+            $("#showStudent").html(`
 <tr>
 <th>申請人</th>
 <th>學號</th>
@@ -71,13 +71,13 @@ $("#showStudent").html(`
                 onApprove: function () { }
             }).modal("show")
         });
-        $('#tt').DataTable({            
+        $('#tt').DataTable({
             fixedHeader: true,
             responsive: true,
-            data: res["d"],  
+            data: res["d"],
             lengthMenu: [
-                [  25, 50, -1 ],
-                [  '25', '50', '全部' ]
+                [25, 50, -1],
+                ['25', '50', '全部']
             ],
             buttons: [
                 'pageLength', 'copy', 'excel', 'pdf'
@@ -134,12 +134,12 @@ $("#showStudent").html(`
                 });
             },
         });
-        new $.fn.dataTable.Buttons( table, {
+        new $.fn.dataTable.Buttons(table, {
             dom: 'Bfrtip',
             buttons: [
                 'copy', 'excel', 'pdf'
             ]
-        } );
+        });
     })
 
 });
@@ -167,15 +167,16 @@ $("#send").click(() => {
             "Authorization": "Bearer " + token
         },
         success: (res) => {
-            res=JSON.parse(res)
-            todo= res.success?()=>{
-                $("#eCheck").modal("hide",true)
-            }:()=>{}
+            res = JSON.parse(res)
+            todo = res.success ? () => {
+                $("#eCheck").modal("hide", true)
+            } : () => { }
             $('body').toast({
                 message: res.message,
                 showProgress: 'bottom',
-                onRemove: todo
-        
+                onRemove: todo,
+                displayTime: 1500
+
             });
         }
     })
@@ -193,10 +194,11 @@ $(".downloadFile").click(e => {
     let toOpen = isImg(ruleFileName) ? fileRoot + ruleFileName : `https://docs.google.com/viewer?url=${fileRoot}${ruleFileName}`
     window.open(toOpen)
 })
-window.onresize=()=>{
+window.onresize = () => {
     // console.log("here")
-    $("#tt").css("width","calc( 100vw - 150px )")
+    $("#tt").css("width", "calc( 100vw - 150px )")
 }
-$("#logout").click(()=>{
+$("#logout").click(() => {
     localStorage.clear()
+    document.location.href = document.location.href.split("/manage")[0]
 })
