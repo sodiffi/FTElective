@@ -29,18 +29,12 @@
                     </div>
                     <div class="field">
                         <label>密碼</label>
-                        <input type="text" name="last-name" placeholder="請輸入身份證字號" id="psw">
-                    </div>
+                        <input type="text" name="last-name" placeholder="請輸入身份證字號" id="psw"> </div>
                     <button class="ui button" id="login"><i class="sign in alternate icon"></i>登入</button>
-
                 </div>
             </div>
-
         </div>
     </div>
-
-
-
 
     <script>
         const rootUrl = document.location.origin
@@ -55,20 +49,19 @@
                 },
                 success: res => {
                     res = JSON.parse(res)
+                    let todo = () => {}
                     if (res.success) {
-                        console.log(res, res.d[0].graduates)
                         localStorage.setItem("s_id", $("#id").val())
                         localStorage.setItem("graduates", res.d[0].graduates == 1)
-                        $('body')
-                            .toast({
-                                class: 'success',
-                                message: res.message,
-                                showProgress: 'bottom',
-                                // classProgress: 'red'
-                            });
-                        document.location.href = `${rootUrl}/eletive`
+                        todo = () => document.location.href = `${rootUrl}/eletive`
                     }
-                    // console.log(res)
+                    $('body').toast({
+                        class: res.success ? 'success' : "warning",
+                        message: res.message,
+                        showProgress: 'bottom',
+                        onRemove: todo
+
+                    });
 
                 }
             })

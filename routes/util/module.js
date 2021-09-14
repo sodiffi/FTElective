@@ -27,7 +27,6 @@ var loginA = async function (newData) {
     console.log("loginA here look me")
     await query(`select * from manager where id= "${newData.id}" and psw= "${newData.psw}" `)
         .then((data) => {
-            console.log(data, newData)
             if (Array.isArray(data)) {
                 result = data.length > 0
             }
@@ -48,7 +47,6 @@ var signAuth = async function (newData) {
 
     await query(`update manager set token= "${newData.token}" where id ="${newData.id}"`)
         .then((data) => {
-            console.log(data)
             result = true;
         }, (error) => {
             result = false;
@@ -95,6 +93,7 @@ var aRecord = async function () {
 
     await query(`select e.*,concat(time," ") as time ,r.name as r_name ,s.name as s_name ,st.system,st.grade,st.name as "st_name",st.class from eletive as e join status as s on s.id=e.status_id join reason as r on r.id=e.reason_id join student as st on e.s_id=st.id`)
         .then((data) => {
+            
             result = data;
         }, (error) => {
             console.log(error)
@@ -125,7 +124,6 @@ var eletive = async function (eData) {
     // if(eData.certUrl==undefined)
     await query(`insert into eletive(s_id,reason_id,applyUrl,reportUrl,certUrl,time) values("${eData.s_id}", "${eData.reason}", "${eData.applyUrl}", "${eData.reportUrl}", "${eData.certUrl}","${eData.time}")`)
         .then((data) => {
-            console.log(data)
             result = 0;
         }, (error) => {
             console.log(error, "erroreee")
@@ -141,7 +139,6 @@ var rEletive = async function (eData) {
     var result;
     await query(`update eletive set applyUrl="${eData.applyUrl}", reportUrl= "${eData.reportUrl}", certUrl="${eData.certUrl}" where id=${eData.id}`)
         .then((data) => {
-            console.log(data)
             result = 0;
         }, (error) => {
             console.log(error, "erroreee")

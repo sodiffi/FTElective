@@ -13,7 +13,6 @@ router.get('/', function (req, res, next) {
 router.post('/', async (req, res, next) => {
   // console.log(req.body )
   data = await mModule.login(req.body)
-  console.log(data)
   let msg = data.isLogin ? "登入成功" : "登入失敗"
   res.send(util.ret(data.isLogin, msg, data.d))
 });
