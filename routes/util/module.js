@@ -36,7 +36,7 @@ var loginA = async function (newData) {
             result = false;
         })
 
-        return result;
+    return result;
 }
 
 // 助教登入(存回token)
@@ -93,7 +93,7 @@ var aRecord = async function () {
 
     await query(`select e.*,concat(time," ") as time ,r.name as r_name ,s.name as s_name ,st.system,st.grade,st.name as "st_name",st.class from eletive as e join status as s on s.id=e.status_id join reason as r on r.id=e.reason_id join student as st on e.s_id=st.id order by time desc`)
         .then((data) => {
-            
+
             result = data;
         }, (error) => {
             console.log(error)
@@ -120,14 +120,22 @@ var aCheck = async function (cData) {
 // 加退選申請
 //----------------------------------
 var eletive = async function (eData) {
-    var result;
+    var result = -1;
+
     // if(eData.certUrl==undefined)
     await query(`insert into eletive(s_id,reason_id,applyUrl,reportUrl,certUrl,time) values("${eData.s_id}", "${eData.reason}", "${eData.applyUrl}", "${eData.reportUrl}", "${eData.certUrl}","${eData.time}")`)
-        .then((data) => {
-            result = 0;
-        }, (error) => {
-            console.log(error, "erroreee")
-            result = -1;
+        .then(async(data) => {
+            if (eData) {
+                await query(`select * from eletive where s_id="${eData.s_id}" order by id desc limit 1 `).then(async(selectData) => {
+                    let addCert = ""
+                    for (let i in eData.certUrl) {
+                        addCert += `insert into cert(e_id,certUrl) values(${selectData.id},${i})`
+                    }
+                    await query(addCert).then(() => {
+                        result = 0;
+                    })
+                })
+            }
         });
 
     return result;

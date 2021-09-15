@@ -43,6 +43,7 @@
                 <li>需人工加選的同學請先下載選課申請書，依照填寫範本所示填妥資料後上傳，選課申請書為必繳資料。</li>
                 <li>若有其他特殊情況(詳見備註)請檢附上課老師同意加選之證明，例如email截圖、line截圖等方式上傳系統。</li>
                 <li>若加選後學分超過修課上限規定，請附上學生報告書(若因重補修超過學分上限者不需另外檢附學生報告書)。</li>
+                <li>限上傳一次，系上/他系請寫在同一張即可，送出前請再三確認；如需修正，請聯繫系辦退件修改</li>
             </ol>
             <button class="downloadSample" name="sample.pdf"><i class="download icon"></i></i>選課申請書範本</button>
             <button class="downloadSample" name="選課申請書修1100514.pdf"><i class="download icon"></i></i>選課申請書</button>
@@ -58,6 +59,7 @@
                 <li>欲退選同學請先下載選課申請書，依照填寫範本所示填妥資料後上傳，選課申請書為必繳資料。</li>
                 <li>若有其他特殊情況(詳見備註)請檢附上課老師同意退選之證明，例如email截圖、line截圖等方式上傳系統。</li>
                 <li>退選後若不足最低學分規定，請附上學生報告書。</li>
+                <li>限上傳一次，系上/他系請寫在同一張即可，送出前請再三確認；如需修正，請聯繫系辦退件修改</li>
             </ol>
             <button class="downloadSample" name="sample.pdf"><i class="download icon"></i></i>選課申請書範本</button>
             <button class="downloadSample" name="選課申請書修1100514.pdf"><i class="download icon"></i></i>選課申請書</button>
@@ -70,6 +72,7 @@
             <ol class="ui suffixed list">
                 <li>僅限應屆畢業班同學申請(得申請減修1-2學分，若全學期校外實習者可申請減修3學分)。</li>
                 <li>請先下載減修申請書，填妥後上傳時請務必附上減修申請表</li>
+                <li>限上傳一次，，送出前請再三確認；如需修正，請聯繫系辦退件修改</li>
             </ol>
 
             <button class="downloadSample" name="減修申請單.docx"><i class="download icon"></i></i>減修申請書</button>
@@ -153,39 +156,37 @@
             <!-- 時間標題+事由 -->
             <div class="header" id="rETitle"></div>
             <div class=" content">
-                <h3 id="rERemark">
-                </h3>
-                <h3>若需要重新上傳文件，請於下方點選瀏覽按鈕選擇檔案，並點選送出</h3>
-                <h3>若要前次上傳紀錄，請點選下載</h3>
+                <div id="rERemark"> </div>
+                <h3>若要瀏覽前次上傳紀錄，請點選下載</h3>
                 <div class="ui horizontal basic segments">
-                    <div class="ui center aligned segment">
+                    <div class="ui center aligned segment computer only">
                         <div class="field studentF">
-                            <label><span class="ui red text">*</span>選課申請書(必填)</label>
+                            <label><span class="ui red text">*</span>申請書(必填)</label>
                             <p>
                                 <!-- <button class="ui button prview" id="eaPrview" name="applyUrl">預覽</button> -->
                                 <button class="ui button downloadFile" id="eaDown" name="applyUrl">下載</button>
                             </p>
-                            <input type="file" id="rEA" />
+                            <input type="file" id="rEA" class="forResend" />
                         </div>
                     </div>
-                    <div class="ui center aligned segment ">
+                    <div class="ui center aligned segment computer only">
                         <div class="field studentF" id="rErF">
                             <label>學生報告書(超修或低修)</label>
                             <p>
                                 <!-- <button class="ui button prview" id="erPrview" name="reportUrl">預覽</button> -->
                                 <button class="ui button downloadFile" id="erDown" name="reportUrl">下載</button>
                             </p>
-                            <input type="file" id="rER" />
+                            <input type="file" id="rER" class="forResend" />
                         </div>
                     </div>
-                    <div class="ui center aligned segment">
+                    <div class="ui center aligned segment  computer only">
                         <div class="field studentF" id="rEcF">
                             <label>任課老師核准證明(選填)</label>
                             <p>
                                 <!-- <button class="ui button prview" id="ecPrview" name="certUrl">預覽</button> -->
                                 <button class="ui button downloadFile" id="ecDown" name="certUrl">下載</button>
                             </p>
-                            <input type="file" id="rEC" />
+                            <input type="file" id="rEC" class="forResend" />
                         </div>
                     </div>
 
@@ -202,23 +203,10 @@
                 <div class="ui button approve ">確認</div>
             </div>
         </div>
-
-        <!-- ===重新減修 -->
-        <!-- <div class="ui modal" id="rERModal">
-            <i class="close icon"></i> 時間標題+事由
-            <div class="header" id="rERTitle"></div>
-            <div class="image content">
-                <div class="field">
-                    <label class="modelField"><span class="ui red text">*</span>申請書(必填)</label>
-                    <input type="file" id="rERA" />
-                </div>
-            </div>
-            <div class="actions">
-                <div class="ui button cancel">取消</div>
-                <div class="ui button approve ">確認</div>
-            </div>
-        </div> -->
     </div>
+
+    <script src="https://smtpjs.com/v3/smtp.js">
+    </script>
     <script src="/js/eletive.js"></script>
 
 </body>

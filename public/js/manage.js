@@ -108,6 +108,29 @@ function tableReload(forInit) {
         });
     })
 }
+
+function toMail(s_id, check) {
+    const mailData = {
+        success: {
+            subject: "助教審核通過",
+            body: "<p>您的選課或減修申請已被核准，請登入本系選課系統查看結果，如有問題請再與系辦聯絡</p>"
+        },
+        error: {
+            subject: "助教審核未通過",
+            body: "<p>您的選課申請因故未被核準，請登入本系統或收email查看原因</p>"
+        }
+    }
+    let toSend = check ? mailData.success : mailData.error
+    Email.send({
+        SecureToken: "d356adce-f0d7-4c4d-98f9-3f784e2c8bf6",
+        To: `${s_id}@ntub.edu.tw`,
+        From: "ningpaiyi@gmail.com",
+        Subject: toSend.subject,
+        Body: toSend.body,
+    }).then(
+        message => console.log(message)
+    );
+}
 $(document).ready(function () {
     $('#tt thead tr')
         .clone(true)
@@ -149,7 +172,7 @@ $(document).ready(function () {
         });
     })
 });
-$("#send").click(() => {    
+$("#send").click(() => {
     let v = $('[name=checkE]:checked').val() === "yes"
     let remark = $("#remark").val()
     let remarkText = $("#remarkText").val()
@@ -168,6 +191,7 @@ $("#send").click(() => {
         success: (res) => {
             res = JSON.parse(res)
             todo = res.success ? () => {
+                toMail(forSaveItem["s_id"], v)
                 $("#eCheck").modal("hide", true)
                 tableReload()
             } : () => { }
