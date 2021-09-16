@@ -133,9 +133,10 @@ $("body").ready(() => {
 
 })
 $("button.addEC").click(e => {
-    $("#pushECField").append(`<input type="file" id=" " class="modelField pushEC" />`)
+    
     let targetName = e.target.name
-
+    console.log(targetName,`<input type="file" id=" " class="modelField ${targetName}EC" />`)
+    $(`#${targetName}ECField`).append(`<input type="file" id=" " class="modelField ${targetName}EC" />`)
     // console.log(targetVal)
     // for(let item in targetVal){
     //     console.log(item)
@@ -211,6 +212,8 @@ $("#pushApply").click(() => {
                 }]
             })
                 ;
+        },onHidden:()=>{
+            $(".pushEC").remove()
         }
     }).modal('show')
 
@@ -233,12 +236,20 @@ $("#pullApply").click(() => {
                         $('body').toast({ message: '資料送出中...' });
                         let pushEA = document.getElementById("pullEA").files[0]
                         let pushER = document.getElementById("pullER").files[0] || ""
-                        let pushEC = document.getElementById("pullEC").files[0] || ""
+                        // let pushEC = document.getElementById("pullEC").files[0] || ""
                         let formData = new FormData()
                         let s_id = localStorage.getItem("s_id")
+                        let target = $(`.pullEC`)
+                        target.each((i) => {
+                            let item = target[i]
+                            console.log(item.value)
+
+                            if (item.value != "") formData.append("ec", item.files[0])
+                            // console.log(item.value!="")
+                        })
                         formData.append("ea", pushEA)
                         formData.append("er", pushER)
-                        formData.append("ec", pushEC)
+                        // formData.append("ec", pushEC)
                         formData.append("s_id", s_id)
                         formData.append("reason", 1)
                         $.ajax({
@@ -262,6 +273,8 @@ $("#pullApply").click(() => {
                 }]
             })
                 ;
+        },onHidden:()=>{
+            $(".pullEC").remove()
         }
     }).modal('show')
 })
