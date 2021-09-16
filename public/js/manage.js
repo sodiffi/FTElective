@@ -56,12 +56,17 @@ function tableReload(forInit) {
                 $("#erPrview").removeClass("disabled")
                 $("#erDown").removeClass("disabled")
             }
-            if (String(row["certUrl"]).length < 5) {
-                $("#ecPrview").addClass("disabled")
-                $("#ecDown").addClass("disabled")
-            } else {
-                $("#ecPrview").removeClass("disabled")
-                $("#ecDown").removeClass("disabled")
+            let hasCert=row["c_url"]
+            $("#rEcF > p ").html("")
+            if (Array.isArray(hasCert)) {
+                hasCert.forEach(cartItem => {
+                    if (cartItem) {
+                        $("#rEcF > p").append(`<a class="ui button   ecDown"  name="${cartItem}" 
+                         
+                        href="${fileRoot}/${cartItem}" target="_blank" >下載</a>`)
+                    }
+                })
+
             }
 
             $("#eCheck").modal({

@@ -2,6 +2,7 @@
 <html>
 
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>北商財稅系人工選課</title>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.css">
@@ -37,6 +38,7 @@
     </div>
 
     <script>
+        // alert(window.screen.availWidth, window.innerWidth)
         const rootUrl = document.location.origin
         $("#login").click(function() {
             console.log($("#id").val(), $("#psw").val())

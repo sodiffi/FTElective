@@ -11,46 +11,55 @@ function isImg(str) {
 
 function detail(index) {
     // console.log("enter detail")
-    // console.log(recordData[index])
+    console.log(recordData[index])
     item = recordData[index]
     forSaveItem = item
     forSaveId = item["id"]
     let title = item["r_name"] + " - " + item["time"]
     let isRemove = item["reason_id"] == 2
     let hasReport = String(item["reportUrl"]).length < 5
-    let hasCert = String(item["certUrl"]).length < 5
+    let hasCert = item["c_url"]
     $("#rER").attr("disabled", isRemove)
     $("#rEC").attr("disabled", isRemove)
+    //退件後才可重送(只管input)
     if (item["status_id"] != 2) {
         $(".forResend").addClass("reSendNo")
     } else {
         $(".forResend").removeClass("reSendNo")
-        if (item["reason_id"] == 2) {
-            $("#ecPrview").addClass("disabled")
-            $("#ecDown").addClass("disabled")
-            $("#erPrview").addClass("disabled")
-            $("#erDown").addClass("disabled")
-            $("#rErF").addClass("disabled")
-            $("#rEcF").addClass("disabled")
+    }
+    //將下載紐清掉
+    //減修只有申請書
+    if (item["reason_id"] == 2) {
+        // $("#ecPrview").addClass("disabled")
+        $(".ecDown").addClass("disabled")
+        // $("#erPrview").addClass("disabled")
+        $("#erDown").addClass("disabled")
+        $("#rErF").addClass("disabled")
+        $("#rEcF").addClass("disabled")
 
+    } else {
+        $("#rErF").removeClass("disabled")
+        $("#rEcF").removeClass("disabled")
+        if (hasReport) {
+            // $("#erPrview").addClass("disabled")
+            $("#erDown").addClass("disabled")
+            $(".erDown").addClass("disabled")
         } else {
-            $("#rErF").removeClass("disabled")
-            $("#rEcF").removeClass("disabled")
-            if (hasReport) {
-                $("#erPrview").addClass("disabled")
-                $("#erDown").addClass("disabled")
-            } else {
-                $("#erPrview").removeClass("disabled")
-                $("#erDown").removeClass("disabled")
-            }
-            if (hasCert) {
-                $("#ecPrview").addClass("disabled")
-                $("#ecDown").addClass("disabled")
-            } else {
-                $("#ecPrview").removeClass("disabled")
-                $("#ecDown").removeClass("disabled")
-            }
+            // $("#erPrview").removeClass("disabled")
+            $("#erDown").removeClass("disabled")
+            $(".erDown").removeClass("disabled")
         }
+    }
+    $("#rEcF > p ").html("")
+    if (Array.isArray(hasCert)) {
+        hasCert.forEach(cartItem => {
+            if (cartItem) {
+                $("#rEcF > p").append(`<a class="ui button   ecDown"  name="${cartItem}" 
+                 
+                href="${fileRoot}/${cartItem}" target="_blank"  >下載</a>`)
+            }
+        })
+
     }
     $("#rETitle").html(title)
     $("#rERemark").html(item["status_id"] == 2 ? (String(item["remark"]).trim() !== "" ? `<h3>退件備註： ${item["remark"]} </h3>` : "") + "<h3>若需要重新上傳文件，請於下方點選瀏覽按鈕選擇檔案，並點選送出</h3>" : "")
@@ -64,6 +73,7 @@ function detail(index) {
 
 function toast(res, todo) {
     $('body').toast({
+        position: 'top attached',
         message: res.message,
         showProgress: 'bottom',
         onRemove: todo
@@ -122,6 +132,22 @@ $("body").ready(() => {
     tableReload()
 
 })
+$("button.addEC").click(e => {
+    $("#pushECField").append(`<input type="file" id=" " class="modelField pushEC" />`)
+    let targetName = e.target.name
+
+    // console.log(targetVal)
+    // for(let item in targetVal){
+    //     console.log(item)
+    // }
+    // console.log(targetVal.val())
+    // if (Array.isArray(targetVal.val())) {
+    //   console.log(  targetVal.val().length)
+    // }
+
+
+
+})
 
 // 加選處理
 $("#pushApply").click(() => {
@@ -129,6 +155,7 @@ $("#pushApply").click(() => {
     $("#pushModal").modal({
         onApprove: function () {
             $('body').toast({
+                position: 'top attached',
                 message: '加選、退選、減修申請只能上傳一次，請同學再次確認後再上傳',
                 displayTime: 0,
                 actions: [{
@@ -139,17 +166,27 @@ $("#pushApply").click(() => {
                         $('body').toast({ message: '資料送出中...' });
                         let pushEA = document.getElementById("pushEA").files[0]
                         let pushER = document.getElementById("pushER").files[0] || ""
-                        let pushEC = document.getElementById("pushEC").files[0] || ""
+
+                        // let pushEC = document.getElementById("pushEC").files[0] || ""
                         let formData = new FormData()
                         let s_id = localStorage.getItem("s_id")
-                        // console.log("formdata")
+                        console.log("formdata")
                         formData.append("ea", pushEA)
+
+                        let target = $(`.pushEC`)
+
+                        target.each((i) => {
+                            let item = target[i]
+                            console.log(item.value)
+
+                            if (item.value != "") formData.append("ec", item.files[0])
+                            // console.log(item.value!="")
+                        })
                         formData.append("er", pushER)
-                        formData.append("ec", pushEC)
                         formData.append("s_id", s_id)
                         formData.append("reason", 0)
                         $.ajax({
-                            url: "./eletive",
+                            url: "./eletive/" + s_id,
                             "method": "POST",
                             contentType: false,
                             processData: false,
@@ -205,7 +242,7 @@ $("#pullApply").click(() => {
                         formData.append("s_id", s_id)
                         formData.append("reason", 1)
                         $.ajax({
-                            url: "./eletive",
+                            url: "./eletive/" + s_id,
                             "method": "POST",
                             contentType: false,
                             processData: false,
@@ -249,7 +286,7 @@ $("#removeApply").click(() => {
                         formData.append("s_id", s_id)
                         formData.append("reason", 2)
                         $.ajax({
-                            url: "./eletive",
+                            url: "./eletive/" + s_id,
                             "method": "POST",
                             contentType: false,
                             processData: false,
@@ -287,13 +324,13 @@ $("#rESend").click(() => {
     formData.append("id", forSaveId)
     formData.append("re", true)
     $.ajax({
-        url: "./eletive",
+        url: "./eletive/" + s_id,
         "method": "POST",
         contentType: false,
         processData: false,
         mimeType: "multipart/form-data",
         data: formData,
-        success: (res) => {        
+        success: (res) => {
             res = JSON.parse(res)
             toMail(s_id, true)
             toast(res, tableReload)
@@ -311,7 +348,9 @@ $(".prview").click(e => {
 $(".downloadFile").click(e => {
     let fileTarget = e.target.name
     let ruleFileName = forSaveItem[fileTarget]
+
     let toOpen = isImg(ruleFileName) ? fileRoot + ruleFileName : `https://docs.google.com/viewer?url=${fileRoot}${ruleFileName}`
+    console.log(toOpen)
     window.open(toOpen)
 })
 $(".downloadSample").click(e => {

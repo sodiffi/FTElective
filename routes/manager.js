@@ -4,7 +4,6 @@ const mModule = require("./util/module")
 const jwt = require('jsonwebtoken')
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
-const mail = require("./util/mail")
 var util = require("./util/util")
 
 // 助教登入
