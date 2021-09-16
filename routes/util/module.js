@@ -15,16 +15,18 @@ function toLow(data, tolows, forcheck) {
     data.forEach((item, index) => {
         //換資料ㄌ
         if (item[forcheck] != check | index == data.length - 1) {
-            if (check != -1) {
-                console.log("here")
-                if (index == data.length - 1 && tolows in item) {
-                    tolow.push(item[tolows])
-                }
+            if (index == data.length - 1 && tolows in item) {
+                tolow.push(item[tolows])
+            }
+            if (check != -1 | index == data.length - 1) {
+                // console.log("here")
+
                 resu[tolows] = tolow
 
                 result.push(resu)
                 tolow = []
             }
+
             resu = item
             check = item[forcheck]
 
@@ -111,6 +113,8 @@ var record = async function (s_id) {
 
     await query(`select e.*,concat(time," ") as time ,r.name as r_name ,s.name as s_name , c.certUrl as c_url from eletive as e join status as s on s.id=e.status_id join reason as r on r.id=e.reason_id left join cert as c on e.id=c.e_id where s_id= "${s_id}" order by time desc`)
         .then((data) => {
+            console.log(data)
+            console.log(result)
             result = data = toLow(data, "c_url", "id")
         }, (error) => {
             console.log(error)

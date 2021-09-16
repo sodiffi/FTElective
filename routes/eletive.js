@@ -31,6 +31,7 @@ router.get("/list", function (req, res, next) {
   s_id = req.query.s_id
   if (s_id) {
     mModule.record(req.query.s_id).then(D => {
+      console.log(D)
       res.send(util.ret(true, "查詢成功", D))
     })
   } else {
@@ -100,49 +101,12 @@ router.post('/:s_id', cpUpload, async (req, res, next) => {
         })
       }
 
-      // console.log("folder path")
+
     }, error => {
       res.send(util.ret(true, "申請失敗"))
       console.log("folder error", error)
-    }
-    )
-    // await client.uploadFrom(`./uploads/${}/${eAFile}`, eAFile).then(res => {
-    //   eaFileCheck = 1
-    // }, error => {
-    //   eaFileCheck = -1
-    // })
-    // if (erFile !== "") {
-    //   await client.uploadFrom(`./uploads/${erFile}`, erFile).then(res => {
-    //     erFileCheck = 1
-    //   }, error => {
-    //     erFileCheck = -1
-    //   })
-    // } else { erFileCheck = 1 }
+    })
 
-    // if (ecFiles !== "") {
-    //   if (Array.isArray(ecFiles)) {
-    //     let size = ecFiles.length - 1
-    //     ecFiles.forEach(async (v, i) => {
-    //       await client.uploadFrom(`./uploads/${v.filename}`, v.filename).then(res => {
-    //         if (i == size) ecFileCheck = 1
-    //       }, error => {
-    //         console.log(error, "here error")
-    //         ecFileCheck = -1
-    //       })
-    //     })
-    //   }
-
-
-    // } else { ecFileCheck = 1 }
-    // console.log("here ", eaFileCheck, ecFileCheck, erFileCheck, eaFileCheck == ecFileCheck == erFileCheck == 1)
-    // if (eaFileCheck == ecFileCheck == erFileCheck == 1) {
-    //   console.log("enter if")
-
-
-    // } else {
-
-    //   res.send(util.ret(true, "申請失敗"))
-    // }
   }
   catch (err) {
     console.log(err)
