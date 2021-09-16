@@ -14,15 +14,11 @@ function toLow(data, tolows, forcheck) {
     let resu = data[0]
     data.forEach((item, index) => {
         //換資料ㄌ
-        if (item[forcheck] != check | index == data.length - 1) {
-            if (index == data.length - 1 && tolows in item) {
-                tolow.push(item[tolows])
-            }
-            if (check != -1 | index == data.length - 1) {
+        if (item[forcheck] != check) {
+            //如果不是第一筆或如果是最後一筆
+            if (check != -1) {
                 // console.log("here")
-
                 resu[tolows] = tolow
-
                 result.push(resu)
                 tolow = []
             }
@@ -34,6 +30,8 @@ function toLow(data, tolows, forcheck) {
         if (tolows in item)
             tolow.push(item[tolows])
     })
+    resu[tolows] = tolow
+    result.push(resu)
     // console.log(result)
     return result
 

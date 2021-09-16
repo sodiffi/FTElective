@@ -73,7 +73,6 @@ function detail(index) {
 
 function toast(res, todo) {
     $('body').toast({
-        position: 'top attached',
         message: res.message,
         showProgress: 'bottom',
         onRemove: todo
@@ -133,9 +132,9 @@ $("body").ready(() => {
 
 })
 $("button.addEC").click(e => {
-    
+
     let targetName = e.target.name
-    console.log(targetName,`<input type="file" id=" " class="modelField ${targetName}EC" />`)
+    console.log(targetName, `<input type="file" id=" " class="modelField ${targetName}EC" />`)
     $(`#${targetName}ECField`).append(`<input type="file" id=" " class="modelField ${targetName}EC" />`)
     // console.log(targetVal)
     // for(let item in targetVal){
@@ -164,46 +163,54 @@ $("#pushApply").click(() => {
                     icon: 'check',
                     class: 'green',
                     click: function () {
-                        $('body').toast({ message: '資料送出中...' });
-                        let pushEA = document.getElementById("pushEA").files[0]
-                        let pushER = document.getElementById("pushER").files[0] || ""
+                      
+                        // console.log(document.getElementById("pushEA").files,document.getElementById("pushEA").files.length)
+                        if (document.getElementById("pushEA").files.length == 0) {
+                           
+                            $('body').toast({ message: '缺少必填資料', class: "error", });
+                        } else {
+                            $('body').toast({ message: '資料送出中...', displayTime: 10000 });
+                            let pushEA = document.getElementById("pushEA").files[0]
+                            let pushER = document.getElementById("pushER").files[0] || ""
 
-                        // let pushEC = document.getElementById("pushEC").files[0] || ""
-                        let formData = new FormData()
-                        let s_id = localStorage.getItem("s_id")
-                        console.log("formdata")
-                        formData.append("ea", pushEA)
+                            // let pushEC = document.getElementById("pushEC").files[0] || ""
+                            let formData = new FormData()
+                            let s_id = localStorage.getItem("s_id")
+                            console.log("formdata")
+                            formData.append("ea", pushEA)
 
-                        let target = $(`.pushEC`)
+                            let target = $(`.pushEC`)
 
-                        target.each((i) => {
-                            let item = target[i]
-                            console.log(item.value)
+                            target.each((i) => {
+                                let item = target[i]
+                                console.log(item.value)
 
-                            if (item.value != "") formData.append("ec", item.files[0])
-                            // console.log(item.value!="")
-                        })
-                        formData.append("er", pushER)
-                        formData.append("s_id", s_id)
-                        formData.append("reason", 0)
-                        $.ajax({
-                            url: "./eletive/" + s_id,
-                            "method": "POST",
-                            contentType: false,
-                            processData: false,
-                            mimeType: "multipart/form-data",
-                            data: formData,
-                            success: (res) => {
-                                res = JSON.parse(res)
-                                toMail(s_id, false)
-                                toast(res, tableReload)
+                                if (item.value != "") formData.append("ec", item.files[0])
+                                // console.log(item.value!="")
+                            })
+                            formData.append("er", pushER)
+                            formData.append("s_id", s_id)
+                            formData.append("reason", 0)
+                            $.ajax({
+                                url: "./eletive/" + s_id,
+                                "method": "POST",
+                                contentType: false,
+                                processData: false,
+                                mimeType: "multipart/form-data",
+                                data: formData,
+                                success: (res) => {
+                                    res = JSON.parse(res)
+                                    toMail(s_id, false)
+                                    toast(res, tableReload)
 
 
-                            },
-                            error: (error) => {
-                                console.log(error)
-                            }
-                        })
+                                },
+                                error: (error) => {
+                                    console.log(error)
+                                }
+                            })
+                        }
+
                     }
                 }, {
                     icon: 'ban',
@@ -212,7 +219,7 @@ $("#pushApply").click(() => {
                 }]
             })
                 ;
-        },onHidden:()=>{
+        }, onHidden: () => {
             $(".pushEC").remove()
         }
     }).modal('show')
@@ -233,38 +240,44 @@ $("#pullApply").click(() => {
                     icon: 'check',
                     class: 'green',
                     click: function () {
-                        $('body').toast({ message: '資料送出中...' });
-                        let pushEA = document.getElementById("pullEA").files[0]
-                        let pushER = document.getElementById("pullER").files[0] || ""
-                        // let pushEC = document.getElementById("pullEC").files[0] || ""
-                        let formData = new FormData()
-                        let s_id = localStorage.getItem("s_id")
-                        let target = $(`.pullEC`)
-                        target.each((i) => {
-                            let item = target[i]
-                            console.log(item.value)
+                     
+                        if (document.getElementById("pullEA").files == 0) {
+                            $('body').toast({ message: '缺少必填資料', class: "error", });
+                        } else {
+                            $('body').toast({ message: '資料送出中...', displayTime: 10000 });
+                            let pushEA = document.getElementById("pullEA").files[0]
+                            let pushER = document.getElementById("pullER").files[0] || ""
+                            // let pushEC = document.getElementById("pullEC").files[0] || ""
+                            let formData = new FormData()
+                            let s_id = localStorage.getItem("s_id")
+                            let target = $(`.pullEC`)
+                            target.each((i) => {
+                                let item = target[i]
+                                console.log(item.value)
 
-                            if (item.value != "") formData.append("ec", item.files[0])
-                            // console.log(item.value!="")
-                        })
-                        formData.append("ea", pushEA)
-                        formData.append("er", pushER)
-                        // formData.append("ec", pushEC)
-                        formData.append("s_id", s_id)
-                        formData.append("reason", 1)
-                        $.ajax({
-                            url: "./eletive/" + s_id,
-                            "method": "POST",
-                            contentType: false,
-                            processData: false,
-                            mimeType: "multipart/form-data",
-                            data: formData,
-                            success: (res) => {
-                                res = JSON.parse(res)
-                                toMail(s_id, false)
-                                toast(res, tableReload)
-                            }
-                        })
+                                if (item.value != "") formData.append("ec", item.files[0])
+                                // console.log(item.value!="")
+                            })
+                            formData.append("ea", pushEA)
+                            formData.append("er", pushER)
+                            // formData.append("ec", pushEC)
+                            formData.append("s_id", s_id)
+                            formData.append("reason", 1)
+                            $.ajax({
+                                url: "./eletive/" + s_id,
+                                "method": "POST",
+                                contentType: false,
+                                processData: false,
+                                mimeType: "multipart/form-data",
+                                data: formData,
+                                success: (res) => {
+                                    res = JSON.parse(res)
+                                    toMail(s_id, false)
+                                    toast(res, tableReload)
+                                }
+                            })
+                        }
+
                     }
                 }, {
                     icon: 'ban',
@@ -273,7 +286,7 @@ $("#pullApply").click(() => {
                 }]
             })
                 ;
-        },onHidden:()=>{
+        }, onHidden: () => {
             $(".pullEC").remove()
         }
     }).modal('show')
@@ -291,26 +304,32 @@ $("#removeApply").click(() => {
                     icon: 'check',
                     class: 'green',
                     click: function () {
-                        $('body').toast({ message: '資料送出中...' });
-                        let removeA = document.getElementById("removeA").files[0]
-                        let formData = new FormData()
-                        let s_id = localStorage.getItem("s_id")
-                        formData.append("ea", removeA)
-                        formData.append("s_id", s_id)
-                        formData.append("reason", 2)
-                        $.ajax({
-                            url: "./eletive/" + s_id,
-                            "method": "POST",
-                            contentType: false,
-                            processData: false,
-                            mimeType: "multipart/form-data",
-                            data: formData,
-                            success: (res => {
-                                res = JSON.parse(res)
-                                toMail(s_id, false)
-                                toast(res, tableReload)
+                       
+                        if (document.getElementById("removeA").files == 0) {
+                            $('body').toast({ message: '缺少必填資料', class: "error", });
+                        } else {
+                            $('body').toast({ message: '資料送出中...', displayTime: 10000 });
+                            let removeA = document.getElementById("removeA").files[0]
+                            let formData = new FormData()
+                            let s_id = localStorage.getItem("s_id")
+                            formData.append("ea", removeA)
+                            formData.append("s_id", s_id)
+                            formData.append("reason", 2)
+                            $.ajax({
+                                url: "./eletive/" + s_id,
+                                "method": "POST",
+                                contentType: false,
+                                processData: false,
+                                mimeType: "multipart/form-data",
+                                data: formData,
+                                success: (res => {
+                                    res = JSON.parse(res)
+                                    toMail(s_id, false)
+                                    toast(res, tableReload)
+                                })
                             })
-                        })
+                        }
+
                     }
                 }, {
                     icon: 'ban',
