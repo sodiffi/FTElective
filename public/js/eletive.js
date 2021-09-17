@@ -385,7 +385,7 @@ $(".downloadFile").click(e => {
     console.log(toOpen)
     window.open(toOpen)
 })
-$(".downloadSample").click(e => {
+$("button.downloadSample").click(e => {
     // console.log("enter smapl")
     let fileTarget = e.target.name
     let toOpen = `https://docs.google.com/viewer?url=${fileRoot}${fileTarget}`
