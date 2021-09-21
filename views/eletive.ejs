@@ -24,7 +24,6 @@
         <a class="item" data-tab="pull"><b>退選</b></a>
     </div>
     <div class="ui bottom center aligned active tab segment" data-tab="record">
-        <!-- <div>選課紀錄</div> -->
         <table class="ui  very basic    celled table selectable striped three table">
             <thead>
                 <tr>
@@ -55,9 +54,6 @@
                     <div class="  right floated content"> <button class="ui button" id="pushApply">申請</button></div>
                 </div>
             </div>
-
-
-
         </div>
 
     </div>
@@ -82,7 +78,6 @@
                 </div>
             </div>
         </div>
-
     </div>
     <div class="ui bottom   tab segment" data-tab="remove">
         <div class="des">
@@ -99,15 +94,8 @@
                     <div class="  right floated content"> <button class="ui button" id="removeApply">申請</button> </div>
                 </div>
             </div>
-
-
         </div>
-
-
-
-
     </div>
-
     <div>
         <!-- ===加選 -->
         <div class="ui modal large" id="pushModal">
@@ -125,7 +113,6 @@
                 <div class="field" id="pushECField">
                     <label class="modelField">任課老師核准證明(選填)</label>
                     <button id="addpushEC" class="modelField addEC" name="push">增加檔案</button>
-                    <!-- <input type="file" id="pushEC" class="modelField pushEC" /> -->
                 </div>
             </div>
             <div class="actions">
@@ -133,7 +120,6 @@
                 <div class="ui button approve ">確認</div>
             </div>
         </div>
-
         <!-- ===退選 -->
         <div class="ui modal large" id="pullModal">
             <i class="close icon"></i>
@@ -155,7 +141,7 @@
                     <div class="field " id="pullECField">
                         <label class="modelField">任課老師核准證明(選填)</label>
                         <button id="addpullEC" class="modelField addEC" name="pull">增加檔案</button>
-                        <!-- <input type="file" id="pullEC" class="modelField" /> -->
+
                     </div>
                 </div>
 
@@ -165,7 +151,6 @@
                 <div class="ui button approve ">確認</div>
             </div>
         </div>
-
         <!-- ===減修 -->
         <div class="ui modal large" id="removeModal">
             <i class="close icon"></i>
@@ -181,7 +166,6 @@
                 <div class="ui button approve ">確認</div>
             </div>
         </div>
-
         <!-- ===重新加退選 -->
         <div class="ui modal large" id="rEModal">
             <i class="close icon"></i>
@@ -191,28 +175,23 @@
                 <div id="rERemark"> </div>
                 <h3>若要瀏覽前次上傳紀錄，請點選下載</h3>
                 <div class="ui basic segment">
-
                     <div class="ui    grid  ">
                         <div class="ui three column divided  center aligned row tablet computer only">
                             <!-- 電腦設備 -->
-
                             <div class="ui  column tablet computer only ">
                                 <div class="field studentF">
                                     <label><span class="ui red text">*</span>申請書(必填)</label>
                                     <p>
-                                        <!-- <button class="ui button prview" id="eaPrview" name="applyUrl">預覽</button> -->
+
                                         <button class="ui button downloadFile" id="eaDown" name="applyUrl">下載</button>
                                     </p>
                                     <input type="file" id="rEA" class="forResend" />
                                 </div>
                             </div>
-
-
                             <div class="ui  column tablet computer only">
                                 <div class="field studentF" id="rErF">
                                     <label>學生報告書(超修或低修)</label>
                                     <p>
-                                        <!-- <button class="ui button prview" id="erPrview" name="reportUrl">預覽</button> -->
                                         <button class="ui button downloadFile erDown" id="erDown" name="reportUrl">下載</button>
                                     </p>
                                     <input type="file" id="rER" class="forResend" />
@@ -220,65 +199,44 @@
                             </div>
 
                             <div class="ui  column tablet computer only">
-                                <div class="field studentF" id="rEcF">
+                                <div class="field studentF rEcF" id="rEcF">
                                     <label>任課老師核准證明(選填)</label>
-                                    <p>
-                                        <!-- <button class="ui button prview" id="ecPrview" name="certUrl">預覽</button> -->
-
-                                    </p>
-                                    <input type="file" id="rEC" class="forResend" />
+                                    <button id="addpushEC" class="modelField addEC forResend" name="re">增加檔案</button>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="ui     row  ">
-
-
+                        <div class="ui   row  ">
                             <!-- 手機設備 -->
                             <div class="ui   sixteen wide column mobile only">
                                 <div class="field studentF">
                                     <label><span class="ui red text">*</span>申請書(必填)</label>
                                     <p>
-                                        <!-- <button class="ui button prview" id="eaPrview" name="applyUrl">預覽</button> -->
                                         <button class="ui button downloadFile" id="eaDown" name="applyUrl">下載</button>
                                     </p>
                                     <input type="file" id="rEA" class="forResend" />
                                 </div>
                             </div>
-
-
                             <div class="ui  sixteen wide column  mobile only">
                                 <div class="field studentF" id="rErF">
                                     <label>學生報告書(超修或低修)</label>
                                     <p>
-                                        <!-- <button class="ui button prview" id="erPrview" name="reportUrl">預覽</button> -->
                                         <button class="ui button downloadFile erDown" id="erDown" name="reportUrl">下載</button>
                                     </p>
                                     <input type="file" id="rER" class="forResend" />
                                 </div>
                             </div>
-
                             <div class="ui  sixteen wide column  mobile only">
-                                <div class="field studentF" id="rEcF">
+                                <div class="field studentF rEcF" id="rEcF">
                                     <label>任課老師核准證明(選填)</label>
-                                    <p>
-                                        <!-- <button class="ui button prview" id="ecPrview" name="certUrl">預覽</button> -->
-                                        <!-- <button class="ui button downloadFile ecDown" id="ecDown" name="certUrl">下載</button> -->
-                                    </p>
-                                    <input type="file" id="rEC" class="forResend" />
+                                    <button id="addpushEC" class="modelField addEC forResend" name="re">增加檔案</button>
                                 </div>
                             </div>
-
                         </div>
-
                     </div>
-
                     <div class="ui basic segment  right aligned ">
                         <div class="ui button forResend " id="rESend">送出</div>
                     </div>
-                </div>
-                <div class="description" id="toView">
-
                 </div>
                 <div class="actions">
                     <div class="ui button cancel">取消</div>
@@ -292,7 +250,5 @@
         <script src="/js/eletive.js"></script>
 
 </body>
-
-
 
 </html>

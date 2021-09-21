@@ -43,7 +43,6 @@
     <script>
         const rootUrl = document.location.origin
         $("#login").click(function() {
-            console.log($("#id").val(), $("#psw").val())
             $.ajax({
                 url: `${rootUrl}/ma`,
                 method: "POST",

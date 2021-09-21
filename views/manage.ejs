@@ -4,13 +4,13 @@
 <head>
     <title>北商財稅系人工選課</title>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.css">
+
     <link rel="icon" href="images/icon.ico" type="image/x-icon" />
+
     <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.js"></script>
-
-
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.css">
+    <!-- 資料表格套件 -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.2/b-2.0.0/b-colvis-2.0.0/b-print-2.0.0/fh-3.1.9/r-2.2.9/datatables.min.css" />
-
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.2/b-2.0.0/b-colvis-2.0.0/b-print-2.0.0/fh-3.1.9/r-2.2.9/datatables.min.js"></script>
 
     <link rel='stylesheet' href='/stylesheets/style.css' />
@@ -25,8 +25,7 @@
     </div>
 
     <div class="ui segment">
-        <!-- <div>選課紀錄</div> -->
-        <table class=" my-table display     " id="tt">
+        <table class=" my-table display" id="tt">
             <thead>
                 <tr>
                     <th>申請人</th>
@@ -54,24 +53,21 @@
                     <div class="ui center aligned segment">
                         <div class="field">
                             <label><span class="ui red text">*</span>申請書(必填)</label>
-                            <!-- <p><button class="ui button prview " id="eaPrview" name="applyUrl">預覽</button> -->
+
                             <button class="ui button downloadFile" id="eaDown" name="applyUrl">下載</button>
                             </p>
                         </div>
                     </div>
                     <div class="ui center aligned segment">
                         <div class="field  "><label>學生報告書(超修或低修)</label>
-                            <!-- <p> <button class="ui button prview  " id="erPrview" name="reportUrl">預覽</button> -->
+
                             <button class="ui button downloadFile  " id="erDown" name="reportUrl">下載</button>
                             </p>
                         </div>
                     </div>
                     <div class="ui center aligned segment">
                         <div class="field" id="rEcF"><label>任課老師核准證明(選填)</label>
-                            <p>
-                                <!-- <button class="ui button prview" id="ecPrview" name="certUrl">預覽</button>
-                                <button class="ui button downloadFile" id="ecDown" name="certUrl">下載</button> -->
-                            </p>
+                            <p> </p>
                         </div>
                     </div>
                 </div>
@@ -119,13 +115,8 @@
                                 <button class="ui button" id="send">送出</button>
                             </div>
                         </div>
-
                     </div>
-
                 </div>
-            </div>
-            <div class="description">
-                <!-- <iframe src="./" style="border: none; height: 500px;" id="view"></iframe> -->
             </div>
             <div class="actions">
                 <div class="ui button cancel">取消</div>
@@ -135,7 +126,6 @@
     </div>
 
     <script src="/js/manage.js"></script>
-
 </body>
 
 </html>

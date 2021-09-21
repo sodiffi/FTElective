@@ -17,7 +17,6 @@ function toLow(data, tolows, forcheck) {
         if (item[forcheck] != check) {
             //如果不是第一筆或如果是最後一筆
             if (check != -1) {
-                // console.log("here")
                 resu[tolows] = tolow
                 result.push(resu)
                 tolow = []
@@ -42,7 +41,6 @@ function toLow(data, tolows, forcheck) {
 //----------------------------------
 var login = async function (newData) {
     var result = 0;
-    console.log(newData.id, newData.psw)
     await query(`select *,concat(system,grade) in ( "日五專5","日五專6","日五專7","日四技4","日四技5","日四技6","進二技2","進二技3","日二技4","日二技2","日二技3","碩士班4","碩士班3","碩士班2") as "graduates" from student where id= "${newData.id}" and psw= "${newData.psw} "`)
         .then((data) => {
             if (Array.isArray(data)) {
@@ -58,7 +56,6 @@ var login = async function (newData) {
 //----------------------------------
 var loginA = async function (newData) {
     var result = false;
-    console.log("loginA here look me")
     await query(`select * from manager where id= "${newData.id}" and psw= "${newData.psw}" `)
         .then((data) => {
             if (Array.isArray(data)) {
@@ -77,7 +74,6 @@ var loginA = async function (newData) {
 //----------------------------------
 var signAuth = async function (newData) {
     var result;
-    console.log("enter sign auto", newData)
 
     await query(`update manager set token= "${newData.token}" where id ="${newData.id}"`)
         .then((data) => {
@@ -111,8 +107,6 @@ var record = async function (s_id) {
 
     await query(`select e.*,concat(time," ") as time ,r.name as r_name ,s.name as s_name , c.certUrl as c_url from eletive as e join status as s on s.id=e.status_id join reason as r on r.id=e.reason_id left join cert as c on e.id=c.e_id where s_id= "${s_id}" order by time desc`)
         .then((data) => {
-            console.log(data)
-            console.log(result)
             result = data = toLow(data, "c_url", "id")
         }, (error) => {
             console.log(error)
@@ -169,7 +163,6 @@ var eletive = async function (eData) {
                     if (Array.isArray(urls)) {
                         urls.forEach(item => {
                             addCert += ` (${selectData[0].id},"${eData.remotePath}/${item.filename}") ,`
-                            console.log("from j", item.filename)
                         })
                         addCert = addCert.substr(0, addCert.length - 1)
                         await query(addCert).then(() => {
@@ -181,7 +174,6 @@ var eletive = async function (eData) {
 
                 })
             } else {
-                console.log("ehre is else")
                 return 0;
             }
         });

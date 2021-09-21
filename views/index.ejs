@@ -36,12 +36,9 @@
             </div>
         </div>
     </div>
-
     <script>
-        // alert(window.screen.availWidth, window.innerWidth)
         const rootUrl = document.location.origin
         $("#login").click(function() {
-            console.log($("#id").val(), $("#psw").val())
             $.ajax({
                 url: `${rootUrl}/`,
                 method: "POST",
@@ -65,10 +62,8 @@
                         displayTime: 1000
 
                     });
-
                 }
             })
-
         })
     </script>
 </body>

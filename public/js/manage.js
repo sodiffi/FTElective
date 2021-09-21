@@ -19,14 +19,10 @@ function tableReload(forInit) {
             "Authorization": "Bearer " + token
         }
     }).then(res => {
-        res = JSON.parse(res)
-        // console.log(res["d"][0])
-        // res["d"].map(item => console.log(item))
+        res = JSON.parse(res)      
         $('#tt').on('click', 'tbody tr', function () {
             let table = new DataTable('#tt');
-            var row = table.row($(this)).data();
-            let iframeUrl = isImg(row["applyUrl"]) ? fileRoot + row["applyUrl"] : `https://docs.google.com/viewer?url=${fileRoot}${row["applyUrl"]}&embedded=true`
-            // $("#view").attr("src", iframeUrl)
+            var row = table.row($(this)).data();       
             forSaveId = row["id"]
             forSaveItem = row
             $("#showStudent").html(`
@@ -49,11 +45,9 @@ function tableReload(forInit) {
     <td>${row["r_name"]}</td>
     <td>${row["s_name"]}</td>
     </tr>`)
-            if (String(row["reportUrl"]).length < 5) {
-                $("#erPrview").addClass("disabled")
+            if (String(row["reportUrl"]).length < 5) {              
                 $("#erDown").addClass("disabled")
-            } else {
-                $("#erPrview").removeClass("disabled")
+            } else {               
                 $("#erDown").removeClass("disabled")
             }
             let hasCert=row["c_url"]
@@ -61,14 +55,11 @@ function tableReload(forInit) {
             if (Array.isArray(hasCert)) {
                 hasCert.forEach(cartItem => {
                     if (cartItem) {
-                        $("#rEcF > p").append(`<a class="ui button   ecDown"  name="${cartItem}" 
-                         
+                        $("#rEcF > p").append(`<a class="ui button   ecDown"  name="${cartItem}"                          
                         href="${fileRoot}/${cartItem}" target="_blank" >下載</a>`)
                     }
                 })
-
             }
-
             $("#eCheck").modal({
                 onApprove: function () { }
             }).modal("show")
