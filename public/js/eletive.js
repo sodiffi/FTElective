@@ -11,6 +11,7 @@ function isImg(str) {
 
 function detail(index) {
 
+
     console.log(recordData[index])
     item = recordData[index]
     forSaveItem = item
@@ -24,6 +25,7 @@ function detail(index) {
     //退件後才可重送(只管input)
     if (item["status_id"] != 2) {
         $(".forResend").addClass("reSendNo")
+        $(".rEcF > p").html(``)
     } else {
         $(".forResend").removeClass("reSendNo")
     }
@@ -136,7 +138,7 @@ $("button.addEC").click(e => {
 
     if (targetName != "re")
         $(`#${targetName}ECField`).append(`<input type="file" id=" " class="modelField ${targetName}EC" />`)
-    else $(".rEcF").append(`<input type="file" id=" " class="modelField ${targetName}EC" />`)
+    else $(".rEcF > p").append(`<input type="file" id=" " class="modelField ${targetName}EC" />`)
 
 
 
@@ -157,10 +159,8 @@ $("#pushApply").click(() => {
                     icon: 'check',
                     class: 'green',
                     click: function () {
-
-
                         if (document.getElementById("pushEA").files.length == 0) {
-
+                       
                             $('body').toast({ message: '缺少必填資料', class: "error", });
                         } else {
                             $('body').toast({ message: '資料送出中...', displayTime: 10000 });
@@ -222,6 +222,7 @@ $("#pullApply").click(() => {
     $("#pullModal").modal({
         onApprove: function () {
             $('body').toast({
+                position: 'top attached',
                 message: '加選、退選、減修申請只能上傳一次，請同學再次確認後再上傳',
                 displayTime: 0,
                 actions: [{
@@ -229,8 +230,8 @@ $("#pullApply").click(() => {
                     icon: 'check',
                     class: 'green',
                     click: function () {
-
-                        if (document.getElementById("pullEA").files == 0) {
+                        console.log(document.getElementById("pullEA").files.length==0)
+                        if (document.getElementById("pullEA").files.length == 0) {
                             $('body').toast({ message: '缺少必填資料', class: "error", });
                         } else {
                             $('body').toast({ message: '資料送出中...', displayTime: 10000 });
@@ -282,6 +283,7 @@ $("#removeApply").click(() => {
     $("#removeModal").modal({
         onApprove: function () {
             $('body').toast({
+                position: 'top attached',
                 message: '加選、退選、減修申請只能上傳一次，請同學再次確認後再上傳',
                 displayTime: 0,
                 actions: [{
@@ -290,7 +292,7 @@ $("#removeApply").click(() => {
                     class: 'green',
                     click: function () {
 
-                        if (document.getElementById("removeA").files == 0) {
+                        if (document.getElementById("removeA").files.length == 0) {
                             $('body').toast({ message: '缺少必填資料', class: "error", });
                         } else {
                             $('body').toast({ message: '資料送出中...', displayTime: 10000 });
