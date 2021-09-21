@@ -1,5 +1,5 @@
 body {
-    background-image: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+    background: linear-gradient(120deg, #f6d365 0%, #fda085 200vw)fixed;
     padding: 30px 50px;
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
@@ -11,7 +11,7 @@ a {
 .des {
     line-height: 50px;
     font-size: 24px;
-    margin-left: 90px;
+    margin: 0 90px;
     text-align: justify;
     text-justify: inter-ideograph;
 }
@@ -30,7 +30,7 @@ p {
 
 .field,
 .ui.form .field>label {
-    font-size: 18px !important;
+    font-size: 18px;
 }
 
 .ui.button {
@@ -89,7 +89,7 @@ a.item {
     color: #000;
     text-decoration: none;
     letter-spacing: 2px;
-    font-size: 21px;
+    font-size: 20px;
 }
 
 a.item.active {
@@ -98,26 +98,13 @@ a.item.active {
 }
 
 #pushApply,
-#pullApply {
-    text-align: center;
-    font-size: 20px;
-    border-radius: 8px;
-    width: 150px;
-    letter-spacing: 5px;
-    position: absolute;
-    bottom: 20px;
-    right: 90px;
-}
-
+#pullApply,
 #removeApply {
     text-align: center;
     font-size: 20px;
     border-radius: 8px;
     width: 150px;
     letter-spacing: 5px;
-    position: absolute;
-    bottom: 5px;
-    right: 90px;
 }
 
 #remarkTextField {
@@ -145,9 +132,30 @@ a.item.active {
     align-items: baseline !important;
 }
 
+.forLogout {
+    text-align: right;
+}
+
+.reSendNo,
+#rESend.reSendNo {
+    display: none !important;
+}
+
+
+/* #logout {
+    display: flex;
+    right: calc(100vw - 100px);
+} */
+
 @media only screen and (max-width:767.98px) {
     #view {
         width: 100%;
+    }
+    .downItems {
+        text-align: right;
+    }
+    td {
+        width: 25vw;
     }
 }
 
@@ -173,4 +181,38 @@ a.item.active {
     #view {
         width: 1140px;
     }
+}
+
+@media only screen and (max-width:600px) {
+    div.ui.grid.two.centered {
+        background: none;
+    }
+    body {
+        padding: 20px;
+        /* font-size: 3.5rem; */
+    }
+    /* .field,
+    .ui.form .field>label {
+        font-size: 3.5rem;
+    } */
+    .des {
+        /* font-size: 3.5vmin; */
+        margin: 0;
+        padding: 3px;
+    }
+    .downloadSample {
+        margin: 15px 0;
+        display: block;
+    }
+    #tab a.item>b {
+        font-size: 3.5vmin;
+    }
+    /* #login,
+    #pushApply,
+    #pullApply,
+    #removeApply,
+    .downloadSample,
+    button.ui.button {
+        font-size: 3vmin;
+    } */
 }

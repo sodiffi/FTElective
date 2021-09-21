@@ -2,6 +2,7 @@
 <html>
 
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>北商財稅系人工選課</title>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.css">
@@ -16,12 +17,12 @@
     </div>
     <div class="ui piled segment">
         <div class="ui grid two centered">
-            <div class="eight wide column">
+            <div class="sixteen wide mobile sixteen wide tablet eight wide computer wide column">
                 <p><i class="caret right icon"></i>本系統為需要系辦助教核准的課程加退選、減修學分申請需求之用，如欲申請請先登入進行身分驗證。</p>
                 <p><i class="caret right icon"></i>若您欲加退選之課程學校選課系統中仍有名額，則請同學直接登入<a href="http://ntcbadm1.ntub.edu.tw/">學校選課系統</a>申請即可，無須登入此系統。</p>
                 <p><i class="caret right icon"></i>申請後不代表已完成，仍須待助教審核後才能確定申請結果，您的申請文件若不齊全則可能有需補件之情形，請同學隨時登入系統查看。</p>
             </div>
-            <div class="four wide column side loginBorder" style="text-align: center;">
+            <div class="sixteen wide mobile sixteen wide tablet four wide computer column  side  " style="text-align: center;">
                 <div class="ui form">
                     <div class="field">
                         <label>帳號</label>
@@ -35,11 +36,9 @@
             </div>
         </div>
     </div>
-
     <script>
         const rootUrl = document.location.origin
         $("#login").click(function() {
-            console.log($("#id").val(), $("#psw").val())
             $.ajax({
                 url: `${rootUrl}/`,
                 method: "POST",
@@ -60,13 +59,11 @@
                         message: res.message,
                         showProgress: 'bottom',
                         onRemove: todo,
-                        displayTime: 1500
+                        displayTime: 1000
 
                     });
-
                 }
             })
-
         })
     </script>
 </body>

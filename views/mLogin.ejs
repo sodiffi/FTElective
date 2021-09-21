@@ -40,13 +40,9 @@
             </div>
         </div>
     </div>
-
-
-
     <script>
         const rootUrl = document.location.origin
         $("#login").click(function() {
-            console.log($("#id").val(), $("#psw").val())
             $.ajax({
                 url: `${rootUrl}/ma`,
                 method: "POST",
@@ -62,11 +58,11 @@
                         todo = () => document.location.href = `${rootUrl}/ma/manage`
                     }
                     $('body').toast({
-                        class: 'success',
+                        class: res.success ? 'success' : "warning",
                         message: res.message,
                         showProgress: 'bottom',
                         onRemove: todo,
-                        displayTime: 1500
+                        displayTime: 1000
                     });
                 }
             })

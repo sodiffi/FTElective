@@ -4,13 +4,20 @@ const multer = require('multer')
 var mime = require('mime-types');
 const ftp = require("basic-ftp")
 const { v4: uuidv4 } = require('uuid');
+const fs = require('fs')
 var util = require("./util/util")
 
 const storage = multer.diskStorage({
-  destination: './uploads/',
+  destination: function (req, file, cb) {
+    let s = Date.now()
+    let r = String(s).slice(0, 7)
+    const path = `./uploads/${req.params.s_id}-${r}`
+    fs.mkdirSync(path, { recursive: true })
+    cb(null, path)
+  },
   filename: function (req, file, cb) {
     let ext = mime.extension(file.mimetype);
-    cb(null, file.fieldname + uuidv4() + '-' + Date.now() + "." + ext)
+    cb(null, file.fieldname + uuidv4() + '_' + Date.now() + "." + ext)
   }
 })
 const upload = multer({ dest: 'uploads/', storage: storage })
@@ -32,87 +39,75 @@ router.get("/list", function (req, res, next) {
 
 })
 
-const cpUpload = upload.fields([{ name: 'ea' }, { name: 'er' }, { name: 'ec' }, { name: "s_id" },{name:"re"}])
-router.post('/', cpUpload, async (req, res, next) => {
+const cpUpload = upload.fields([{ name: 'ea' }, { name: 'er' }, { name: 'ec' }, { name: "re" }])
+router.post('/:s_id', cpUpload, async (req, res, next) => {
+
+
   let d = new Date().toISOString().split("T")[0]
   let t = new Date().toLocaleTimeString("tw", { city: 'TAIWAN', timeZone: 'Asia/Taipei', hour12: false },)
-  var eAFile = req.files["ea"][0].filename;
-  var erFile = req.files["er"] !== undefined ? req.files["er"][0].filename : ""
-  var ecFile = req.files["ec"] !== undefined ? req.files["ec"][0].filename : ""
-  // console.log(req.files["re"])
-  var eaFileCheck = 0
-  var erFileCheck = 0
-  var ecFileCheck = 0
+
+  let folderPath = ""
+  if (req.body.re) {
+    if(req.files["ea"] != undefined) folderPath=req.files["ea"][0].destination
+    if(req.files["er"] != undefined) folderPath=req.files["er"][0].destination
+    if(req.files["ec"] != undefined) folderPath=req.files["ec"][0].destination
+  } else {
+    folderPath = req.files["ea"][0].destination
+  }
+  let remotePath = String(folderPath).split("./uploads/")[1]
+
   const client = new ftp.Client()
-  client.ftp.verbose = true
+
   try {
     await client.access({
       host: "ftpupload.net",
       user: "unaux_29705433",
       password: "k9uy2e14b2u",
     })
-    console.log(await client.list())
-    await client.ensureDir("/htdocs/fteFile")
+
+    await client.ensureDir("/htdocs/fteFile/")
     await client.cd("/htdocs/fteFile")
-    await client.uploadFrom(`./uploads/${eAFile}`, eAFile).then(res => {
-      eaFileCheck = 1
-    }, error => {
-      eaFileCheck = -1
-    })
-    if (erFile !== "") {
-      await client.uploadFrom(`./uploads/${erFile}`, erFile).then(res => {
-        erFileCheck = 1
-      }, error => {
-        erFileCheck = -1
-      })
-    } else { erFileCheck = 1 }
-
-    if (ecFile !== "") {
-      await client.uploadFrom(`./uploads/${ecFile}`, ecFile).then(res => {
-        ecFileCheck = 1
-      }, error => {
-        ecFileCheck = -1
-      })
-    } else { ecFileCheck = 1 }
-    // console.log("here ", eaFileCheck, ecFileCheck, erFileCheck, eaFileCheck == ecFileCheck == erFileCheck == 1)
-    if (eaFileCheck == ecFileCheck == erFileCheck == 1) {
-      // console.log()
+    console.log(folderPath,remotePath)
+    await client.uploadFromDir(String(folderPath), remotePath).then(resd => {
       let eData = {
-        s_id: req.body.s_id,
+        s_id: req.params.s_id,
         reason: req.body.reason || 0,
-        applyUrl: req.files["ea"][0].filename,
-        reportUrl: req.files["er"] != undefined ? req.files["er"][0].filename : "",
-        certUrl: req.files["ec"] != undefined ? req.files["ec"][0].filename : "",
-        time: `${d} ${t}`
-
+        applyUrl: req.files["ea"] != undefined && req.body.re ? `${remotePath}/${req.files["ea"][0].filename}` : "",
+        reportUrl: req.files["er"] != undefined ? `${remotePath}/${req.files["er"][0].filename}` : "",
+        certUrl: req.files["ec"] != undefined ? req.files["ec"] : "",
+        time: `${d} ${t}`,
+        remotePath: remotePath
       }
       if (!req.body.re) {
         mModule.eletive(eData).then(D => {
           res.send(util.ret(true, "申請成功"))
 
-        }, (error) => {
-          res.send(util.ret(false, "申請失敗"))
-
-        })
+        }, error => console.log(error))
       } else {
         eData.id = req.body.id
         mModule.rEletive(eData).then(D => {
+
           res.send(util.ret(true, "重新申請成功"))
 
         }, (error) => {
+
           res.send(util.ret(false, "重新申請失敗"))
 
         })
       }
 
 
-    }
+    }, error => {
+      res.send(util.ret(true, "申請失敗"))
+      console.log("folder error", error)
+    })
+
   }
   catch (err) {
     console.log(err)
   }
-  client.close()
 
+  client.close()
 })
 
 
