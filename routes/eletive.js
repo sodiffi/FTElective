@@ -58,14 +58,15 @@ router.post('/:s_id', cpUpload, async (req, res, next) => {
 
   try {
     await client.access({
-      host: "ftpupload.net",
-      user: "unaux_29705433",
-      password: "k9uy2e14b2u",
+      host: "sv46.byethost46.org",
+      user: "yusiang",
+      password: "h;9]L7FO4oL8tc",
+      secure: false
     })
 
-    await client.ensureDir("/htdocs/fteFile/")
-    await client.cd("/htdocs/fteFile")
-    console.log(folderPath, remotePath)
+    await client.ensureDir("/public_html/fteFile/")
+    await client.cd("/public_html/fteFile/")
+    console.log(folderPath, remotePath, req.files["ec"] != undefined, req.files["ec"])
     await client.uploadFromDir(String(folderPath), remotePath).then(resd => {
       let eData = {
         s_id: req.params.s_id,
