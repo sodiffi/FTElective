@@ -26,10 +26,10 @@ function toLow(data, tolows, forcheck) {
             check = item[forcheck]
 
         }
-        if (tolows in item)
+        if (tolows in item && item[tolows] != "")
             tolow.push(item[tolows])
     })
-    resu[tolows] = tolow
+    if (tolow != undefined) resu[tolows] = tolow
     result.push(resu)
     // console.log(result)
     return result

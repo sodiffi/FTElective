@@ -160,7 +160,7 @@ $("#pushApply").click(() => {
                     class: 'green',
                     click: function () {
                         if (document.getElementById("pushEA").files.length == 0) {
-                       
+
                             $('body').toast({ message: '缺少必填資料', class: "error", });
                         } else {
                             $('body').toast({ message: '資料送出中...', displayTime: 10000 });
@@ -225,12 +225,13 @@ $("#pullApply").click(() => {
                 position: 'top attached',
                 message: '加選、退選、減修申請只能上傳一次，請同學再次確認後再上傳',
                 displayTime: 0,
+                re: false,
                 actions: [{
                     text: '確認送出',
                     icon: 'check',
                     class: 'green',
                     click: function () {
-                        console.log(document.getElementById("pullEA").files.length==0)
+                        console.log(document.getElementById("pullEA").files.length == 0)
                         if (document.getElementById("pullEA").files.length == 0) {
                             $('body').toast({ message: '缺少必填資料', class: "error", });
                         } else {

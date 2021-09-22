@@ -96,12 +96,7 @@ function tableReload(forInit) {
             }],
             initComplete: forInit,
         });
-        new $.fn.dataTable.Buttons(table, {
-            dom: 'Bfrtip',
-            buttons: [
-                'copy', 'excel', 'pdf'
-            ]
-        });
+       
     })
 }
 
@@ -200,16 +195,12 @@ $("#send").click(() => {
         }
     })
 })
-$(".prview").click(e => {
-    let fileTarget = e.target.name
-    let ruleFileName = forSaveItem[fileTarget]
-    let iframeUrl = isImg(ruleFileName) ? fileRoot + ruleFileName : `https://docs.google.com/viewer?url=${fileRoot}${ruleFileName}&embedded=true`
-    // $("#view").attr("src", iframeUrl)
-})
+
 $(".downloadFile").click(e => {
     let fileTarget = e.target.name
     let ruleFileName = forSaveItem[fileTarget]
     let toOpen = isImg(ruleFileName) ? fileRoot + ruleFileName : `https://docs.google.com/viewer?url=${fileRoot}${ruleFileName}`
+    console.log(toOpen)
     window.open(toOpen)
 })
 window.onresize = () => {
