@@ -1,5 +1,5 @@
 var recordData = []
-const fileRoot = "http://yusiang.unaux.com/fteFile/"
+const fileRoot = "https://yusiang.unaux.com/fteFile/"
 var forSaveId = ""
 var forSaveItem = ""
 
@@ -135,10 +135,10 @@ $("body").ready(() => {
                 text: '確認',
                 icon: 'check',
 
-                click: function () {    document.location.href = "../"}
+                click: function () { document.location.href = "../" }
             }]
         });
-     
+
     } else {
         let g = localStorage.getItem("graduates")
         if (g == "true") $("#tab").append(' <a class="item" data-tab="remove"><b>減修</b></a>');
@@ -183,7 +183,6 @@ $("#pushApply").click(() => {
                             let pushEA = document.getElementById("pushEA").files[0]
                             let pushER = document.getElementById("pushER").files[0] || ""
 
-                            // let pushEC = document.getElementById("pushEC").files[0] || ""
                             let formData = new FormData()
                             let s_id = localStorage.getItem("s_id")
 
@@ -207,7 +206,7 @@ $("#pushApply").click(() => {
                                     res = JSON.parse(res)
                                     toMail(s_id, false)
                                     toast(res, tableReload)
-
+                                    $(".pushEC").remove()
 
                                 },
                                 error: (error) => {
@@ -224,8 +223,6 @@ $("#pushApply").click(() => {
                 }]
             })
                 ;
-        }, onHidden: () => {
-            $(".pushEC").remove()
         }
     }).modal('show')
 
@@ -254,7 +251,7 @@ $("#pullApply").click(() => {
                             $('body').toast({ message: '資料送出中...', displayTime: 10000 });
                             let pushEA = document.getElementById("pullEA").files[0]
                             let pushER = document.getElementById("pullER").files[0] || ""
-                            // let pushEC = document.getElementById("pullEC").files[0] || ""
+
                             let formData = new FormData()
                             let s_id = localStorage.getItem("s_id")
                             let target = $(`.pullEC`)
@@ -277,6 +274,7 @@ $("#pullApply").click(() => {
                                     res = JSON.parse(res)
                                     toMail(s_id, false)
                                     toast(res, tableReload)
+                                    $(".pullEC").remove()
                                 }
                             })
                         }
@@ -289,8 +287,6 @@ $("#pullApply").click(() => {
                 }]
             })
                 ;
-        }, onHidden: () => {
-            $(".pullEC").remove()
         }
     }).modal('show')
 })
@@ -383,7 +379,8 @@ $("#rESend").click(() => {
 $(".downloadFile").click(e => {
     let fileTarget = e.target.name
     let ruleFileName = forSaveItem[fileTarget]
-    let toOpen = isImg(ruleFileName) ? fileRoot + ruleFileName : `https://docs.google.com/viewer?url=${fileRoot}${ruleFileName}`
+    let toOpen = isImg(ruleFileName) ? fileRoot + ruleFileName : `${fileRoot}${ruleFileName}`
+    console.log(toOpen)
     window.open(toOpen)
 })
 

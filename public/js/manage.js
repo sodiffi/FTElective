@@ -199,7 +199,7 @@ $("#send").click(() => {
 $(".downloadFile").click(e => {
     let fileTarget = e.target.name
     let ruleFileName = forSaveItem[fileTarget]
-    let toOpen = isImg(ruleFileName) ? fileRoot + ruleFileName : `https://docs.google.com/viewer?url=${fileRoot}${ruleFileName}`
+    let toOpen = `${fileRoot}${ruleFileName}`
     console.log(toOpen)
     window.open(toOpen)
 })
