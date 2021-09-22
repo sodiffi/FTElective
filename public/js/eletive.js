@@ -379,7 +379,7 @@ $("#rESend").click(() => {
 $(".downloadFile").click(e => {
     let fileTarget = e.target.name
     let ruleFileName = forSaveItem[fileTarget]
-    let toOpen = isImg(ruleFileName) ? fileRoot + ruleFileName : `${fileRoot}${ruleFileName}`
+    let toOpen = isImg(ruleFileName) ? fileRoot + ruleFileName : `${fileRoot}/${ruleFileName}`
     console.log(toOpen)
     window.open(toOpen)
 })

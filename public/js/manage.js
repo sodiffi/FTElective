@@ -199,7 +199,7 @@ $("#send").click(() => {
 $(".downloadFile").click(e => {
     let fileTarget = e.target.name
     let ruleFileName = forSaveItem[fileTarget]
-    let toOpen = `${fileRoot}${ruleFileName}`
+    let toOpen = `${fileRoot}/${ruleFileName}`
     console.log(toOpen)
     window.open(toOpen)
 })
