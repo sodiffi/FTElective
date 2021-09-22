@@ -126,10 +126,26 @@ function toMail(s_id, re) {
     );
 }
 $("body").ready(() => {
-    let g = localStorage.getItem("graduates")
-    if (g == "true") $("#tab").append(' <a class="item" data-tab="remove"><b>減修</b></a>');
-    $('.menu .item').tab();
-    tableReload()
+    if (localStorage.getItem("s_id") == null) {
+        $('body').toast({
+            position: 'top attached',
+            message: '請先登入後，再使用本網站',
+            displayTime: 0,
+            actions: [{
+                text: '確認',
+                icon: 'check',
+
+                click: function () {    document.location.href = "../"}
+            }]
+        });
+     
+    } else {
+        let g = localStorage.getItem("graduates")
+        if (g == "true") $("#tab").append(' <a class="item" data-tab="remove"><b>減修</b></a>');
+        $('.menu .item').tab();
+        tableReload()
+    }
+
 
 })
 $("button.addEC").click(e => {
