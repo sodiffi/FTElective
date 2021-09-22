@@ -23,6 +23,13 @@ router.get('/download/:fileName', function (req, res) {
   res.download(file);
 });
 
+// 取師長證明
+router.get('/cdata/list', function (req, res) {
+  mModule.cData({ "id": req.query.id }).then(resu => {
+    res.send(util.ret(resu.success !== -1, resu.success !== -1 ? "查詢成功" : "查詢失敗", resu))
+  })
+});
+
 
 
 

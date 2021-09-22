@@ -132,6 +132,22 @@ var aRecord = async function () {
 
     return result;
 }
+
+// 師長證明下載
+//----------------------------------
+var cData = async function (cData) {
+    var result;
+
+    await query(`SELECT * FROM eletive.cert  where e_id ="${cData.id}" and c_time in (select max(c_time) from eletive.cert where e_id="${cData.id}")`)
+        .then((data) => {
+            result = data;
+        }, (error) => {
+            console.log(error)
+            result = -1;
+        });
+
+    return result;
+}
 // 助教審核
 //----------------------------------
 var aCheck = async function (cData) {
@@ -184,14 +200,38 @@ var eletive = async function (eData) {
 // 重新加退選申請
 //----------------------------------
 var rEletive = async function (eData) {
+    let updateSql = [` ${"applyUrl" in eData ? "applyUrl = " + eData.applyUrl : ""}`, ` ${"reportUrl" in eData ? "applyUrl = " + eData.reportUrl : ""}`].join(" , ")
+    if ("certUrl" in eData) {
+        console.log("update certUrl")
+        let addCert = "insert into cert(e_id,certUrl) values"
+        let urls = eData.certUrl
+        if (Array.isArray(urls)) {
+            urls.forEach(item => {
+                addCert += ` (${eData.id},"${eData.remotePath}/${item.filename}") ,`
+            })
+            addCert = addCert.substr(0, addCert.length - 1)
+            console.log(addCert)
+            await query(addCert).then(() => {
+                result = 0;
+            })
+        } else {
+            result = 0
+        }
+
+    }
+    if (updateSql.length > 4) {
+        await query(`update eletive set applyUrl="${eData.applyUrl}", reportUrl= "${eData.reportUrl}"  where id=${eData.id}`)
+            .then((data) => {
+                result = 0;
+            }, (error) => {
+                console.log(error, "erroreee")
+                result = -1;
+            });
+    } else {
+
+    }
     var result;
-    await query(`update eletive set applyUrl="${eData.applyUrl}", reportUrl= "${eData.reportUrl}", certUrl="${eData.certUrl}" where id=${eData.id}`)
-        .then((data) => {
-            result = 0;
-        }, (error) => {
-            console.log(error, "erroreee")
-            result = -1;
-        });
+
 
     return result;
 }
@@ -200,5 +240,5 @@ var rEletive = async function (eData) {
 
 //匯出
 module.exports = {
-    login, eletive, record, loginA, signAuth, checkAuth, aRecord, aCheck, rEletive
+    login, eletive, record, loginA, signAuth, checkAuth, aRecord, aCheck, rEletive, cData
 }

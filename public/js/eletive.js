@@ -53,16 +53,26 @@ function detail(index) {
         }
     }
     $("#rEcF > p ").html("")
-    if (Array.isArray(hasCert)) {
-        hasCert.forEach(cartItem => {
-            if (cartItem) {
-                $("#rEcF > p").append(`<a class="ui button   ecDown"  name="${cartItem}" 
-                 
-                href="${fileRoot}/${cartItem}" target="_blank"  >下載</a>`)
-            }
-        })
+    $.ajax({
+        url: `./cdata/list?id=${item["id"]}`,
+        method: "GET",
+        success: (res) => {
+            console.log(res)
+            res = JSON.parse(res)
+            let cd = res.d
+            if (Array.isArray(cd)) {
+                cd.forEach(cartItem => {
+                    if (cartItem) {
+                        $("#rEcF > p").append(`<a class="ui button   ecDown"  name="${cartItem.certUrl}" 
+                         
+                        href="${fileRoot}/${cartItem.certUrl}" target="_blank"  >下載</a>`)
+                    }
+                })
 
-    }
+            }
+        }
+    })
+
     $("#rETitle").html(title)
     $("#rERemark").html(item["status_id"] == 2 ? (String(item["remark"]).trim() !== "" ? `<h3>退件備註： ${item["remark"]} </h3>` : "") + "<h3>若需要重新上傳文件，請於下方點選瀏覽按鈕選擇檔案，並點選送出</h3>" : "")
     let iframeUrl = isImg(item["applyUrl"]) ? `${fileRoot}/${item["applyUrl"]}` : `https://docs.google.com/viewer?url=${fileRoot}/${item["applyUrl"]}&embedded=true`
