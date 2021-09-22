@@ -61,6 +61,7 @@ router.post('/:s_id', cpUpload, async (req, res, next) => {
       host: "sv46.byethost46.org",
       user: "yusiang",
       password: "h;9]L7FO4oL8tc",
+      secure: false
     })
 
     await client.ensureDir("/public_html/fteFile/")
