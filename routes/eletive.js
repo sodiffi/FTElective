@@ -42,15 +42,13 @@ router.get("/list", function (req, res, next) {
 const cpUpload = upload.fields([{ name: 'ea' }, { name: 'er' }, { name: 'ec' }, { name: "re" }])
 router.post('/:s_id', cpUpload, async (req, res, next) => {
 
-
   let d = new Date().toISOString().split("T")[0]
   let t = new Date().toLocaleTimeString("tw", { city: 'TAIWAN', timeZone: 'Asia/Taipei', hour12: false },)
-
   let folderPath = ""
   if (req.body.re) {
-    if(req.files["ea"] != undefined) folderPath=req.files["ea"][0].destination
-    if(req.files["er"] != undefined) folderPath=req.files["er"][0].destination
-    if(req.files["ec"] != undefined) folderPath=req.files["ec"][0].destination
+    if (req.files["ea"] != undefined) folderPath = req.files["ea"][0].destination
+    if (req.files["er"] != undefined) folderPath = req.files["er"][0].destination
+    if (req.files["ec"] != undefined) folderPath = req.files["ec"][0].destination
   } else {
     folderPath = req.files["ea"][0].destination
   }
@@ -67,12 +65,12 @@ router.post('/:s_id', cpUpload, async (req, res, next) => {
 
     await client.ensureDir("/htdocs/fteFile/")
     await client.cd("/htdocs/fteFile")
-    console.log(folderPath,remotePath)
+    console.log(folderPath, remotePath)
     await client.uploadFromDir(String(folderPath), remotePath).then(resd => {
       let eData = {
         s_id: req.params.s_id,
         reason: req.body.reason || 0,
-        applyUrl: req.files["ea"] != undefined && req.body.re ? `${remotePath}/${req.files["ea"][0].filename}` : "",
+        applyUrl: req.files["ea"] != undefined && req.body.re == undefined ? `${remotePath}/${req.files["ea"][0].filename}` : "",
         reportUrl: req.files["er"] != undefined ? `${remotePath}/${req.files["er"][0].filename}` : "",
         certUrl: req.files["ec"] != undefined ? req.files["ec"] : "",
         time: `${d} ${t}`,
