@@ -1,4 +1,4 @@
-const fileRoot = "http://yusiang.unaux.com/fteFile/"
+const fileRoot = "https://yusiang.unaux.com/fteFile/"
 const rootUrl = document.location.origin
 
 var token = localStorage.getItem("token")
