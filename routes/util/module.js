@@ -105,7 +105,7 @@ var checkAuth = async function (newData) {
 var record = async function (s_id) {
     var result;
 
-    await query(`select e.*,concat(time," ") as time ,r.name as r_name ,s.name as s_name , c.certUrl as c_url from eletive as e join status as s on s.id=e.status_id join reason as r on r.id=e.reason_id left join cert as c on e.id=c.e_id where s_id= "${s_id}" order by time desc`)
+    await query(`select e.*,concat(time," ") as time ,r.name as r_name ,s.name as s_name , c.certUrl as c_url from eletive as e join status as s on s.id=e.status_id join reason as r on r.id=e.reason_id left join cert as c on e.id=c.e_id where s_id= "${s_id}" order by id,time desc`)
         .then((data) => {
             result = data = toLow(data, "c_url", "id")
         }, (error) => {
@@ -121,7 +121,7 @@ var record = async function (s_id) {
 var aRecord = async function () {
     var result;
 
-    await query(`select e.*,concat(time," ") as time ,r.name as r_name ,s.name as s_name ,st.system,st.grade,st.name as "st_name",st.class , c.certUrl as c_url from eletive as e join status as s on s.id=e.status_id join reason as r on r.id=e.reason_id join student as st on e.s_id=st.id left join cert as c on e.id=c.e_id where st.class !="測" order by time desc`)
+    await query(`select e.*,concat(time," ") as time ,r.name as r_name ,s.name as s_name ,st.system,st.grade,st.name as "st_name",st.class , c.certUrl as c_url from eletive as e join status as s on s.id=e.status_id join reason as r on r.id=e.reason_id join student as st on e.s_id=st.id left join cert as c on e.id=c.e_id where st.class !="測" order by id,time desc`)
         .then((data) => {
 
             result = data = toLow(data, "c_url", "id")
@@ -200,7 +200,8 @@ var eletive = async function (eData) {
 // 重新加退選申請
 //----------------------------------
 var rEletive = async function (eData) {
-    let updateSql = [` ${"applyUrl" in eData ? "applyUrl = " + eData.applyUrl : ""}`, ` ${"reportUrl" in eData ? "applyUrl = " + eData.reportUrl : ""}`].join(" , ")
+    let updateSql = [` ${"applyUrl" in eData && eData.applyUrl.length > 10 ? "applyUrl = " + eData.applyUrl : ""}`, ` ${"reportUrl" in eData && eData.reportUrl.length > 10 ? "applyUrl = " + eData.reportUrl : ""}`].join(" , ")
+    console.log(updateSql)
     if ("certUrl" in eData) {
         console.log("update certUrl")
         let addCert = "insert into cert(e_id,certUrl) values"
@@ -219,8 +220,9 @@ var rEletive = async function (eData) {
         }
 
     }
-    if (updateSql.length > 4) {
-        await query(`update eletive set applyUrl="${eData.applyUrl}", reportUrl= "${eData.reportUrl}"  where id=${eData.id}`)
+    if (updateSql.length > 10) {
+       
+        await query(updateSql)
             .then((data) => {
                 result = 0;
             }, (error) => {
