@@ -71,7 +71,7 @@ router.post('/:s_id', cpUpload, async (req, res, next) => {
       let eData = {
         s_id: req.params.s_id,
         reason: req.body.reason || 0,
-        applyUrl: req.files["ea"] != undefined && req.body.re == undefined ? `${remotePath}/${req.files["ea"][0].filename}` : "",
+        applyUrl: req.files["ea"] != undefined ? `${remotePath}/${req.files["ea"][0].filename}` : "",
         reportUrl: req.files["er"] != undefined ? `${remotePath}/${req.files["er"][0].filename}` : "",
         certUrl: req.files["ec"] != undefined ? req.files["ec"] : "",
         time: `${d} ${t}`,

@@ -200,8 +200,12 @@ var eletive = async function (eData) {
 // 重新加退選申請
 //----------------------------------
 var rEletive = async function (eData) {
-    let updateSql = [` ${"applyUrl" in eData && eData.applyUrl.length > 10 ? "applyUrl = " + eData.applyUrl : ""}`, ` ${"reportUrl" in eData && eData.reportUrl.length > 10 ? "applyUrl = " + eData.reportUrl : ""}`].join(" , ")
-    console.log(updateSql)
+    let updateSqls = []
+    if ("applyUrl" in eData && eData.applyUrl.length > 6) { updateSqls.push(`applyUrl = " ${eData.applyUrl}"`) }
+    if ("reportUrl" in eData && eData.reportUrl.length > 6) { updateSqls.push(`reportUrl = " ${eData.reportUrl}"`) }
+    // let updateSql = [` ${"applyUrl" in eData && eData.applyUrl.length > 6 ? "applyUrl = \"" + eData.applyUrl + "\"" : ""}`, ` ${"reportUrl" in eData && eData.reportUrl.length > 6 ? "applyUrl = " + eData.reportUrl : ""}`].join(" , ")
+    let updateSql = updateSqls.join(" , ")
+    console.log(updateSql, eData)
     if ("certUrl" in eData) {
         console.log("update certUrl")
         let addCert = "insert into cert(e_id,certUrl) values"
@@ -221,8 +225,8 @@ var rEletive = async function (eData) {
 
     }
     if (updateSql.length > 10) {
-       
-        await query(updateSql)
+
+        await query(`update eletive set ${updateSql}  where id=${eData.id}`)
             .then((data) => {
                 result = 0;
             }, (error) => {
