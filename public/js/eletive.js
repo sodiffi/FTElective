@@ -23,7 +23,7 @@ function detail(index) {
     $("#rER").attr("disabled", isRemove)
     $("#rEC").attr("disabled", isRemove)
     //退件後才可重送(只管input)
-    if (item["status_id"] != 2) {
+    if (item["status_id"] % 2 != 0) {
         $(".forResend").addClass("reSendNo")
         $(".rEcF > p").html(``)
     } else {
