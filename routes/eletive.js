@@ -44,6 +44,7 @@ router.post('/:s_id', cpUpload, async (req, res, next) => {
 
   let d = new Date().toISOString().split("T")[0]
   let t = new Date().toLocaleTimeString("tw", { city: 'TAIWAN', timeZone: 'Asia/Taipei', hour12: false },)
+  console.log("time", d, t)
   let folderPath = ""
   if (req.body.re) {
     if (req.files["ea"] != undefined) folderPath = req.files["ea"][0].destination
@@ -81,7 +82,14 @@ router.post('/:s_id', cpUpload, async (req, res, next) => {
         mModule.eletive(eData).then(D => {
           res.send(util.ret(true, "申請成功"))
 
-        }, error => console.log(error))
+        }, error => {
+          let errMsg = "申請失敗"
+          if (error.sqlMessage == "請勿重複申請") {
+            errMsg += "，請勿重複申請"
+          }
+
+          res.send(util.ret(true, errMsg))
+        })
       } else {
         eData.id = req.body.id
         mModule.rEletive(eData).then(D => {

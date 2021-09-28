@@ -19,10 +19,10 @@ function tableReload(forInit) {
             "Authorization": "Bearer " + token
         }
     }).then(res => {
-        res = JSON.parse(res)      
+        res = JSON.parse(res)
         $('#tt').on('click', 'tbody tr', function () {
             let table = new DataTable('#tt');
-            var row = table.row($(this)).data();       
+            var row = table.row($(this)).data();
             forSaveId = row["id"]
             forSaveItem = row
             $("#showStudent").html(`
@@ -45,12 +45,12 @@ function tableReload(forInit) {
     <td>${row["r_name"]}</td>
     <td>${row["s_name"]}</td>
     </tr>`)
-            if (String(row["reportUrl"]).length < 5) {              
+            if (String(row["reportUrl"]).length < 5) {
                 $("#erDown").addClass("disabled")
-            } else {               
+            } else {
                 $("#erDown").removeClass("disabled")
             }
-            let hasCert=row["c_url"]
+            let hasCert = row["c_url"]
             $("#rEcF > p ").html("")
             if (Array.isArray(hasCert)) {
                 hasCert.forEach(cartItem => {
@@ -96,7 +96,7 @@ function tableReload(forInit) {
             }],
             initComplete: forInit,
         });
-       
+
     })
 }
 
@@ -112,13 +112,15 @@ function toMail(s_id, check) {
         }
     }
     let toSend = check ? mailData.success : mailData.error
+    console.log("before mail")
     Email.send({
         SecureToken: "d356adce-f0d7-4c4d-98f9-3f784e2c8bf6",
         To: `${s_id}@ntub.edu.tw`,
         From: "ningpaiyi@gmail.com",
         Subject: toSend.subject,
         Body: toSend.body,
-    }).then(
+    })
+    .then(
         message => console.log(message)
     );
 }
@@ -192,7 +194,7 @@ $("#send").click(() => {
                 onRemove: todo,
                 displayTime: 1500
             });
-        }
+        }, error: (error) => console.log(error)
     })
 })
 
