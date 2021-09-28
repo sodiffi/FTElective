@@ -85,7 +85,7 @@ router.post('/:s_id', cpUpload, async (req, res, next) => {
         }, error => {
           let errMsg = "申請失敗"
           if (error.sqlMessage == "請勿重複申請") {
-            errMsg += "，請勿重複申請"
+            errMsg += "，請勿重複申請，請到選課紀錄檢查是否有申請紀錄未通過，並點選未通過的紀錄上傳須補件項目"
           }
 
           res.send(util.ret(true, errMsg))
