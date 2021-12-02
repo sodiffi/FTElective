@@ -29,7 +29,8 @@ function toLow(data, tolows, forcheck) {
         if (tolows in item && item[tolows] != "")
             tolow.push(item[tolows])
     })
-    if (tolow != undefined) resu[tolows] = tolow
+    console.log(tolow)
+    // if (tolow != undefined) resu[tolows] = tolow
     result.push(resu)
     // console.log(result)
     return result
@@ -40,13 +41,15 @@ function toLow(data, tolows, forcheck) {
 // 學生登入
 //----------------------------------
 var login = async function (newData) {
+    console.log(newData)
     var result = 0;
-    await query(`select *,concat(system,grade) in ( "日五專5","日五專6","日五專7","日四技4","日四技5","日四技6","進二技2","進二技3","日二技4","日二技2","日二技3","碩士班4","碩士班3","碩士班2") as "graduates" from student where id= "${newData.id}" and psw= "${newData.psw} "`)
+    await query(`select *,concat(s.system,s.grade) in ( "日五專5","日五專6","日五專7","日四技4","日四技5","日四技6","進二技2","進二技3","日二技4","日二技2","日二技3","碩士班4","碩士班3","碩士班2") as "graduates" from student as s where id= "${newData.id}" and psw= "${newData.psw}"`)
         .then((data) => {
             if (Array.isArray(data)) {
                 result = { isLogin: data.length > 0, d: data }
             }
         }, (error) => {
+            console.log(error)
             result = -1;
         });
 
@@ -105,7 +108,7 @@ var checkAuth = async function (newData) {
 var record = async function (s_id) {
     var result;
 
-    await query(`select e.*,concat(time," ") as time ,r.name as r_name ,s.name as s_name , c.certUrl as c_url from eletive as e join status as s on s.id=e.status_id join reason as r on r.id=e.reason_id left join cert as c on e.id=c.e_id where s_id= "${s_id}" order by id,time desc`)
+    await query(`select e.*,concat(time," ") as time ,r.name as r_name ,s.name as s_name , c.certUrl as c_url from eletive as e left join status as s on s.id=e.status_id left join reason as r on r.id=e.reason_id left join cert as c on e.id=c.e_id where s_id= "${s_id}" order by id,time desc`)
         .then((data) => {
             result = data = toLow(data, "c_url", "id")
         }, (error) => {
@@ -121,7 +124,7 @@ var record = async function (s_id) {
 var aRecord = async function () {
     var result;
 
-    await query(`select e.*,concat(time," ") as time ,r.name as r_name ,s.name as s_name ,st.system,st.grade,st.name as "st_name",st.class , c.certUrl as c_url from eletive as e join status as s on s.id=e.status_id join reason as r on r.id=e.reason_id join student as st on e.s_id=st.id left join cert as c on e.id=c.e_id where st.class !="測" order by id,time desc`)
+    await query(`select e.*,concat(time," ") as time ,r.name as r_name ,s.name as s_name ,st.system,st.grade,st.name as "st_name",st.class , c.certUrl as c_url from eletive as e join status as s on s.id=e.status_id join reason as r on r.id=e.reason_id join student as st on e.s_id=st.id left join cert as c on e.id=c.e_id where st.class ="測" order by id,time desc`)
         .then((data) => {
 
             result = data = toLow(data, "c_url", "id")
@@ -138,7 +141,7 @@ var aRecord = async function () {
 var cData = async function (cData) {
     var result;
 
-    await query(`SELECT * FROM eletive.cert  where e_id ="${cData.id}" and c_time in (select max(c_time) from eletive.cert where e_id="${cData.id}")`)
+    await query(`SELECT * FROM cert  where e_id ="${cData.id}" and c_time in (select max(c_time) from cert where e_id="${cData.id}")`)
         .then((data) => {
             result = data;
         }, (error) => {

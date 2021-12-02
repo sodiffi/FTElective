@@ -1,4 +1,4 @@
-const fileRoot = "https://yusiang.unaux.com/fteFile/"
+const fileRoot = "127.0.0.1:3000/"
 const rootUrl = document.location.origin
 
 var token = localStorage.getItem("token")
@@ -169,13 +169,15 @@ $("#send").click(() => {
     let v = $('[name=checkE]:checked').val() === "yes"
     let remark = $("#remark").val()
     let remarkText = $("#remarkText").val()
-    remark = v ? "" : (remark == "其他" ? remarkText : remark + "<br/>" + remarkText)
+    let status=$("[name='checkE']:checked").val() 
+    console.log(status)
+    remark = v ? "" : (remark == "其他" ? remarkText : "")
     $.ajax({
         url: `${rootUrl}/ma/list`,
         method: "POST",
         data: {
             "id": forSaveId,
-            "status_id": v ? 1 : 2,
+            "status_id": status,
             "remark": remark
         },
         headers: {
@@ -201,7 +203,7 @@ $("#send").click(() => {
 $(".downloadFile").click(e => {
     let fileTarget = e.target.name
     let ruleFileName = forSaveItem[fileTarget]
-    let toOpen = `${fileRoot}/${ruleFileName}`
+    let toOpen = `../${ruleFileName}`
     console.log(toOpen)
     window.open(toOpen)
 })

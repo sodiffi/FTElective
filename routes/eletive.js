@@ -31,6 +31,7 @@ router.get("/list", function (req, res, next) {
   s_id = req.query.s_id
   if (s_id) {
     mModule.record(req.query.s_id).then(D => {
+  
       res.send(util.ret(true, "查詢成功", D))
     })
   } else {
@@ -54,68 +55,68 @@ router.post('/:s_id', cpUpload, async (req, res, next) => {
     folderPath = req.files["ea"][0].destination
   }
   let remotePath = String(folderPath).split("./uploads/")[1]
-
-  const client = new ftp.Client()
-
-  try {
-    await client.access({
-      host: "sv46.byethost46.org",
-      user: "yusiang",
-      password: "h;9]L7FO4oL8tc",
-      secure: false
-    })
-
-    await client.ensureDir("/public_html/fteFile/")
-    await client.cd("/public_html/fteFile/")
-    console.log(folderPath, remotePath, req.files["ec"] != undefined, req.files["ec"])
-    await client.uploadFromDir(String(folderPath), remotePath).then(resd => {
-      let eData = {
-        s_id: req.params.s_id,
-        reason: req.body.reason || 0,
-        applyUrl: req.files["ea"] != undefined ? `${remotePath}/${req.files["ea"][0].filename}` : "",
-        reportUrl: req.files["er"] != undefined ? `${remotePath}/${req.files["er"][0].filename}` : "",
-        certUrl: req.files["ec"] != undefined ? req.files["ec"] : "",
-        time: `${d} ${t}`,
-        remotePath: remotePath
-      }
-      if (!req.body.re) {
-        mModule.eletive(eData).then(D => {
-          res.send(util.ret(true, "申請成功"))
-
-        }, error => {
-          let errMsg = "申請失敗"
-          if (error.sqlMessage == "請勿重複申請") {
-            errMsg += "，請勿重複申請，請到選課紀錄檢查是否有申請紀錄未通過，並點選未通過的紀錄上傳須補件項目"
-          }
-
-          res.send(util.ret(true, errMsg))
-        })
-      } else {
-        eData.id = req.body.id
-        mModule.rEletive(eData).then(D => {
-
-          res.send(util.ret(true, "重新申請成功"))
-
-        }, (error) => {
-
-          res.send(util.ret(false, "重新申請失敗"))
-
-        })
-      }
-
+  let eData = {
+    s_id: req.params.s_id,
+    reason: req.body.reason || 0,
+    applyUrl: req.files["ea"] != undefined ? `${remotePath}/${req.files["ea"][0].filename}` : "",
+    reportUrl: req.files["er"] != undefined ? `${remotePath}/${req.files["er"][0].filename}` : "",
+    certUrl: req.files["ec"] != undefined ? req.files["ec"] : "",
+    time: `${d} ${t}`,
+    remotePath: remotePath
+  }
+  if (!req.body.re) {
+    mModule.eletive(eData).then(D => {
+      res.send(util.ret(true, "申請成功"))
 
     }, error => {
-      res.send(util.ret(true, "申請失敗"))
-      console.log("folder error", error)
+      let errMsg = "申請失敗"
+      if (error.sqlMessage == "請勿重複申請") {
+        errMsg += "，請勿重複申請，請到選課紀錄檢查是否有申請紀錄未通過，並點選未通過的紀錄上傳須補件項目"
+      }
+
+      res.send(util.ret(true, errMsg))
     })
+  } else {
+    eData.id = req.body.id
+    mModule.rEletive(eData).then(D => {
 
-  }
-  catch (err) {
-    console.log(err)
+      res.send(util.ret(true, "重新申請成功"))
+
+    }, (error) => {
+
+      res.send(util.ret(false, "重新申請失敗"))
+
+    })
   }
 
-  client.close()
+
+}, error => {
+  res.send(util.ret(true, "申請失敗"))
+  console.log("folder error", error)
 })
+  // const client = new ftp.Client()
+
+  // try {
+  //   await client.access({
+  //     host: "sv46.byethost46.org",
+  //     user: "yusiang",
+  //     password: "h;9]L7FO4oL8tc",
+  //     secure: false
+  //   })
+
+  //   await client.ensureDir("/public_html/fteFile/")
+  //   await client.cd("/public_html/fteFile/")
+  //   console.log(folderPath, remotePath, req.files["ec"] != undefined, req.files["ec"])
+  //   await client.uploadFromDir(String(folderPath), remotePath).then(resd => {
+     
+
+  // }
+  // catch (err) {
+  //   console.log(err)
+  // }
+
+  // client.close()
+// })
 
 
 module.exports = router;
