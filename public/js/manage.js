@@ -112,7 +112,7 @@ function toMail(s_id, check) {
         }
     }
     let toSend = check ? mailData.success : mailData.error
-    console.log("before mail")
+    // console.log("before mail")
     Email.send({
         SecureToken: "d356adce-f0d7-4c4d-98f9-3f784e2c8bf6",
         To: `${s_id}@ntub.edu.tw`,
@@ -120,9 +120,7 @@ function toMail(s_id, check) {
         Subject: toSend.subject,
         Body: toSend.body,
     })
-    .then(
-        message => console.log(message)
-    );
+   
 }
 $(document).ready(function () {
     $('#tt thead tr')
@@ -170,7 +168,7 @@ $("#send").click(() => {
     let remark = $("#remark").val()
     let remarkText = $("#remarkText").val()
     let status=$("[name='checkE']:checked").val() 
-    console.log(status)
+    
     remark = v ? "" : (remark == "其他" ? remarkText : "")
     $.ajax({
         url: `${rootUrl}/ma/list`,
@@ -196,7 +194,7 @@ $("#send").click(() => {
                 onRemove: todo,
                 displayTime: 1500
             });
-        }, error: (error) => console.log(error)
+        }
     })
 })
 
@@ -204,8 +202,9 @@ $(".downloadFile").click(e => {
     let fileTarget = e.target.name
     let ruleFileName = forSaveItem[fileTarget]
     let toOpen = `../${ruleFileName}`
-    console.log(toOpen)
-    window.open(toOpen)
+    
+    $("#ff").attr("src",toOpen)
+    // window.open(toOpen)
 })
 window.onresize = () => {
     $("#tt").css("width", "calc( 100vw - 150px )")

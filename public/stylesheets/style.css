@@ -141,6 +141,10 @@ a.item.active {
     display: none !important;
 }
 
+#ff {
+    width: 75vw;
+}
+
 
 /* #logout {
     display: flex;

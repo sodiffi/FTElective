@@ -12,7 +12,7 @@ function isImg(str) {
 function detail(index) {
 
 
-    console.log(recordData[index])
+    // console.log(recordData[index])
     item = recordData[index]
     forSaveItem = item
     forSaveId = item["id"]
@@ -24,7 +24,7 @@ function detail(index) {
     $("#rEC").attr("disabled", isRemove)
     //退件後才可重送(只管input)
     if (item["status_id"] != 2) {
-        console.log("resend")
+        // console.log("resend")
         $(".forResend").addClass("reSendNo")
         $(".rEcF > p").html(``)
     } else {
@@ -58,7 +58,7 @@ function detail(index) {
         url: `./cdata/list?id=${item["id"]}`,
         method: "GET",
         success: (res) => {
-            console.log(res)
+            // console.log(res)
             res = JSON.parse(res)
             let cd = res.d
             if (Array.isArray(cd)) {
@@ -114,7 +114,7 @@ function tableReload() {
 
         },
         error: (error) => {
-            console.log(error)
+            // console.log(error)
         }
     })
 }
@@ -132,9 +132,7 @@ function toMail(s_id, re) {
         From: "ningpaiyi@gmail.com",
         Subject: mailData.apply.subject,
         Body: mailData.apply.body,
-    }).then(
-        message => console.log(message)
-    );
+    });
 }
 $("body").ready(() => {
     if (localStorage.getItem("s_id") == null) {
@@ -221,7 +219,7 @@ $("#pushApply").click(() => {
 
                                 },
                                 error: (error) => {
-                                    console.log(error)
+                                    // console.log(error)
                                 }
                             })
                         }
@@ -255,7 +253,7 @@ $("#pullApply").click(() => {
                     icon: 'check',
                     class: 'green',
                     click: function () {
-                        console.log(document.getElementById("pullEA").files.length == 0)
+                        
                         if (document.getElementById("pullEA").files.length == 0) {
                             $('body').toast({ message: '缺少必填資料', class: "error", });
                         } else {
@@ -391,7 +389,7 @@ $(".downloadFile").click(e => {
     let fileTarget = e.target.name
     let ruleFileName = forSaveItem[fileTarget]
     let toOpen = isImg(ruleFileName) ? "../" + ruleFileName : `../${ruleFileName}`
-    console.log(toOpen)
+    
     window.open(toOpen)
 })
 

@@ -11,7 +11,7 @@ router.post('/', async (req, res, next) => {
     try {
         // 驗證使用者，並將驗證成功回傳 
         await mModule.loginA(req.body).then(async (isLogin) => {
-            console.log("isLogin", isLogin)
+            
             if (isLogin) {
                 let user_id = req.body.id
                 // 設定密鑰
@@ -22,7 +22,7 @@ router.post('/', async (req, res, next) => {
                 await mModule.signAuth({ id: user_id, token: token }).then(isSave => {
                     res.send(util.ret(isLogin, "登入成功", { token: token }))
                 }, error => {
-                    console.log(error)
+                    // console.log(error)
                     res.send(util.ret(isLogin, "登入失敗", { error: error }))
                 })
 
@@ -32,12 +32,12 @@ router.post('/', async (req, res, next) => {
             }
             // 回傳該用戶JWT          
         }, error => {
-            console.log(error)
+            // console.log(error)
             res.send(util.ret(isLogin, "登入失敗", { errorMsg: "loginAerror", error: error }))
         })
 
     } catch (err) {
-        console.log(err)
+        // console.log(err)
         res.status(400).send()
     }
 });

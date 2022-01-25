@@ -1,0 +1,7 @@
+[0mGET / [32m200 [0m78.493 ms - 3507[0m
+[0mGET /stylesheets/style.css [32m200 [0m5.187 ms - 3399[0m
+[0mGET /images/banner1.png [32m200 [0m7.288 ms - 112190[0m
+[0mGET /images/side.png [32m200 [0m6.281 ms - 10621[0m
+[0mGET /images/icon.ico [32m200 [0m5.374 ms - 75529[0m
+[0mGET /ma [33m404 [0m7.370 ms - 44[0m
+[0mGET /ma [33m404 [0m2.536 ms - 44[0m

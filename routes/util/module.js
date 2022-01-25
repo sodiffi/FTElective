@@ -29,7 +29,7 @@ function toLow(data, tolows, forcheck) {
         if (tolows in item && item[tolows] != "")
             tolow.push(item[tolows])
     })
-    console.log(tolow)
+    
     // if (tolow != undefined) resu[tolows] = tolow
     result.push(resu)
     // console.log(result)
@@ -41,7 +41,7 @@ function toLow(data, tolows, forcheck) {
 // 學生登入
 //----------------------------------
 var login = async function (newData) {
-    console.log(newData)
+    
     var result = 0;
     await query(`select *,concat(s.system,s.grade) in ( "日五專5","日五專6","日五專7","日四技4","日四技5","日四技6","進二技2","進二技3","日二技4","日二技2","日二技3","碩士班4","碩士班3","碩士班2") as "graduates" from student as s where id= "${newData.id}" and psw= "${newData.psw}"`)
         .then((data) => {
@@ -49,7 +49,7 @@ var login = async function (newData) {
                 result = { isLogin: data.length > 0, d: data }
             }
         }, (error) => {
-            console.log(error)
+            // console.log(error)
             result = -1;
         });
 
@@ -66,7 +66,7 @@ var loginA = async function (newData) {
             }
 
         }, (error) => {
-            console.log(error)
+            // console.log(error)
             result = false;
         })
 
@@ -112,7 +112,7 @@ var record = async function (s_id) {
         .then((data) => {
             result = data = toLow(data, "c_url", "id")
         }, (error) => {
-            console.log(error)
+            // console.log(error)
             result = -1;
         });
 
@@ -129,7 +129,7 @@ var aRecord = async function () {
 
             result = data = toLow(data, "c_url", "id")
         }, (error) => {
-            console.log(error)
+            // console.log(error)
             result = -1;
         });
 
@@ -145,7 +145,7 @@ var cData = async function (cData) {
         .then((data) => {
             result = data;
         }, (error) => {
-            console.log(error)
+            // console.log(error)
             result = -1;
         });
 
@@ -160,7 +160,7 @@ var aCheck = async function (cData) {
         .then((data) => {
             result = data;
         }, (error) => {
-            console.log(error)
+            // console.log(error)
             result = -1;
         });
 
@@ -208,9 +208,9 @@ var rEletive = async function (eData) {
     if ("reportUrl" in eData && eData.reportUrl.length > 6) { updateSqls.push(`reportUrl = " ${eData.reportUrl}"`) }
     // let updateSql = [` ${"applyUrl" in eData && eData.applyUrl.length > 6 ? "applyUrl = \"" + eData.applyUrl + "\"" : ""}`, ` ${"reportUrl" in eData && eData.reportUrl.length > 6 ? "applyUrl = " + eData.reportUrl : ""}`].join(" , ")
     let updateSql = updateSqls.join(" , ")
-    console.log(updateSql, eData)
+    
     if ("certUrl" in eData) {
-        console.log("update certUrl")
+        
         let addCert = "insert into cert(e_id,certUrl) values"
         let urls = eData.certUrl
         if (Array.isArray(urls)) {
@@ -218,7 +218,7 @@ var rEletive = async function (eData) {
                 addCert += ` (${eData.id},"${eData.remotePath}/${item.filename}") ,`
             })
             addCert = addCert.substr(0, addCert.length - 1)
-            console.log(addCert)
+            
             await query(addCert).then(() => {
                 result = 0;
             })
@@ -233,7 +233,7 @@ var rEletive = async function (eData) {
             .then((data) => {
                 result = 0;
             }, (error) => {
-                console.log(error, "erroreee")
+                
                 result = -1;
             });
     } else {

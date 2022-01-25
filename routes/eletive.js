@@ -45,7 +45,7 @@ router.post('/:s_id', cpUpload, async (req, res, next) => {
 
   let d = new Date().toISOString().split("T")[0]
   let t = new Date().toLocaleTimeString("tw", { city: 'TAIWAN', timeZone: 'Asia/Taipei', hour12: false },)
-  console.log("time", d, t)
+  
   let folderPath = ""
   if (req.body.re) {
     if (req.files["ea"] != undefined) folderPath = req.files["ea"][0].destination
@@ -92,7 +92,7 @@ router.post('/:s_id', cpUpload, async (req, res, next) => {
 
 }, error => {
   res.send(util.ret(true, "申請失敗"))
-  console.log("folder error", error)
+  
 })
   // const client = new ftp.Client()
 

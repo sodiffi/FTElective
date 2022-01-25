@@ -1,0 +1,16 @@
+[0mGET / [36m304 [0m12.046 ms - -[0m
+[0mGET /images/banner1.png [36m304 [0m2.018 ms - -[0m
+[0mGET /stylesheets/style.css [36m304 [0m2.513 ms - -[0m
+[0mGET /images/icon.ico [36m304 [0m0.617 ms - -[0m
+[0mPOST / [32m200 [0m849.395 ms - 150[0m
+[0mGET /eletive [32m200 [0m8.448 ms - 14123[0m
+[0mGET /stylesheets/style.css [36m304 [0m0.809 ms - -[0m
+[0mGET /js/eletive.js [32m200 [0m2.771 ms - 14937[0m
+[0mGET /images/banner1.png [36m304 [0m0.541 ms - -[0m
+[0mGET /eletive/list?s_id=10656010 [32m200 [0m97.115 ms - 1546[0m
+[0mGET /cdata/list?id=1 [32m200 [0m6.261 ms - 48[0m
+[0mGET /ma/ [32m200 [0m8.037 ms - 3242[0m
+[0mGET /stylesheets/style.css [36m304 [0m0.698 ms - -[0m
+[0mGET /images/banner1.png [36m304 [0m0.554 ms - -[0m
+[0mGET /images/side.png [36m304 [0m0.555 ms - -[0m
+[0mGET /ma/images/icon.ico [33m404 [0m5.346 ms - 44[0m

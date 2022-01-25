@@ -3,7 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
+var virtualDirPath =   '';
 var indexRouter = require('./routes/index');
 var eletiveRouter = require('./routes/eletive');
 var managerRouter = require('./routes/manager');
@@ -22,9 +22,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'uploads')));
 // app.use(multer({dest:'./uploads/'}));
 app.use(express.static("uploads"))
-app.use('/', indexRouter);
-app.use('/eletive', eletiveRouter);
-app.use('/ma', managerRouter);
+app.use(virtualDirPath+'/', indexRouter);
+app.use(virtualDirPath+'/eletive', eletiveRouter);
+app.use(virtualDirPath+'/ma', managerRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -43,3 +43,4 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+app.listen(process.env.PORT);
