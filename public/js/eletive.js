@@ -10,29 +10,32 @@ function isImg(str) {
 }
 
 function detail(index) {
-
-
-    // console.log(recordData[index])
     item = recordData[index]
     forSaveItem = item
     forSaveId = item["id"]
     let title = item["r_name"] + " - " + item["time"]
-    let isRemove = item["reason_id"] == 2
     let hasReport = String(item["reportUrl"]).length < 5
     let hasCert = item["c_url"]
-    $("#rER").attr("disabled", isRemove)
-    $("#rEC").attr("disabled", isRemove)
+    let isRe = [3, 4, 5, 7, 8, 9, 12].includes(item["status_id"])
+    let isReR = [3, 7, 8, 12].includes(item["status_id"])
+    let isReF = [4, 7, 9, 12].includes(item["status_id"])
+    let isReX = [5, 8, 9, 12].includes(item["status_id"])
+    $("input#rEA").attr("disabled", !isReR)
+    $("input#rER").attr("disabled", !isReF)
+    console.log(!isReX,!isReR)
+    $("button#addpushEC").attr("disabled",!isReX)
+   
     //退件後才可重送(只管input)
-    if (item["status_id"] != 2) {
-        // console.log("resend")
+    if (!isRe) {
         $(".forResend").addClass("reSendNo")
         $(".rEcF > p").html(``)
     } else {
         $(".forResend").removeClass("reSendNo")
     }
+    
     //將下載紐清掉
     //減修只有申請書
-    if (item["reason_id"] == 2) {
+    if (isRe) {
         // $("#ecPrview").addClass("disabled")
         $(".ecDown").addClass("disabled")
         // $("#erPrview").addClass("disabled")
@@ -75,7 +78,7 @@ function detail(index) {
     })
 
     $("#rETitle").html(title)
-    $("#rERemark").html(item["status_id"] == 2 ? (String(item["remark"]).trim() !== "" ? `<h3>退件備註： ${item["remark"]} </h3>` : "") + "<h3>若需要重新上傳文件，請於下方點選瀏覽按鈕選擇檔案，並點選送出</h3>" : "")
+    $("#rERemark").html(item["status_id"] == 3 ? (String(item["remark"]).trim() !== "" ? `<h3>退件備註： ${item["remark"]} </h3>` : "") + "<h3>若需要重新上傳文件，請於下方點選瀏覽按鈕選擇檔案，並點選送出</h3>" : "")
     let iframeUrl = isImg(item["applyUrl"]) ? `${fileRoot}/${item["applyUrl"]}` : `https://docs.google.com/viewer?url=${fileRoot}/${item["applyUrl"]}&embedded=true`
     let iframeItem = isImg(item["applyUrl"]) ? `<img src=${iframeUrl}>` : ` <iframe src="${iframeUrl}" style="border: none; height: 500px;" id="view"></iframe>`
 
@@ -157,21 +160,16 @@ $("body").ready(() => {
 
 
 })
-$("button.addEC").click(e => {
-
+$("button.addEC").on("click",e => {
     let targetName = e.target.name
-
     if (targetName != "re")
         $(`#${targetName}ECField`).append(`<input type="file" id=" " class="modelField ${targetName}EC" />`)
     else $(".rEcF > p").append(`<input type="file" id=" " class="modelField ${targetName}EC" />`)
 
-
-
-
 })
 
 // 加選處理
-$("#pushApply").click(() => {
+$("#pushApply").on("click",() => {
 
     $("#pushModal").modal({
         onApprove: function () {
@@ -239,7 +237,7 @@ $("#pushApply").click(() => {
 })
 
 // 退選處理
-$("#pullApply").click(() => {
+$("#pullApply").on("click",() => {
 
     $("#pullModal").modal({
         onApprove: function () {
@@ -253,7 +251,7 @@ $("#pullApply").click(() => {
                     icon: 'check',
                     class: 'green',
                     click: function () {
-                        
+
                         if (document.getElementById("pullEA").files.length == 0) {
                             $('body').toast({ message: '缺少必填資料', class: "error", });
                         } else {
@@ -301,7 +299,7 @@ $("#pullApply").click(() => {
 })
 
 // 減修處理
-$("#removeApply").click(() => {
+$("#removeApply").on("click",() => {
     $("#removeModal").modal({
         onApprove: function () {
             $('body').toast({
@@ -312,7 +310,7 @@ $("#removeApply").click(() => {
                     text: '確認送出',
                     icon: 'check',
                     class: 'green',
-                    click: function () {
+                    click:  ()=> {
 
                         if (document.getElementById("removeA").files.length == 0) {
                             $('body').toast({ message: '缺少必填資料', class: "error", });
@@ -352,7 +350,7 @@ $("#removeApply").click(() => {
 })
 
 // 重新加退選處理
-$("#rESend").click(() => {
+$("#rESend").on("click",() => {
     let rEA = document.getElementById("rEA").files[0] || ""
     let rER = document.getElementById("rER").files[0] || ""
     let formData = new FormData()
@@ -389,7 +387,7 @@ $(".downloadFile").click(e => {
     let fileTarget = e.target.name
     let ruleFileName = forSaveItem[fileTarget]
     let toOpen = isImg(ruleFileName) ? "../" + ruleFileName : `../${ruleFileName}`
-    
+
     window.open(toOpen)
 })
 

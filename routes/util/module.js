@@ -29,19 +29,65 @@ function toLow(data, tolows, forcheck) {
         if (tolows in item && item[tolows] != "")
             tolow.push(item[tolows])
     })
-    
-    // if (tolow != undefined) resu[tolows] = tolow
+
+    if (tolow != undefined) resu[tolows] = tolow
     result.push(resu)
-    // console.log(result)
+    console.log(result)
     return result
 
 }
+
+/**
+ * @param {Array} data - The date
+ * @param {Array} tolows - The tolow
+ * @param {String} forcheck - The id
+ */
+function toLows(data, tolows, forcheck) {
+    let result = []
+    let check = -1
+    let resu = data[0]
+    let lows = {}
+    data.forEach((item, index) => {
+        if (check != item[forcheck] & index != 0) {
+
+            tolows.forEach(tolow => {
+                if (lows[tolow] != []) {
+                    resu[tolow] = lows[tolow]
+                }
+            })
+            result.push(resu)
+        }
+        if (index == 0 | check != item[forcheck]) {
+            check = item[forcheck]
+            tolows.forEach(tolow => lows[tolow] = [])
+            resu = item
+        }
+
+        tolows.forEach(tolow => {
+            if (tolow in item) {
+                lows[tolow].push(item[tolow])
+            }
+        })
+        if (index == data.length - 1) {
+
+            tolows.forEach(tolow => {
+                if (lows[tolow] != []) {
+                    resu[tolow] = lows[tolow]
+                }
+            })
+            result.push(resu)
+        }
+    })
+    return result
+
+}
+
 
 //----------------------------------
 // 學生登入
 //----------------------------------
 var login = async function (newData) {
-    
+
     var result = 0;
     await query(`select *,concat(s.system,s.grade) in ( "日五專5","日五專6","日五專7","日四技4","日四技5","日四技6","進二技2","進二技3","日二技4","日二技2","日二技3","碩士班4","碩士班3","碩士班2") as "graduates" from student as s where id= "${newData.id}" and psw= "${newData.psw}"`)
         .then((data) => {
@@ -108,7 +154,7 @@ var checkAuth = async function (newData) {
 var record = async function (s_id) {
     var result;
 
-    await query(`select e.*,concat(time," ") as time ,r.name as r_name ,s.name as s_name , c.certUrl as c_url from eletive as e left join status as s on s.id=e.status_id left join reason as r on r.id=e.reason_id left join cert as c on e.id=c.e_id where s_id= "${s_id}" order by id,time desc`)
+    await query(`select e.*,concat(time," ") as time ,r.name as r_name ,s.name as s_name , c.certUrl as c_url from eletive as e left join status as s on s.id=e.status_id left join reason as r on r.id=e.reason_id left join cert as c on e.id=c.e_id where s_id= "${s_id}" order by time desc`)
         .then((data) => {
             result = data = toLow(data, "c_url", "id")
         }, (error) => {
@@ -124,12 +170,13 @@ var record = async function (s_id) {
 var aRecord = async function () {
     var result;
 
-    await query(`select e.*,concat(time," ") as time ,r.name as r_name ,s.name as s_name ,st.system,st.grade,st.name as "st_name",st.class , c.certUrl as c_url from eletive as e join status as s on s.id=e.status_id join reason as r on r.id=e.reason_id join student as st on e.s_id=st.id left join cert as c on e.id=c.e_id where st.class ="測" order by id,time desc`)
+    await query(`select e.*,concat(time," ") as time ,r.name as r_name ,s.name as s_name ,st.system,st.grade,st.name as "st_name",st.class , c.id as c_id, c.certUrl as c_url, c.checked as c_value from eletive as e join status as s on s.id=e.status_id join reason as r on r.id=e.reason_id join student as st on e.s_id=st.id left join cert as c on e.id=c.e_id where st.class ="測" order by time desc`)
         .then((data) => {
-
-            result = data = toLow(data, "c_url", "id")
+            console.log(data)
+            result = toLows(data, ["c_url", "c_id", "c_value"], "id")
+            console.log(result)
         }, (error) => {
-            // console.log(error)
+            console.log(error)
             result = -1;
         });
 
@@ -141,7 +188,7 @@ var aRecord = async function () {
 var cData = async function (cData) {
     var result;
 
-    await query(`SELECT * FROM cert  where e_id ="${cData.id}" and c_time in (select max(c_time) from cert where e_id="${cData.id}")`)
+    await query(`SELECT * FROM cert  where e_id ="${cData.id}"`)
         .then((data) => {
             result = data;
         }, (error) => {
@@ -165,6 +212,27 @@ var aCheck = async function (cData) {
         });
 
     return result;
+}
+/**助教師長證明審核
+ * @param {Array} ids - The 
+ * @param {Array} values - The tolow
+ */
+var aCheckCert = async function (ids, values) {
+    var result;
+    var s_sql = ""
+    console.log(Array.isArray(ids), Array.isArray(values))
+    if (ids.length == values.length) {
+        ids.forEach((id, index) => {
+            s_sql += ` update cert set checked="${values[index]}" where id="${id}"; `
+        })
+        await query(s_sql).then((data) => {
+            result = data
+        }, (error) => {
+            console.log(error)
+            result = -1
+        })
+    }
+    return result
 }
 // 加退選申請
 //----------------------------------
@@ -204,13 +272,13 @@ var eletive = async function (eData) {
 //----------------------------------
 var rEletive = async function (eData) {
     let updateSqls = []
-    if ("applyUrl" in eData && eData.applyUrl.length > 6) { updateSqls.push(`applyUrl = " ${eData.applyUrl}"`) }
-    if ("reportUrl" in eData && eData.reportUrl.length > 6) { updateSqls.push(`reportUrl = " ${eData.reportUrl}"`) }
+    if ("applyUrl" in eData && eData.applyUrl.length > 6) { updateSqls.push(`applyUrl = "${eData.applyUrl}"`) }
+    if ("reportUrl" in eData && eData.reportUrl.length > 6) { updateSqls.push(`reportUrl = "${eData.reportUrl}"`) }
     // let updateSql = [` ${"applyUrl" in eData && eData.applyUrl.length > 6 ? "applyUrl = \"" + eData.applyUrl + "\"" : ""}`, ` ${"reportUrl" in eData && eData.reportUrl.length > 6 ? "applyUrl = " + eData.reportUrl : ""}`].join(" , ")
     let updateSql = updateSqls.join(" , ")
-    
+
     if ("certUrl" in eData) {
-        
+
         let addCert = "insert into cert(e_id,certUrl) values"
         let urls = eData.certUrl
         if (Array.isArray(urls)) {
@@ -218,7 +286,7 @@ var rEletive = async function (eData) {
                 addCert += ` (${eData.id},"${eData.remotePath}/${item.filename}") ,`
             })
             addCert = addCert.substr(0, addCert.length - 1)
-            
+
             await query(addCert).then(() => {
                 result = 0;
             })
@@ -233,7 +301,7 @@ var rEletive = async function (eData) {
             .then((data) => {
                 result = 0;
             }, (error) => {
-                
+
                 result = -1;
             });
     } else {
@@ -249,5 +317,5 @@ var rEletive = async function (eData) {
 
 //匯出
 module.exports = {
-    login, eletive, record, loginA, signAuth, checkAuth, aRecord, aCheck, rEletive, cData
+    login, eletive, record, loginA, signAuth, checkAuth, aRecord, aCheck, rEletive, cData, aCheckCert
 }

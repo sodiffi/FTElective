@@ -8,7 +8,7 @@ var forSaveItem = ""
 function isImg(str) {
     var index = str.lastIndexOf(".");
     var ext = str.substr(index + 1);
-    return ['png', 'jpg', 'jpeg', 'bmp', 'gif', 'webp', ' psd ', ' svg ', ' tiff '].indexOf(ext.toLowerCase()) !== -1
+    return ['png', 'jpg', 'jpeg', 'bmp', 'gif', 'webp', ' psd ', ' svg ', ' tiff '].includes(ext.toLowerCase())
 }
 
 function tableReload(forInit) {
@@ -23,6 +23,10 @@ function tableReload(forInit) {
         $('#tt').on('click', 'tbody tr', function () {
             let table = new DataTable('#tt');
             var row = table.row($(this)).data();
+            let ruleFileName = forSaveItem["applyUrl"]
+            let toOpen = `../${ruleFileName}`
+            $('.dropdown.multiple').dropdown("clear")
+            $("#ff").attr("src", toOpen)
             forSaveId = row["id"]
             forSaveItem = row
             $("#showStudent").html(`
@@ -53,47 +57,47 @@ function tableReload(forInit) {
             let hasCert = row["c_url"]
             $("#rEcF > p ").html("")
             if (Array.isArray(hasCert)) {
-                hasCert.forEach(cartItem => {
+                hasCert.forEach((cartItem, index) => {
                     if (cartItem) {
-                        $("#rEcF > p").append(`<a class="ui button   ecDown"  name="${cartItem}"                          
-                        href="${fileRoot}/${cartItem}" target="_blank" >下載</a>`)
+                        $("#rEcF > p").append(`<div>
+                        <a class="ui button   ecDown"  name="${cartItem}"                          
+                        href="${fileRoot}/${cartItem}" target="_blank" >下載</a>
+                        <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <input type="radio" name="c_no_${row["c_id"][index]}"   value="1">
+                                        <label for="no">有效</label>
+                                    </div>
+                                </div>
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="c_no_${row["c_id"][index]}"   value="2">
+                                <label for="no">無效</label>
+                            </div>
+                        </div>
+                        </div>`)
                     }
                 })
             }
-            $("#eCheck").modal({
-                onApprove: function () { }
-            }).modal("show")
+            $("#eCheck").modal({ onApprove: () => { } }).modal("show")
         });
 
         $('#tt').DataTable({
             fixedHeader: true,
             responsive: true,
             data: res["d"],
-            lengthMenu: [
-                [25, 50, -1],
-                ['25', '50', '全部']
-            ],
+            lengthMenu: [[25, 50, -1], ['25', '50', '全部']],
             destroy: true,
-            buttons: [
-                'pageLength'
+            buttons: ['pageLength'],
+            columns: [
+                { data: 'st_name' },
+                { data: 's_id' },
+                { data: 'system' },
+                { data: 'class' },
+                { data: 'grade' },
+                { data: 'time' },
+                { data: 'r_name' },
+                { data: 's_name' }
             ],
-            columns: [{
-                data: 'st_name'
-            }, {
-                data: 's_id'
-            }, {
-                data: 'system'
-            }, {
-                data: 'class'
-            }, {
-                data: 'grade'
-            }, {
-                data: 'time'
-            }, {
-                data: 'r_name'
-            }, {
-                data: 's_name'
-            }],
             initComplete: forInit,
         });
 
@@ -120,14 +124,14 @@ function toMail(s_id, check) {
         Subject: toSend.subject,
         Body: toSend.body,
     })
-   
+
 }
-$(document).ready(function () {
+$(() => {
     $('#tt thead tr')
         .clone(true)
         .addClass('filters')
         .appendTo('#tt thead');
-
+    $('.dropdown.multiple').dropdown()
     tableReload(function () {
         var api = this.api();
         // For each column
@@ -142,7 +146,7 @@ $(document).ready(function () {
             // On every keypress in this input
             $('input', $('.filters th').eq($(api.column(colIdx).header()).index()))
                 .off('keyup change')
-                .on('keyup change', function (e) {
+                .on('compositionend', (e) => {
                     e.stopPropagation();
                     // Get the search value
                     $(this).attr('title', $(this).val());
@@ -163,20 +167,47 @@ $(document).ready(function () {
         });
     })
 });
-$("#send").click(() => {
+$("#send").on("click", () => {
     let v = $('[name=checkE]:checked').val() === "yes"
     let remark = $("#remark").val()
     let remarkText = $("#remarkText").val()
-    let status=$("[name='checkE']:checked").val() 
-    
+    let status = $("[name='checkE']:checked").val()
+    let checkE_no = $(".dropdown.multiple").dropdown("get value")
+    if (status === "3") {
+        if (Array.isArray(checkE_no)) {
+            let tempStatus = 0
+            tempStatus += (checkE_no.includes("apply") ? 3 : 0)
+            tempStatus += (checkE_no.includes("AF") ? 4 : 0)
+            tempStatus += (checkE_no.includes("AX") ? 5 : 0)
+            if ([3, 4, 5, 7, 8, 9, 12].includes(tempStatus)) {
+                status = tempStatus
+            }
+        }
+    }
     remark = v ? "" : (remark == "其他" ? remarkText : "")
+    let hasCert = $("[name^='c_no_']")
+    var cert_id = []
+    var cert_val = []
+    if (hasCert) {
+        hasCert.each(item => {
+            if (hasCert[item].checked) {
+                cert_id.push(String(hasCert[item].name).split("c_no_")[1])
+                cert_val.push(hasCert[item].value)
+            }
+        })
+    }
+    hasCert = cert_id.length == cert_val.length
+
     $.ajax({
         url: `${rootUrl}/ma/list`,
         method: "POST",
         data: {
             "id": forSaveId,
             "status_id": status,
-            "remark": remark
+            "remark": remark,
+            "hasCert": hasCert,
+            "cert_ids":cert_id,
+            "cert_values":cert_val
         },
         headers: {
             "Authorization": "Bearer " + token
@@ -198,18 +229,28 @@ $("#send").click(() => {
     })
 })
 
-$(".downloadFile").click(e => {
+$(".downloadFile").on("click", e => {
     let fileTarget = e.target.name
     let ruleFileName = forSaveItem[fileTarget]
     let toOpen = `../${ruleFileName}`
-    
-    $("#ff").attr("src",toOpen)
+
+    $("#ff").attr("src", toOpen)
+    window.setTimeout(() => $("#ff")[0].contentWindow.print(), 3000)
+
     // window.open(toOpen)
 })
 window.onresize = () => {
     $("#tt").css("width", "calc( 100vw - 150px )")
 }
-$("#logout").click(() => {
+$("#logout").on("click", () => {
     localStorage.clear()
     document.location.href = document.location.href.split("/manage")[0]
+})
+$("input[name='checkE']").on("click", (event) => {
+    if (event.target.value === "3") {
+        $("#checkE_no").removeClass("disabled")
+    }
+    else {
+        $("#checkE_no").addClass("disabled")
+    }
 })

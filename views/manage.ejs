@@ -18,7 +18,7 @@
 
 <body>
     <div>
-        <img src="/images/banner1.png" alt="這是背景圖">
+        <img src="/images/banner1.png" alt="背景圖">
         <div class="forLogout">
             <button class="ui button " id="logout">登出</button>
         </div>
@@ -77,7 +77,8 @@
 
                 <div class="ui form">
                     <div class="ui grid">
-                        <div class="two wide column"> </div>
+                        <div class="two wide column">
+                        </div>
                         <div class="three wide column">
                             <div class="grouped fields">
                                 <div class="field">
@@ -92,14 +93,16 @@
                                 <div class="field">
                                     <div class="ui radio checkbox">
                                         <input type="radio" name="checkE" checked="checked" id="no_" value="3">
-                                        <label for="no">請補件(選課申請書)</label>
+                                        <label for="yes">未通過</label>
                                     </div>
                                 </div>
-                                <div class="field">
-                                    <div class="ui radio checkbox">
-                                        <input type="radio" name="checkE" checked="checked" id="no_" value="4">
-                                        <label for="no">請補件(學生報告書)</label>
-                                    </div>
+                                <div class="field" id="checkE_no">
+                                    <select class="ui fluid dropdown multiple ">
+                                        <option value="">Select</option>
+                                        <option value="apply">選課申請書</option>
+                                        <option value="AF">學生報告書</option>
+                                        <option value="AX">師長證明</option>                                     
+                                      </select>
                                 </div>
                                 <div class="field">
                                     <div class="ui radio checkbox">
@@ -115,7 +118,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="nine wide column       ">
+                        <div class="nine wide column">
                             <div class=" equal width grouped fields">
                                 <div class="field"> <label>常用備註</label></div>
                                 <div class="field">
