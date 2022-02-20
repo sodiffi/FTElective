@@ -229,6 +229,7 @@ $("#send").on("click", () => {
     })
 })
 
+
 $(".downloadFile").on("click", e => {
     let fileTarget = e.target.name
     let ruleFileName = forSaveItem[fileTarget]

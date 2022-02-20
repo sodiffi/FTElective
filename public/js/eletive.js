@@ -22,9 +22,9 @@ function detail(index) {
     let isReX = [5, 8, 9, 12].includes(item["status_id"])
     $("input#rEA").attr("disabled", !isReR)
     $("input#rER").attr("disabled", !isReF)
-    console.log(!isReX,!isReR)
-    $("button#addpushEC").attr("disabled",!isReX)
-   
+    console.log(!isReX, !isReR)
+    $("button#addpushEC").attr("disabled", !isReX)
+
     //退件後才可重送(只管input)
     if (!isRe) {
         $(".forResend").addClass("reSendNo")
@@ -32,7 +32,7 @@ function detail(index) {
     } else {
         $(".forResend").removeClass("reSendNo")
     }
-    
+
     //將下載紐清掉
     //減修只有申請書
     if (isRe) {
@@ -67,8 +67,8 @@ function detail(index) {
             if (Array.isArray(cd)) {
                 cd.forEach(cartItem => {
                     if (cartItem) {
-                        $("#rEcF > p").append(`<a class="ui button   ecDown"  name="${cartItem.certUrl}" 
-                         
+                        $("#rEcF > p").append(`<a class="ui button   ecDown"  name="${cartItem.certUrl}"
+
                         href="${fileRoot}/${cartItem.certUrl}" target="_blank"  >下載</a>`)
                     }
                 })
@@ -159,8 +159,9 @@ $("body").ready(() => {
     }
 
 
+
 })
-$("button.addEC").on("click",e => {
+$("button.addEC").on("click", e => {
     let targetName = e.target.name
     if (targetName != "re")
         $(`#${targetName}ECField`).append(`<input type="file" id=" " class="modelField ${targetName}EC" />`)
@@ -169,78 +170,82 @@ $("button.addEC").on("click",e => {
 })
 
 // 加選處理
-$("#pushApply").on("click",() => {
+$("#pushApply").on("click", () => {
 
-    $("#pushModal").modal({
-        onApprove: function () {
-            $('body').toast({
-                position: 'top attached',
-                message: '加選、退選、減修申請只能上傳一次，請同學再次確認後再上傳',
-                displayTime: 0,
-                actions: [{
-                    text: '確認送出',
-                    icon: 'check',
-                    class: 'green',
-                    click: function () {
-                        if (document.getElementById("pushEA").files.length == 0) {
+    try {
+        $(".modal.pushModal").modal({
+            onApprove: () => {
 
-                            $('body').toast({ message: '缺少必填資料', class: "error", });
-                        } else {
-                            $('body').toast({ message: '資料送出中...', displayTime: 10000 });
-                            let pushEA = document.getElementById("pushEA").files[0]
-                            let pushER = document.getElementById("pushER").files[0] || ""
+                $('body').toast({
+                    position: 'top attached',
+                    message: '加選、退選、減修申請只能上傳一次，請同學再次確認後再上傳',
+                    displayTime: 0,
+                    actions: [{
+                        text: '確認送出',
+                        icon: 'check',
+                        class: 'green',
+                        click: function () {
+                            if (document.getElementById("pushEA").files.length == 0) {
 
-                            let formData = new FormData()
-                            let s_id = localStorage.getItem("s_id")
+                                $('body').toast({ message: '缺少必填資料', class: "error", });
+                            } else {
+                                $('body').toast({ message: '資料送出中...', displayTime: 10000 });
+                                let pushEA = document.getElementById("pushEA").files[0]
+                                let pushER = document.getElementById("pushER").files[0] || ""
 
-                            formData.append("ea", pushEA)
-                            let target = $(`.pushEC`)
-                            target.each((i) => {
-                                let item = target[i]
-                                if (item.value != "") formData.append("ec", item.files[0])
-                            })
-                            formData.append("er", pushER)
-                            formData.append("s_id", s_id)
-                            formData.append("reason", 0)
-                            $.ajax({
-                                url: "./eletive/" + s_id,
-                                "method": "POST",
-                                contentType: false,
-                                processData: false,
-                                mimeType: "multipart/form-data",
-                                data: formData,
-                                success: (res) => {
-                                    res = JSON.parse(res)
-                                    toMail(s_id, false)
-                                    toast(res, tableReload)
-                                    $(".pushEC").remove()
+                                let formData = new FormData()
+                                let s_id = localStorage.getItem("s_id")
 
-                                },
-                                error: (error) => {
-                                    // console.log(error)
-                                }
-                            })
+                                formData.append("ea", pushEA)
+                                let target = $(`.pushEC`)
+                                target.each((i) => {
+                                    let item = target[i]
+                                    if (item.value != "") formData.append("ec", item.files[0])
+                                })
+                                formData.append("er", pushER)
+                                formData.append("s_id", s_id)
+                                formData.append("reason", 0)
+                                $.ajax({
+                                    url: "./eletive/" + s_id,
+                                    "method": "POST",
+                                    contentType: false,
+                                    processData: false,
+                                    mimeType: "multipart/form-data",
+                                    data: formData,
+                                    success: (res) => {
+                                        res = JSON.parse(res)
+                                        toMail(s_id, false)
+                                        toast(res, tableReload)
+                                        $(".pushEC").remove()
+
+                                    },
+                                    error: (error) => {
+                                        // console.log(error)
+                                    }
+                                })
+                            }
+
                         }
-
-                    }
-                }, {
-                    icon: 'ban',
-                    class: 'icon red',
-                    text: "取消",
-                }]
-            })
-                ;
-        }
-    }).modal('show')
-
+                    }, {
+                        icon: 'ban',
+                        class: 'icon red',
+                        text: "取消",
+                    }]
+                })
+                    ;
+            }
+        }).modal('show')
+    } catch (error) {
+        console.log("error", error)
+    }
+    console.log("done")
 
 })
-
 // 退選處理
-$("#pullApply").on("click",() => {
-
-    $("#pullModal").modal({
-        onApprove: function () {
+$("#pullApply").on("click", () => {
+    console.log("pull ")
+    $(".modal.pullModal").modal({
+        onApprove: () => {
             $('body').toast({
                 position: 'top attached',
                 message: '加選、退選、減修申請只能上傳一次，請同學再次確認後再上傳',
@@ -299,8 +304,8 @@ $("#pullApply").on("click",() => {
 })
 
 // 減修處理
-$("#removeApply").on("click",() => {
-    $("#removeModal").modal({
+$("#removeApply").on("click", () => {
+    $(".modal.removeModal").modal({
         onApprove: function () {
             $('body').toast({
                 position: 'top attached',
@@ -310,7 +315,7 @@ $("#removeApply").on("click",() => {
                     text: '確認送出',
                     icon: 'check',
                     class: 'green',
-                    click:  ()=> {
+                    click: () => {
 
                         if (document.getElementById("removeA").files.length == 0) {
                             $('body').toast({ message: '缺少必填資料', class: "error", });
@@ -350,7 +355,7 @@ $("#removeApply").on("click",() => {
 })
 
 // 重新加退選處理
-$("#rESend").on("click",() => {
+$("#rESend").click(() => {
     let rEA = document.getElementById("rEA").files[0] || ""
     let rER = document.getElementById("rER").files[0] || ""
     let formData = new FormData()
