@@ -1,5 +1,5 @@
 var recordData = []
-const fileRoot = "https://yusiang.unaux.com/fteFile/"
+const fileRoot = document.location.origin
 var forSaveId = ""
 var forSaveItem = ""
 

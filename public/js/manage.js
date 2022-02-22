@@ -1,4 +1,4 @@
-const fileRoot = "127.0.0.1:3000/"
+
 const rootUrl = document.location.origin
 
 var token = localStorage.getItem("token")
@@ -60,8 +60,8 @@ function tableReload(forInit) {
                 hasCert.forEach((cartItem, index) => {
                     if (cartItem) {
                         $("#rEcF > p").append(`<div>
-                        <a class="ui button   ecDown"  name="${cartItem}"                          
-                        href="${fileRoot}/${cartItem}" target="_blank" >下載</a>
+                        <button class="ui button   ecDown"  name="${cartItem}"
+                        data="${rootUrl}/${cartItem}" >下載</button>
                         <div class="field">
                                     <div class="ui radio checkbox">
                                         <input type="radio" name="c_no_${row["c_id"][index]}"   value="1">
@@ -76,6 +76,10 @@ function tableReload(forInit) {
                         </div>
                         </div>`)
                     }
+                })
+                $(".ecDown").click(e=>{
+                    let fileName=e.target.name
+                    console.log(fileName)
                 })
             }
             $("#eCheck").modal({ onApprove: () => { } }).modal("show")
@@ -240,9 +244,8 @@ $(".downloadFile").on("click", e => {
 
     // window.open(toOpen)
 })
-window.onresize = () => {
-    $("#tt").css("width", "calc( 100vw - 150px )")
-}
+
+
 $("#logout").on("click", () => {
     localStorage.clear()
     document.location.href = document.location.href.split("/manage")[0]
