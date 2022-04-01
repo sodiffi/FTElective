@@ -35,127 +35,25 @@
             <tbody id="record"></tbody>
         </table>
     </div>
+
     <div class="ui bottom  tab segment" data-tab="push">
-        <div class="des">
-            <h2>加選程序說明:</h2>
-            <ol class="ui suffixed list">
-                <li>若欲加選的課程在學校選課系統中仍顯示有名額，請直接登入學校選課系統選課，不必填寫選課申請單。</li>
-                <li>需人工加選的同學請先下載選課申請書，依照填寫範本所示填妥資料後上傳，選課申請書為必繳資料。</li>
-                <li>若有其他特殊情況(詳見備註)請檢附上課老師同意加選之證明，例如email截圖、line截圖等方式上傳系統。</li>
-                <li>若加選後學分超過修課上限規定，請附上學生報告書(若因重補修超過學分上限者不需另外檢附學生報告書)。</li>
-                <li>限上傳一次，系上/他系請寫在同一張即可，送出前請再三確認；如需修正，請聯繫系辦退件修改</li>
-            </ol>
-            <div class="ui   list">
-                <div class="item downItems">
-                    <a class="downloadSample" target="_blank" name="sample.pdf" href="sample.pdf"><i
-                            class="download icon"></i></i>選課申請書範本</a>
-                    <a class="downloadSample" target="_blank" name="選課申請書修1100514.pdf" href="apply.pdf"><i
-                            class="download icon"></i></i>選課申請書</a>
-
-
-                    <div class=" right floated content"> <button class="ui button" id="pushApply">申請</button></div>
-                </div>
-            </div>
-        </div>
-
+        <%- include('plus'); -%>
     </div>
 
     <div class="ui bottom   tab segment" data-tab="pull">
-        <div class="des">
-            <h2>退選程序說明:</h2>
-            <ol class="ui suffixed relaxed list">
-                <li>必修課程請以在本班修課為原則，若遇特殊情況需要退選(ex.重補修衝堂)請檢附原任課老師同意之證明。</li>
-                <li>欲退選同學請先下載選課申請書，依照填寫範本所示填妥資料後上傳，選課申請書為必繳資料。</li>
-                <li>若有其他特殊情況(詳見備註)請檢附上課老師同意退選之證明，例如email截圖、line截圖等方式上傳系統。</li>
-                <li>退選後若不足最低學分規定，請附上學生報告書。</li>
-                <li>限上傳一次，系上/他系請寫在同一張即可，送出前請再三確認；如需修正，請聯繫系辦退件修改</li>
-            </ol>
-
-            <div class="ui   list">
-                <div class="item downItems">
-                    <a class="downloadSample" target="_blank" name="sample.pdf" href="sample.pdf"><i
-                            class="download icon"></i></i>選課申請書範本</a>
-                    <a class="downloadSample" target="_blank" name="選課申請書修1100514.pdf" href="apply.pdf"><i
-                            class="download icon"></i></i>選課申請書</a>
-
-                    <div class="right floated content"> <button class="ui button" id="pullApply">申請</button> </div>
-                </div>
-            </div>
-        </div>
+        <%- include('drop'); -%>
     </div>
     <div class="ui bottom tab segment" data-tab="remove">
-        <div class="des">
-            <h2>減修程序說明:</h2>
-            <ol class="ui suffixed relaxed list">
-                <li>僅限應屆畢業班同學申請(得申請減修1-2學分，若全學期校外實習者可申請減修3學分)。</li>
-                <li>請先下載減修申請書，填妥後上傳時請務必附上減修申請表</li>
-                <li>限上傳一次，，送出前請再三確認；如需修正，請聯繫系辦退件修改</li>
-            </ol>
-            <div class="ui list">
-                <div class="item downItems">
-
-                    <a class="downloadSample" target="_blank" name="減修申請單.docx" href="remove" .docx"><i
-                            class="download icon"></i></i>減修申請書</a>
-                    <div class="right floated content"> <button class="ui button" id="removeApply">申請</button> </div>
-                </div>
-            </div>
-        </div>
+        <%- include('remove'); -%>
     </div>
     <div>
         <!-- ===加選 -->
-        <div class="ui modal large pushModal" id="pushModal">
-            <i class="close icon"></i>
-            <div class="header"> 加選申請 </div>
-            <div class="image content">
-                <div class="field">
-                    <label class="modelField"><span class="ui red text">*</span>選課申請書(必填)</label>
-                    <input type="file" id="pushEA" class="modelField" />
-                </div>
-                <div class="field">
-                    <label class="modelField">學生報告書(超修或低修)</label>
-                    <input type="file" id="pushER" class="modelField" />
-                </div>
-                <div class="field" id="pushECField">
-                    <label class="modelField">任課老師核准證明(選填)</label>
-                    <button id="addpushEC" class="modelField addEC" name="push">增加檔案</button>
-                </div>
-            </div>
-            <div class="actions">
-                <div class="ui button cancel">取消</div>
-                <div class="ui button approve">確認</div>
-            </div>
-        </div>
+
+            <%- include('model',{title:"加選申請",type:"push"}); -%>
+
         <!-- ===退選 -->
-        <div class="ui modal large pullModal" id="pullModal">
-            <i class="close icon"></i>
-            <div class="header"> 退選申請 </div>
-            <div class="image content">
-                <div class="image content">
-                    <div class="field">
-                        <label><span class="ui red text">*</span>選課申請書(必填)</label>
-                        <input type="file" id="pullEA" class="modelField" />
-                    </div>
-                </div>
-                <div class="image content">
-                    <div class="field">
-                        <label class="modelField">學生報告書(超修或低修)</label>
-                        <input type="file" id="pullER" class="modelField" />
-                    </div>
-                </div>
-                <div class="image content">
-                    <div class="field" id="pullECField">
-                        <label class="modelField">任課老師核准證明(選填)</label>
-                        <button id="addpullEC" class="modelField addEC" name="pull">增加檔案</button>
-
-                    </div>
-                </div>
-
-            </div>
-            <div class="actions">
-                <div class="ui button cancel">取消</div>
-                <div class="ui button approve">確認</div>
-            </div>
-        </div>
+        <%- include('model',{title:"加選申請",type:"pull"}); -%>
+       
         <!-- ===減修 -->
         <div class="ui modal large removeModal" id="removeModal">
             <i class="close icon"></i>
@@ -207,41 +105,13 @@
                             <div class="ui column tablet computer only">
                                 <div class="field studentF rEcF" id="rEcF">
                                     <label>任課老師核准證明(選填)</label>
-                                    <button id="addpushEC" class="modelField addEC forResend" name="re">增加檔案</button>
+                                    <button id="addEC" class="modelField addEC forResend" name="re">增加檔案</button>
                                     <p></p>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="ui row">
-                            <!-- 手機設備 -->
-                            <div class="ui sixteen wide column mobile only">
-                                <div class="field studentF">
-                                    <label><span class="ui red text">*</span>申請書(必填)</label>
-                                    <p>
-                                        <button class="ui button downloadFile" id="eaDown" name="applyUrl">下載</button>
-                                    </p>
-                                    <input type="file" id="rEA" class="forResend" />
-                                </div>
-                            </div>
-                            <div class="ui sixteen wide column mobile only">
-                                <div class="field studentF" id="rErF">
-                                    <label>學生報告書(超修或低修)</label>
-                                    <p>
-                                        <button class="ui button downloadFile erDown" id="erDown"
-                                            name="reportUrl">下載</button>
-                                    </p>
-                                    <input type="file" id="rER" class="forResend" />
-                                </div>
-                            </div>
-                            <div class="ui sixteen wide column mobile only">
-                                <div class="field studentF rEcF" id="rEcF">
-                                    <label>任課老師核准證明(選填)</label>
-                                    <button id="addpushEC" class="modelField addEC forResend" name="re">增加檔案</button>
-                                    <p></p>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- 這邊貼上 -->
                     </div>
                     <div class="ui basic segment right aligned">
                         <div class="ui button forResend" id="rESend">送出</div>

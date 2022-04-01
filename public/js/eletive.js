@@ -22,8 +22,8 @@ function detail(index) {
     let isReX = [5, 8, 9, 12].includes(item["status_id"])
     $("input#rEA").attr("disabled", !isReR)
     $("input#rER").attr("disabled", !isReF)
-    console.log(!isReX, !isReR)
-    $("button#addpushEC").attr("disabled", !isReX)
+
+    $("button#addEC").attr("disabled", !isReX)
 
     //退件後才可重送(只管input)
     if (!isRe) {
@@ -61,15 +61,20 @@ function detail(index) {
         url: `./cdata/list?id=${item["id"]}`,
         method: "GET",
         success: (res) => {
-            // console.log(res)
             res = JSON.parse(res)
             let cd = res.d
             if (Array.isArray(cd)) {
-                cd.forEach(cartItem => {
+                cd.forEach((cartItem, index) => {
                     if (cartItem) {
-                        $("#rEcF > p").append(`<a class="ui button   ecDown"  name="${cartItem.certUrl}"
+                        $("#rEcF > p").append(`
+                        <div>
+                        <a class="ui button ecDown" name="${cartItem.certUrl}"
+                        href="${fileRoot}/${cartItem.certUrl}" target="_blank"  >下載</a>
 
-                        href="${fileRoot}/${cartItem.certUrl}" target="_blank"  >下載</a>`)
+
+                        </div>
+                        <p> ${cartItem["checked"] == 1 ? "有效" : "無效"}</p>
+                        `)
                     }
                 })
 
@@ -79,11 +84,7 @@ function detail(index) {
 
     $("#rETitle").html(title)
     $("#rERemark").html(item["status_id"] == 3 ? (String(item["remark"]).trim() !== "" ? `<h3>退件備註： ${item["remark"]} </h3>` : "") + "<h3>若需要重新上傳文件，請於下方點選瀏覽按鈕選擇檔案，並點選送出</h3>" : "")
-    let iframeUrl = isImg(item["applyUrl"]) ? `${fileRoot}/${item["applyUrl"]}` : `https://docs.google.com/viewer?url=${fileRoot}/${item["applyUrl"]}&embedded=true`
-    let iframeItem = isImg(item["applyUrl"]) ? `<img src=${iframeUrl}>` : ` <iframe src="${iframeUrl}" style="border: none; height: 500px;" id="view"></iframe>`
-
     $("#rEModal").modal("show")
-
 }
 
 function toast(res, todo) {
@@ -91,7 +92,6 @@ function toast(res, todo) {
         message: res.message,
         showProgress: 'bottom',
         onRemove: todo
-
     });
 }
 
@@ -115,9 +115,6 @@ function tableReload() {
                 }
             }
 
-        },
-        error: (error) => {
-            // console.log(error)
         }
     })
 }
@@ -175,7 +172,6 @@ $("#pushApply").on("click", () => {
     try {
         $(".modal.pushModal").modal({
             onApprove: () => {
-
                 $('body').toast({
                     position: 'top attached',
                     message: '加選、退選、減修申請只能上傳一次，請同學再次確認後再上傳',
@@ -184,9 +180,8 @@ $("#pushApply").on("click", () => {
                         text: '確認送出',
                         icon: 'check',
                         class: 'green',
-                        click: function () {
+                        click: () => {
                             if (document.getElementById("pushEA").files.length == 0) {
-
                                 $('body').toast({ message: '缺少必填資料', class: "error", });
                             } else {
                                 $('body').toast({ message: '資料送出中...', displayTime: 10000 });
@@ -238,12 +233,12 @@ $("#pushApply").on("click", () => {
     } catch (error) {
         console.log("error", error)
     }
-    console.log("done")
+
 
 })
 // 退選處理
 $("#pullApply").on("click", () => {
-    console.log("pull ")
+
     $(".modal.pullModal").modal({
         onApprove: () => {
             $('body').toast({
@@ -255,15 +250,13 @@ $("#pullApply").on("click", () => {
                     text: '確認送出',
                     icon: 'check',
                     class: 'green',
-                    click: function () {
-
+                    click: () => {
                         if (document.getElementById("pullEA").files.length == 0) {
                             $('body').toast({ message: '缺少必填資料', class: "error", });
                         } else {
                             $('body').toast({ message: '資料送出中...', displayTime: 10000 });
                             let pushEA = document.getElementById("pullEA").files[0]
                             let pushER = document.getElementById("pullER").files[0] || ""
-
                             let formData = new FormData()
                             let s_id = localStorage.getItem("s_id")
                             let target = $(`.pullEC`)
@@ -316,7 +309,6 @@ $("#removeApply").on("click", () => {
                     icon: 'check',
                     class: 'green',
                     click: () => {
-
                         if (document.getElementById("removeA").files.length == 0) {
                             $('body').toast({ message: '缺少必填資料', class: "error", });
                         } else {

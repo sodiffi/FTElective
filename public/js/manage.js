@@ -55,31 +55,37 @@ function tableReload(forInit) {
                 $("#erDown").removeClass("disabled")
             }
             let hasCert = row["c_url"]
+            let c_value = row["c_value"]
             $("#rEcF > p ").html("")
             if (Array.isArray(hasCert)) {
+                console.log(c_value, c_value[0] == 1, c_value[0] == 2)
                 hasCert.forEach((cartItem, index) => {
                     if (cartItem) {
+
                         $("#rEcF > p").append(`<div>
                         <button class="ui button   ecDown"  name="${cartItem}"
                         data="${rootUrl}/${cartItem}" >下載</button>
                         <div class="field">
                                     <div class="ui radio checkbox">
-                                        <input type="radio" name="c_no_${row["c_id"][index]}"   value="1">
+                                        <input type="radio" name="c_no_${row["c_id"][index]}"   value="1" ${c_value[index] == 1 ? "checked" : ""}>
                                         <label for="no">有效</label>
                                     </div>
                                 </div>
                         <div class="field">
                             <div class="ui radio checkbox">
-                                <input type="radio" name="c_no_${row["c_id"][index]}"   value="2">
+                                <input type="radio" name="c_no_${row["c_id"][index]}"   value="2" ${c_value[index] == 2 ? "checked" : ""}>
                                 <label for="no">無效</label>
                             </div>
                         </div>
                         </div>`)
                     }
+                    // if(c_value[index])
                 })
-                $(".ecDown").click(e=>{
-                    let fileName=e.target.name
-                    console.log(fileName)
+
+                $(".ecDown").click(e => {
+                    let fileName = e.target.name
+                    $("#ff").attr("src", `${rootUrl}/${fileName}`)
+                    window.setTimeout(() => $("#ff")[0].contentWindow.print(), 500)
                 })
             }
             $("#eCheck").modal({ onApprove: () => { } }).modal("show")
@@ -116,11 +122,11 @@ function toMail(s_id, check) {
         },
         error: {
             subject: "助教審核未通過",
-            body: "<p>您的選課申請因故未被核準，請登入本系統或收email查看原因</p>"
+            body: "<p>您的選課申請因故未被核準，請登入本系統查看原因</p>"
         }
     }
     let toSend = check ? mailData.success : mailData.error
-    // console.log("before mail")
+
     Email.send({
         SecureToken: "d356adce-f0d7-4c4d-98f9-3f784e2c8bf6",
         To: `${s_id}@ntub.edu.tw`,
@@ -200,6 +206,7 @@ $("#send").on("click", () => {
             }
         })
     }
+
     hasCert = cert_id.length == cert_val.length
 
     $.ajax({
@@ -210,8 +217,8 @@ $("#send").on("click", () => {
             "status_id": status,
             "remark": remark,
             "hasCert": hasCert,
-            "cert_ids":cert_id,
-            "cert_values":cert_val
+            "cert_ids": cert_id,
+            "cert_values": cert_val
         },
         headers: {
             "Authorization": "Bearer " + token
@@ -240,7 +247,7 @@ $(".downloadFile").on("click", e => {
     let toOpen = `../${ruleFileName}`
 
     $("#ff").attr("src", toOpen)
-    window.setTimeout(() => $("#ff")[0].contentWindow.print(), 3000)
+    window.setTimeout(() => $("#ff")[0].contentWindow.print(), 500)
 
     // window.open(toOpen)
 })

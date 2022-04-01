@@ -32,7 +32,7 @@ function toLow(data, tolows, forcheck) {
 
     if (tolow != undefined) resu[tolows] = tolow
     result.push(resu)
-    console.log(result)
+
     return result
 
 }
@@ -90,14 +90,13 @@ var login = async function (newData) {
 
     var result = 0;
     await query(`select *,concat(s.system,s.grade) in ( "日五專5","日五專6","日五專7","日四技4","日四技5","日四技6","進二技2","進二技3","日二技4","日二技2","日二技3","碩士班4","碩士班3","碩士班2") as "graduates" from student as s where id= "${newData.id}" and psw= "${newData.psw}"`)
-        .then((data) => {
-            if (Array.isArray(data)) {
-                result = { isLogin: data.length > 0, d: data }
-            }
-        }, (error) => {
-            // console.log(error)
-            result = -1;
-        });
+        .then(
+            (data) => {
+                if (Array.isArray(data)) {
+                    result = { isLogin: data.length > 0, d: data }
+                }
+            }, (error) => result = -1
+        );
 
     return result;
 }
@@ -106,15 +105,13 @@ var login = async function (newData) {
 var loginA = async function (newData) {
     var result = false;
     await query(`select * from manager where id= "${newData.id}" and psw= "${newData.psw}" `)
-        .then((data) => {
-            if (Array.isArray(data)) {
-                result = data.length > 0
-            }
-
-        }, (error) => {
-            // console.log(error)
-            result = false;
-        })
+        .then(
+            (data) => {
+                if (Array.isArray(data)) {
+                    result = data.length > 0
+                }
+            }, (error) => result = false
+        )
 
     return result;
 }
@@ -125,11 +122,10 @@ var signAuth = async function (newData) {
     var result;
 
     await query(`update manager set token= "${newData.token}" where id ="${newData.id}"`)
-        .then((data) => {
-            result = true;
-        }, (error) => {
-            result = false;
-        });
+        .then(
+            (data) => result = true
+            , (error) => result = false
+        );
 
     return result;
 }
@@ -140,11 +136,10 @@ var checkAuth = async function (newData) {
     var result;
 
     await query('select  token from manager  where id ="?"', newData.id)
-        .then((data) => {
-            result = true;
-        }, (error) => {
-            result = false;
-        });
+        .then(
+            (data) => result = true
+            , (error) => result = false
+        );
 
     return result;
 }
@@ -154,13 +149,11 @@ var checkAuth = async function (newData) {
 var record = async function (s_id) {
     var result;
 
-    await query(`select e.*,concat(time," ") as time ,r.name as r_name ,s.name as s_name , c.certUrl as c_url from eletive as e left join status as s on s.id=e.status_id left join reason as r on r.id=e.reason_id left join cert as c on e.id=c.e_id where s_id= "${s_id}" order by time desc`)
-        .then((data) => {
-            result = data = toLow(data, "c_url", "id")
-        }, (error) => {
-            // console.log(error)
-            result = -1;
-        });
+    await query(`select e.*,concat(time," ") as time ,r.name as r_name ,s.name as s_name , c.id as c_id, c.certUrl as c_url, c.checked as c_value from eletive as e left join status as s on s.id=e.status_id left join reason as r on r.id=e.reason_id left join cert as c on e.id=c.e_id where s_id= "${s_id}" order by time desc`)
+        .then(
+            (data) => result = toLows(data, ["c_url", "c_id", "c_value"], "id")
+            , (error) => result = -1
+        );
 
     return result;
 }
@@ -171,15 +164,10 @@ var aRecord = async function () {
     var result;
 
     await query(`select e.*,concat(time," ") as time ,r.name as r_name ,s.name as s_name ,st.system,st.grade,st.name as "st_name",st.class , c.id as c_id, c.certUrl as c_url, c.checked as c_value from eletive as e join status as s on s.id=e.status_id join reason as r on r.id=e.reason_id join student as st on e.s_id=st.id left join cert as c on e.id=c.e_id where st.class ="測" order by time desc`)
-        .then((data) => {
-            console.log(data)
-            result = toLows(data, ["c_url", "c_id", "c_value"], "id")
-            console.log(result)
-        }, (error) => {
-            console.log(error)
-            result = -1;
-        });
-
+        .then(
+            (data) => result = toLows(data, ["c_url", "c_id", "c_value"], "id")
+            , (error) => result = -1
+        );
     return result;
 }
 
@@ -187,15 +175,11 @@ var aRecord = async function () {
 //----------------------------------
 var cData = async function (cData) {
     var result;
-
     await query(`SELECT * FROM cert  where e_id ="${cData.id}"`)
-        .then((data) => {
-            result = data;
-        }, (error) => {
-            // console.log(error)
-            result = -1;
-        });
-
+        .then(
+            (data) => result = data
+            , (error) => result = -1
+        );
     return result;
 }
 // 助教審核
@@ -204,17 +188,15 @@ var aCheck = async function (cData) {
     var result;
 
     await query(`update eletive set status_id=${cData.status_id} , remark="${cData.remark || " "}" where id=${cData.id}`)
-        .then((data) => {
-            result = data;
-        }, (error) => {
-            // console.log(error)
-            result = -1;
-        });
+        .then(
+            (data) => result = data
+            , (error) => result = -1
+        );
 
     return result;
 }
 /**助教師長證明審核
- * @param {Array} ids - The 
+ * @param {Array} ids - The
  * @param {Array} values - The tolow
  */
 var aCheckCert = async function (ids, values) {
@@ -222,15 +204,16 @@ var aCheckCert = async function (ids, values) {
     var s_sql = ""
     console.log(Array.isArray(ids), Array.isArray(values))
     if (ids.length == values.length) {
-        ids.forEach((id, index) => {
-            s_sql += ` update cert set checked="${values[index]}" where id="${id}"; `
+        ids.every(async (id, index) => {
+            await query(` update cert set checked="${values[index]}" where id="${id}"; `).then((data) => {
+                result = data
+            }, (error) => {
+                result = -1
+                return false
+
+            })
         })
-        await query(s_sql).then((data) => {
-            result = data
-        }, (error) => {
-            console.log(error)
-            result = -1
-        })
+
     }
     return result
 }

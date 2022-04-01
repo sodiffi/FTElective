@@ -204,19 +204,12 @@ a.item.active {
         margin: 0;
         padding: 3px;
     }
-    .downloadSample {
+    .Sample {
         margin: 15px 0;
         display: block;
     }
     #tab a.item>b {
         font-size: 3.5vmin;
     }
-    /* #login,
-    #pushApply,
-    #pullApply,
-    #removeApply,
-    .downloadSample,
-    button.ui.button {
-        font-size: 3vmin;
-    } */
+
 }
