@@ -1,0 +1,40 @@
+<div class="content">
+    <div id="rERemark"></div>
+    <h3>若要瀏覽前次上傳紀錄，請點選下載</h3>
+    <div class="ui basic segment">
+        <div class="ui grid">
+            <div class="ui three column divided center aligned row tablet ">
+                <!-- 電腦設備 -->
+                <div class="ui column tablet ">
+                    <div class="field studentF">
+                        <label><span class="ui red text">*</span>申請書(必填)</label>
+                        <p>
+                            <button class="ui button downloadFile" id="eaDown" name="applyUrl">下載</button>
+                        </p>
+                        <input type="file" id="rEA" class="forResend" />
+                    </div>
+                </div>
+                <div class="ui column tablet ">
+                    <div class="field studentF" id="rErF">
+                        <label>學生報告書(超修或低修)</label>
+                        <p>
+                            <button class="ui button downloadFile erDown" id="erDown" name="reportUrl">下載</button>
+                        </p>
+                        <input type="file" id="rER" class="forResend" />
+                    </div>
+                </div>
+
+                <div class="ui column tablet ">
+                    <div class="field studentF rEcF" id="rEcF">
+                        <label>任課老師核准證明(選填)</label>
+                        <button id="addEC" class="modelField addEC forResend" name="re">增加檔案</button>
+                        <p></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui basic segment right aligned">
+            <div class="ui button forResend" id="rESend">送出</div>
+        </div>
+    </div>
+</div>

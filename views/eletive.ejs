@@ -13,7 +13,7 @@
 
 <body>
     <div class="header">
-        <img src="/images/banner1.png" alt="這是背景圖">
+        <img src="/images/banner1.png" alt="">
         <div class="forLogout">
             <button class="ui button" id="logout">登出</button>
         </div>
@@ -37,98 +37,39 @@
     </div>
 
     <div class="ui bottom  tab segment" data-tab="push">
-        <%- include('plus'); -%>
+        <%- include('tab/plus'); -%>
     </div>
 
     <div class="ui bottom   tab segment" data-tab="pull">
-        <%- include('drop'); -%>
+        <%- include('tab/drop'); -%>
     </div>
+
     <div class="ui bottom tab segment" data-tab="remove">
-        <%- include('remove'); -%>
+        <%- include('tab/remove'); -%>
     </div>
+
     <div>
-        <!-- ===加選 -->
-
-            <%- include('model',{title:"加選申請",type:"push"}); -%>
-
-        <!-- ===退選 -->
-        <%- include('model',{title:"加選申請",type:"pull"}); -%>
-       
-        <!-- ===減修 -->
-        <div class="ui modal large removeModal" id="removeModal">
-            <i class="close icon"></i>
-            <div class="header"> 減修申請 </div>
-            <div class="image content">
-                <div class="field">
-                    <label class="modelField"><span class="ui red text">*</span>減修申請書(必填)</label>
-                    <input type="file" id="removeA" class="modelField" />
-                </div>
-            </div>
-            <div class="actions">
-                <div class="ui button cancel">取消</div>
-                <div class="ui button approve">確認</div>
-            </div>
-        </div>
-        <!-- ===重新加退選 -->
-        <div class="ui modal large rEModal" id="rEModal">
-            <i class="close icon"></i>
-            <!-- 時間標題+事由 -->
-            <div class="header" id="rETitle"></div>
-            <div class="content">
-                <div id="rERemark"> </div>
-                <h3>若要瀏覽前次上傳紀錄，請點選下載</h3>
-                <div class="ui basic segment">
-                    <div class="ui grid">
-                        <div class="ui three column divided center aligned row tablet computer only">
-                            <!-- 電腦設備 -->
-                            <div class="ui column tablet computer only">
-                                <div class="field studentF">
-                                    <label><span class="ui red text">*</span>申請書(必填)</label>
-                                    <p>
-
-                                        <button class="ui button downloadFile" id="eaDown" name="applyUrl">下載</button>
-                                    </p>
-                                    <input type="file" id="rEA" class="forResend" />
-                                </div>
-                            </div>
-                            <div class="ui column tablet computer only">
-                                <div class="field studentF" id="rErF">
-                                    <label>學生報告書(超修或低修)</label>
-                                    <p>
-                                        <button class="ui button downloadFile erDown" id="erDown"
-                                            name="reportUrl">下載</button>
-                                    </p>
-                                    <input type="file" id="rER" class="forResend" />
-                                </div>
-                            </div>
-
-                            <div class="ui column tablet computer only">
-                                <div class="field studentF rEcF" id="rEcF">
-                                    <label>任課老師核准證明(選填)</label>
-                                    <button id="addEC" class="modelField addEC forResend" name="re">增加檔案</button>
-                                    <p></p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 這邊貼上 -->
-                    </div>
-                    <div class="ui basic segment right aligned">
-                        <div class="ui button forResend" id="rESend">送出</div>
-                    </div>
-                </div>
-                <div class="actions">
-                    <div class="ui button cancel">取消</div>
-                    <div class="ui button approve">確認</div>
-                </div>
-            </div>
+        <div>
+            <!-- 加選 -->
+            <%- include('model/model',{title:"加選申請",type:"push",doc:"three_fields"}); -%>
         </div>
 
-        <script src="https://smtpjs.com/v3/smtp.js">
-        </script>
+        <div>
+            <!-- 退選 -->
+            <%- include('model/model',{title:"退選申請",type:"pull",doc:"three_fields"}); -%>
+        </div>
 
-        <script src="/js/eletive.js"></script>
-
+        <div>
+            <!-- 減修 -->
+            <%- include('model/model',{title:"減修申請",type:"remove",doc:"one_field"}); -%>
+        </div>
+        <div>
+            <!-- 重新加退選 -->
+            <%- include('model/model',{title:"重新加退選",type:"rE",doc:"reApply"}); -%>
+        </div>
+    </div>
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
+    <script src="/js/eletive.js"></script>
 </body>
 
 </html>

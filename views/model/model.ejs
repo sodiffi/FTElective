@@ -1,0 +1,13 @@
+<div class="ui modal large <%=type %>Modal" id="<%=type %>Modal">
+    <i class="close icon"></i>
+    <div class="header" id="<%=type%>Title">
+        <%=title%>
+    </div>
+
+        <%- include(doc,{type:type}); -%>
+    
+    <div class="actions">
+        <div class="ui button cancel">取消</div>
+        <div class="ui button approve">確認</div>
+    </div>
+</div>

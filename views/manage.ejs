@@ -4,28 +4,26 @@
 <head>
     <title>北商財稅系人工選課</title>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
-
     <link rel="icon" href="images/icon.ico" type="image/x-icon" />
-
     <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.css">
-    <!-- 資料表格套件 -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.2/b-2.0.0/b-colvis-2.0.0/b-print-2.0.0/fh-3.1.9/r-2.2.9/datatables.min.css" />
-    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.2/b-2.0.0/b-colvis-2.0.0/b-print-2.0.0/fh-3.1.9/r-2.2.9/datatables.min.js"></script>
-
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.datatables.net/v/dt/dt-1.11.2/b-2.0.0/b-colvis-2.0.0/b-print-2.0.0/fh-3.1.9/r-2.2.9/datatables.min.css" />
+    <script type="text/javascript"
+        src="https://cdn.datatables.net/v/dt/dt-1.11.2/b-2.0.0/b-colvis-2.0.0/b-print-2.0.0/fh-3.1.9/r-2.2.9/datatables.min.js"></script>
     <link rel='stylesheet' href='/stylesheets/style.css' />
 </head>
 
 <body>
     <div>
-        <img src="/images/banner1.png" alt="背景圖">
+        <img src="/images/banner1.png" alt="">
         <div class="forLogout">
             <button class="ui button " id="logout">登出</button>
         </div>
     </div>
 
     <div class="ui segment">
-        <table class=" my-table display" id="tt">
+        <table class=" my-table display" id="main_table">
             <thead>
                 <tr>
                     <th>申請人</th>
@@ -40,6 +38,7 @@
             </thead>
         </table>
     </div>
+
     <div>
         <div class="ui modal large" id="eCheck">
             <i class="close icon"></i>
@@ -60,7 +59,6 @@
                     </div>
                     <div class="ui center aligned segment">
                         <div class="field  "><label>學生報告書(超修或低修)</label>
-
                             <button class="ui button downloadFile  " id="erDown" name="reportUrl">下載</button>
                             </p>
                         </div>
@@ -72,13 +70,13 @@
                     </div>
                 </div>
                 <div class="ui segments">
-                    <iframe id="ff"></iframe>
+                    <iframe id="hidden_ifream"></iframe>
                 </div>
 
                 <div class="ui form">
                     <div class="ui grid">
-                        <div class="two wide column">
-                        </div>
+                        <div class="two wide column"></div>
+
                         <div class="three wide column">
                             <div class="grouped fields">
                                 <div class="field">
@@ -86,13 +84,13 @@
                                 </div>
                                 <div class="field">
                                     <div class="ui radio checkbox">
-                                        <input type="radio" name="checkE" checked="checked" id="yes" value="2">
+                                        <input type="radio" name="checkE"  id="yes" value="2">
                                         <label for="yes">通過</label>
                                     </div>
                                 </div>
                                 <div class="field">
                                     <div class="ui radio checkbox">
-                                        <input type="radio" name="checkE" checked="checked" id="no_" value="3">
+                                        <input type="radio" name="checkE"  id="no_" value="3">
                                         <label for="yes">未通過</label>
                                     </div>
                                 </div>
@@ -102,54 +100,56 @@
                                         <option value="apply">選課申請書</option>
                                         <option value="AF">學生報告書</option>
                                         <option value="AX">師長證明</option>
-                                      </select>
+                                    </select>
                                 </div>
                                 <div class="field">
                                     <div class="ui radio checkbox">
-                                        <input type="radio" name="checkE" checked="checked" id="no_" value="11">
+                                        <input type="radio" name="checkE"  id="no_" value="11">
                                         <label for="no">退件</label>
                                     </div>
                                 </div>
                                 <div class="field">
                                     <div class="ui radio checkbox">
-                                        <input type="radio" name="checkE" checked="checked" id="no_" value="13">
+                                        <input type="radio" name="checkE"  id="no_" value="13">
                                         <label for="no">其他</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                         <div class="nine wide column">
                             <div class=" equal width grouped fields">
                                 <div class="field"> <label>常用備註</label></div>
                                 <div class="field">
                                     <select class="ui search dropdown" id="remark">
-                                            <option value="退件(該課程不得申請加選/退選)">退件(該課程不得申請加選/退選)</option>
-                                            <option value="申請資料有誤(請修改/刪除：科目名稱、科目代號、學分數)">申請資料有誤(請修改/刪除：科目名稱、科目代號、學分數)</option>
-                                            <option value="請補交報告書">請補交報告書</option>
-                                            <option value="請補交授課老師同意證明文件">請補交授課老師同意證明文件</option>
-                                            <option value="其他">其他</option>
-                                        </select>
+                                        <option value="退件(該課程不得申請加選/退選)">退件(該課程不得申請加選/退選)</option>
+                                        <option value="申請資料有誤(請修改/刪除：科目名稱、科目代號、學分數)">申請資料有誤(請修改/刪除：科目名稱、科目代號、學分數)
+                                        </option>
+                                        <option value="請補交報告書">請補交報告書</option>
+                                        <option value="請補交授課老師同意證明文件">請補交授課老師同意證明文件</option>
+                                        <option value="其他">其他</option>
+                                    </select>
                                 </div>
-                                <div class="field" id="remarkTextField"> <input type="text" placeholder="其他文字" id="remarkText"></div>
+                                <div class="field" id="remarkTextField"> <input type="text" placeholder="其他文字"
+                                        id="remarkText"></div>
 
                             </div>
-
                         </div>
+
                         <div class="two wide column bottom aligned">
                             <div class="field toCenter">
                                 <button class="ui button" id="send">送出</button>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
 
         </div>
     </div>
-    <script src="https://smtpjs.com/v3/smtp.js">
-    </script>
-    <script src="/js/manage.js">
-    </script>
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
+    <script src="/js/manage.js"></script>
 </body>
 
 </html>
