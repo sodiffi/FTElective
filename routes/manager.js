@@ -60,10 +60,8 @@ router.get("/token", async (req, res, next) => res.send("ok"))
 router.post("/list", async (req, res, next) => {
     if (util.checkAuth(req)) {
         var body = req.body
-
         await mModule.aCheck(req.body).then(async (data) => {
             if (req.body.hasCert) {
-                // console.log(req.body)
                 for (var key in body) {
                     if (String(key).includes("cert_ids")) {
                         if (!Array.isArray(body[key])) {
@@ -78,19 +76,15 @@ router.post("/list", async (req, res, next) => {
                         body["cert_values"] = body[key]
                     }
                 }
-                console.log("----------")
-                console.log(body)
-                console.log("----------")
                 await mModule.aCheckCert(body.cert_ids, body.cert_values).then(data => {
                     res.send(util.ret(true, "審核成功", data))
-                }, error => {
-
+                }, () => {
                     res.send(util.ret(false, "審核失敗"))
                 })
             } else {
                 res.send(util.ret(true, "審核成功", data))
             }
-        }, error => {
+        }, () => {
             res.send(util.ret(false, "審核失敗"))
         })
     } else {

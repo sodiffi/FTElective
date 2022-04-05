@@ -89,13 +89,13 @@ function toLows(data, tolows, forcheck) {
 var login = async function (newData) {
 
     var result = 0;
-    await query(`select *,concat(s.system,s.grade) in ( "日五專5","日五專6","日五專7","日四技4","日四技5","日四技6","進二技2","進二技3","日二技4","日二技2","日二技3","碩士班4","碩士班3","碩士班2") as "graduates" from student as s where id= "${newData.id}" and psw= "${newData.psw}"`)
+    await query(`select *,concat(s.system,s.grade)not in ("五專1","五專2","五專3","五專4","四技1","四技2","四技3","進二技1","日二技1","碩士班1")  as "graduates" from student as s where id= "${newData.id}" and psw= "${newData.psw}"`)
         .then(
             (data) => {
                 if (Array.isArray(data)) {
                     result = { isLogin: data.length > 0, d: data }
                 }
-            }, (error) => result = -1
+            }, () => result = -1
         );
 
     return result;
@@ -110,7 +110,7 @@ var loginA = async function (newData) {
                 if (Array.isArray(data)) {
                     result = data.length > 0
                 }
-            }, (error) => result = false
+            }, () => result = false
         )
 
     return result;
@@ -119,15 +119,10 @@ var loginA = async function (newData) {
 // 助教登入(存回token)
 //----------------------------------
 var signAuth = async function (newData) {
-    var result;
+    return await query(`update manager set token= "${newData.token}" where id ="${newData.id}"`)
+        .then(() => true, () => false);
 
-    await query(`update manager set token= "${newData.token}" where id ="${newData.id}"`)
-        .then(
-            (data) => result = true
-            , (error) => result = false
-        );
 
-    return result;
 }
 
 // 助教驗證
