@@ -20,14 +20,21 @@ function tableReload(forInit) {
         }
     }).then(res => {
         res = JSON.parse(res)
-        $('#tt').on('click', 'tbody tr', function () {
-            let table = new DataTable('#tt');
+        $('#main_table').on('click', 'tbody tr', function () {
+            let table = new DataTable('#main_table');
             var row = table.row($(this)).data();
             let ruleFileName = forSaveItem["applyUrl"]
             let toOpen = `../${ruleFileName}`
             $('.dropdown.multiple').dropdown("clear")
-            $("#ff").attr("src", toOpen)
+            $("#hidden_ifream").attr("src", toOpen)
             forSaveId = row["id"]
+            let status_id = row["status_id"]
+            if (![2, 11, 13].includes(status_id)) {
+                status_id = 3
+            }
+
+            $(`input[name='checkE'][value=${status_id}]`).attr("checked", "checked")
+
             forSaveItem = row
             $("#showStudent").html(`
     <tr>
@@ -58,7 +65,6 @@ function tableReload(forInit) {
             let c_value = row["c_value"]
             $("#rEcF > p ").html("")
             if (Array.isArray(hasCert)) {
-                console.log(c_value, c_value[0] == 1, c_value[0] == 2)
                 hasCert.forEach((cartItem, index) => {
                     if (cartItem) {
 
@@ -79,19 +85,18 @@ function tableReload(forInit) {
                         </div>
                         </div>`)
                     }
-                    // if(c_value[index])
                 })
 
                 $(".ecDown").click(e => {
                     let fileName = e.target.name
-                    $("#ff").attr("src", `${rootUrl}/${fileName}`)
-                    window.setTimeout(() => $("#ff")[0].contentWindow.print(), 500)
+                    $("#hidden_ifream").attr("src", `${rootUrl}/${fileName}`)
+                    window.setTimeout(() => $("#hidden_ifream")[0].contentWindow.print(), 500)
                 })
             }
             $("#eCheck").modal({ onApprove: () => { } }).modal("show")
         });
 
-        $('#tt').DataTable({
+        $('#main_table').DataTable({
             fixedHeader: true,
             responsive: true,
             data: res["d"],
@@ -137,32 +142,26 @@ function toMail(s_id, check) {
 
 }
 $(() => {
-    $('#tt thead tr')
+    $('#main_table thead tr')
         .clone(true)
         .addClass('filters')
-        .appendTo('#tt thead');
+        .appendTo('#main_table thead');
     $('.dropdown.multiple').dropdown()
     tableReload(function () {
         var api = this.api();
-        // For each column
         api.columns().eq(0).each(function (colIdx) {
-            // Set the header cell to contain the input element
             var cell = $('.filters th').eq(
                 $(api.column(colIdx).header()).index()
             );
             var title = $(cell).text();
             $(cell).html(' <div class="ui form"><input type="text" placeholder="' + title + '" class="searchInput"/></div>');
-
-            // On every keypress in this input
             $('input', $('.filters th').eq($(api.column(colIdx).header()).index()))
                 .off('keyup change')
                 .on('compositionend', (e) => {
                     e.stopPropagation();
-                    // Get the search value
                     $(this).attr('title', $(this).val());
-                    var regexr = '({search})'; //$(this).parents('th').find('select').val();
+                    var regexr = '({search})';
                     var cursorPosition = this.selectionStart;
-                    // Search the column for that value
                     api.column(colIdx)
                         .search(
                             this.value != '' ?
@@ -171,7 +170,6 @@ $(() => {
                             this.value != '',
                             this.value == ''
                         ).draw();
-
                     $(this).focus()[0].setSelectionRange(cursorPosition, cursorPosition);
                 });
         });
@@ -246,8 +244,8 @@ $(".downloadFile").on("click", e => {
     let ruleFileName = forSaveItem[fileTarget]
     let toOpen = `../${ruleFileName}`
 
-    $("#ff").attr("src", toOpen)
-    window.setTimeout(() => $("#ff")[0].contentWindow.print(), 500)
+    $("#hidden_ifream").attr("src", toOpen)
+    window.setTimeout(() => $("#hidden_ifream")[0].contentWindow.print(), 500)
 
     // window.open(toOpen)
 })

@@ -25,7 +25,7 @@ p {
 }
 
 .header img {
-    width: calc( 95vw - 100px)
+    width: calc(95vw - 100px)
 }
 
 .field,
@@ -111,7 +111,7 @@ a.item.active {
     margin-bottom: 0;
 }
 
-#tt {
+#main_table {
     width: calc(100vw - 150px) !important;
 }
 
@@ -141,75 +141,58 @@ a.item.active {
     display: none !important;
 }
 
-#ff {
+#hidden_ifream {
     display: none;
 }
 
 
-/* #logout {
-    display: flex;
-    right: calc(100vw - 100px);
-} */
 
 @media only screen and (max-width:767.98px) {
-    #view {
-        width: 100%;
-    }
+
     .downItems {
         text-align: right;
     }
+
     td {
         width: 25vw;
     }
-}
-
-@media only screen and (min-width:768px) {
-    #view {
-        width: 100%;
-    }
-}
-
-@media only screen and (min-width: 992px) {
-    #view {
-        width: 1020px;
-    }
-}
-
-@media only screen and (min-width:1200px) {
-    #view {
-        width: 1080px;
-    }
-}
-
-@media only screen and (min-width:1920px) {
-    #view {
-        width: 1140px;
-    }
-}
-
-@media only screen and (max-width:600px) {
     div.ui.grid.two.centered {
         background: none;
     }
+
     body {
         padding: 20px;
-        /* font-size: 3.5rem; */
     }
-    /* .field,
-    .ui.form .field>label {
-        font-size: 3.5rem;
-    } */
+
+
     .des {
-        /* font-size: 3.5vmin; */
         margin: 0;
         padding: 3px;
     }
+
     .Sample {
         margin: 15px 0;
         display: block;
     }
+
     #tab a.item>b {
         font-size: 3.5vmin;
     }
+    .ui.grid>[class*="three column"].row>.column.tablet {
+        width: 100vw !important;
+        margin: 15px;
+    }
+    .header img{
+        width: 90vw;
+    }
+}
+
+
+@media only screen and (max-width:600px) {
+
+
+}
+
+@media screen and (max-width:700px) {
 
 }
